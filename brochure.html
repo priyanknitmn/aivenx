@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AIvenX — Company Brochure</title>
+<link rel="icon" type="image/png" href="/assets/aivenx-mark.png" />
+
+<!-- Tailwind CDN — same setup as the landing page so the brochure stays in sync visually -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          'brand-cyan': '#22D3EE',
+          'brand-purple': '#A855F7',
+          'brand-ink': '#0F172A',
+          'brand-cream': '#FFF1D6',
+        },
+        fontFamily: { sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'] },
+      },
+    },
+  };
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+<style>
+  /* Brand gradients */
+  .brand-gradient { background: linear-gradient(135deg, #22D3EE 0%, #A855F7 100%); }
+  .brand-gradient-text {
+    background: linear-gradient(135deg, #22D3EE 0%, #A855F7 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* A4 page setup. Each .page is one printed page. We pad in mm so the
+     content respects printer margins. The body has a soft grey backdrop
+     on screen so pages feel like sheets of paper. */
+  @page { size: A4; margin: 0; }
+
+  html, body { background: #E5E7EB; }
+  body { font-family: 'Inter', system-ui, sans-serif; color: #0F172A; }
+
+  .page {
+    width: 210mm;
+    min-height: 297mm;
+    margin: 12mm auto;
+    background: #ffffff;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    padding: 18mm 18mm;
+    position: relative;
+    overflow: hidden;
+    page-break-after: always;
+  }
+  .page:last-child { page-break-after: auto; }
+
+  .page-cover {
+    color: white;
+    background: linear-gradient(135deg, #22D3EE 0%, #A855F7 100%);
+    padding: 0;
+  }
+
+  /* Background grid for cover */
+  .cover-grid {
+    background-image:
+      linear-gradient(rgba(255,255,255,0.10) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.10) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  /* Print: drop shadows + grey backdrop, keep margins from @page */
+  @media print {
+    html, body { background: #ffffff; }
+    .page {
+      margin: 0;
+      box-shadow: none;
+      width: 210mm;
+      min-height: 297mm;
+    }
+    .no-print { display: none !important; }
+  }
+
+  /* Footer line on each interior page */
+  .page-footer {
+    position: absolute;
+    left: 18mm;
+    right: 18mm;
+    bottom: 10mm;
+    display: flex;
+    justify-content: space-between;
+    font-size: 9pt;
+    color: #94A3B8;
+    border-top: 1px solid #E2E8F0;
+    padding-top: 4mm;
+  }
+</style>
+</head>
+<body class="antialiased">
+
+<!-- =================================================================
+     PRINT BAR (screen only) — gives a one-click print/save-to-PDF action
+     ================================================================= -->
+<div class="no-print sticky top-0 z-50 backdrop-blur bg-white/90 border-b border-slate-200">
+  <div class="max-w-5xl mx-auto px-6 py-3 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <img src="/assets/aivenx-mark.png" alt="AIvenX" class="h-7 w-auto" />
+      <span class="text-sm font-semibold">AIvenX Brochure</span>
+      <span class="text-xs text-slate-500">— preview</span>
+    </div>
+    <div class="flex items-center gap-3">
+      <span class="text-xs text-slate-500 hidden md:block">Print → Save as PDF (A4) for emailing</span>
+      <button onclick="window.print()" class="brand-gradient text-white text-sm font-semibold px-4 py-2 rounded-lg shadow hover:shadow-md transition">
+        🖨 Print / Save PDF
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- =================================================================
+     PAGE 1 — COVER
+     ================================================================= -->
+<section class="page page-cover">
+  <div class="cover-grid w-full h-full" style="min-height: 297mm; padding: 18mm; display: flex; flex-direction: column; justify-content: space-between;">
+    <div>
+      <img src="/assets/aivenx-logo.png" alt="AIvenX" style="height: 18mm; filter: brightness(0) invert(1);" />
+    </div>
+
+    <div>
+      <p class="text-sm font-mono uppercase tracking-[0.3em] text-white/80 mb-6">Company Brochure · 2026</p>
+      <h1 class="text-6xl font-black leading-[1.05] tracking-tight mb-6" style="font-size: 56pt;">
+        The AI-native<br />school,<br />in one login.
+      </h1>
+      <p class="text-xl text-white/90 max-w-xl leading-relaxed">
+        ERP + Cortex AI Studio + face-recognition attendance.
+        Twenty-plus modules. One platform. One bill.
+      </p>
+    </div>
+
+    <div class="flex items-end justify-between">
+      <div>
+        <p class="text-sm text-white/70 uppercase tracking-widest mb-1">aivenx.co.in</p>
+        <p class="text-sm text-white/70">hello@aivenx.co.in · Mumbai, India</p>
+      </div>
+      <div class="text-right">
+        <p class="text-xs text-white/60 uppercase tracking-widest">Built for</p>
+        <p class="text-sm font-semibold text-white/90">IB · CBSE · ICSE · CAIE · AP</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =================================================================
+     PAGE 2 — THE PROBLEM / WHY AIVENX
+     ================================================================= -->
+<section class="page">
+  <p class="text-xs font-mono uppercase tracking-[0.3em] text-brand-purple mb-3">The problem we solve</p>
+  <h2 class="text-4xl font-black tracking-tight mb-8">Schools are juggling 5 vendors.<br/>Teachers are juggling 5 logins.</h2>
+
+  <div class="grid grid-cols-2 gap-8 mb-10">
+    <div>
+      <p class="text-base text-slate-700 leading-relaxed">
+        A typical school today runs on a patchwork: an ERP for fees, a
+        separate LMS for content, an attendance app, an exam tool, a
+        biometric vendor, and a transport tracker. Each charges
+        per-module, per-student, or per-year. Each has its own login,
+        its own data silo, its own outage window.
+      </p>
+      <p class="text-base text-slate-700 leading-relaxed mt-4">
+        The cost isn't just licence fees — it's the 10 hours a week
+        every teacher loses to context-switching, manual data entry,
+        and re-typing the same student record into four different
+        systems.
+      </p>
+    </div>
+    <div class="bg-slate-50 rounded-2xl p-7 border border-slate-200">
+      <p class="text-xs uppercase tracking-widest text-slate-500 mb-4">Typical school stack</p>
+      <ul class="space-y-3 text-sm">
+        <li class="flex justify-between"><span class="text-slate-700">School ERP</span><span class="font-mono text-slate-500">Vendor A</span></li>
+        <li class="flex justify-between"><span class="text-slate-700">LMS / content</span><span class="font-mono text-slate-500">Vendor B</span></li>
+        <li class="flex justify-between"><span class="text-slate-700">Biometric attendance</span><span class="font-mono text-slate-500">Vendor C</span></li>
+        <li class="flex justify-between"><span class="text-slate-700">Exam / report cards</span><span class="font-mono text-slate-500">Vendor D</span></li>
+        <li class="flex justify-between"><span class="text-slate-700">Transport / GPS</span><span class="font-mono text-slate-500">Vendor E</span></li>
+        <li class="pt-3 border-t border-slate-200 mt-3 flex justify-between font-semibold">
+          <span>5 logins · 5 invoices · 5 SLAs</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="brand-gradient rounded-2xl p-8 text-white">
+    <p class="text-xs uppercase tracking-widest text-white/80 mb-3">Our answer</p>
+    <p class="text-3xl font-extrabold leading-tight">
+      Replace the entire stack with one elegantly designed platform —
+      built AI-first, not retrofitted.
+    </p>
+  </div>
+
+  <div class="page-footer">
+    <span>AIvenX · The AI-native school</span>
+    <span>Page 2</span>
+  </div>
+</section>
+
+<!-- =================================================================
+     PAGE 3 — THE PLATFORM (modules at a glance)
+     ================================================================= -->
+<section class="page">
+  <p class="text-xs font-mono uppercase tracking-[0.3em] text-brand-purple mb-3">The platform</p>
+  <h2 class="text-4xl font-black tracking-tight mb-3">One platform.<br/>Twenty-plus modules.</h2>
+  <p class="text-base text-slate-600 leading-relaxed mb-8 max-w-2xl">
+    Everything a modern school needs — from a parent paying fees on
+    Monday to a camera marking attendance on Wednesday — runs on the
+    same elegant system, with one student record at the centre.
+  </p>
+
+  <div class="grid grid-cols-3 gap-4 text-sm">
+    <!-- School Operations -->
+    <div class="rounded-xl border border-slate-200 p-5">
+      <p class="text-xs uppercase tracking-widest text-brand-cyan font-semibold mb-3">School Operations</p>
+      <ul class="space-y-1.5 text-slate-700">
+        <li>• Admissions & enquiry</li>
+        <li>• Fees & invoicing</li>
+        <li>• HR & payroll</li>
+        <li>• Library</li>
+        <li>• Transport & hostel</li>
+        <li>• Real-time reports</li>
+      </ul>
+    </div>
+    <!-- Academics -->
+    <div class="rounded-xl border border-slate-200 p-5">
+      <p class="text-xs uppercase tracking-widest text-brand-purple font-semibold mb-3">Academics</p>
+      <ul class="space-y-1.5 text-slate-700">
+        <li>• Class & section setup</li>
+        <li>• Timetables</li>
+        <li>• Examinations</li>
+        <li>• Report cards (multi-board)</li>
+        <li>• Promotion & rollover</li>
+        <li>• Parent portal</li>
+      </ul>
+    </div>
+    <!-- Cortex AI -->
+    <div class="rounded-xl border border-slate-200 p-5">
+      <p class="text-xs uppercase tracking-widest text-brand-purple font-semibold mb-3">Cortex AI Studio</p>
+      <ul class="space-y-1.5 text-slate-700">
+        <li>• Chapter generator</li>
+        <li>• 150k question bank</li>
+        <li>• Assessment Creator</li>
+        <li>• AI Evaluator</li>
+        <li>• Lesson plans</li>
+        <li>• Cortex Helper bot</li>
+      </ul>
+    </div>
+    <!-- Attendance & Safety -->
+    <div class="rounded-xl border border-slate-200 p-5">
+      <p class="text-xs uppercase tracking-widest text-brand-cyan font-semibold mb-3">Attendance & Safety</p>
+      <ul class="space-y-1.5 text-slate-700">
+        <li>• Face AI attendance</li>
+        <li>• Default-absent policy</li>
+        <li>• Period-wise tracking</li>
+        <li>• Auto reports</li>
+        <li>• Visitor logs</li>
+      </ul>
+    </div>
+    <!-- Communication -->
+    <div class="rounded-xl border border-slate-200 p-5">
+      <p class="text-xs uppercase tracking-widest text-brand-cyan font-semibold mb-3">Communication</p>
+      <ul class="space-y-1.5 text-slate-700">
+        <li>• Notice board</li>
+        <li>• Parent messaging</li>
+        <li>• Email & SMS templates</li>
+        <li>• Multi-language</li>
+        <li>• Event calendar</li>
+      </ul>
+    </div>
+    <!-- Multi-tenant -->
+    <div class="rounded-xl border border-slate-200 p-5">
+      <p class="text-xs uppercase tracking-widest text-brand-purple font-semibold mb-3">Foundations</p>
+      <ul class="space-y-1.5 text-slate-700">
+        <li>• Multi-tenant secure</li>
+        <li>• Role-based access</li>
+        <li>• Audit logs</li>
+        <li>• Data export anytime</li>
+        <li>• Daily backups</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>AIvenX · The platform</span>
+    <span>Page 3</span>
+  </div>
+</section>
+
+<!-- =================================================================
+     PAGE 4 — CORTEX AI STUDIO (deep dive)
+     ================================================================= -->
+<section class="page">
+  <p class="text-xs font-mono uppercase tracking-[0.3em] text-brand-purple mb-3">The flagship</p>
+  <h2 class="text-4xl font-black tracking-tight mb-3">
+    <span class="brand-gradient-text">Cortex</span> writes the curriculum.<br/>Teachers do the teaching.
+  </h2>
+  <p class="text-base text-slate-600 leading-relaxed mb-8 max-w-2xl">
+    Cortex AI Studio is what makes AIvenX different. It generates
+    curriculum-aligned chapters, assembles exam papers from a 150,000-question
+    bank, grades handwritten answer sheets, and writes lesson plans —
+    in seconds, not hours.
+  </p>
+
+  <div class="grid grid-cols-2 gap-5 mb-6">
+    <div class="rounded-xl bg-white border border-slate-200 p-6">
+      <p class="text-3xl font-black brand-gradient-text mb-2">📘</p>
+      <h3 class="font-bold text-lg mb-1">Chapter Generator</h3>
+      <p class="text-sm text-slate-600 leading-relaxed">
+        Pick subject, grade, and topic. Cortex produces a board-aligned
+        chapter in four learning modes: <b>Focus</b> (clear & structured),
+        <b>Spark</b> (engaging analogies), <b>Quest</b> (gamified), and
+        <b>Saga</b> (narrative). Diagrams, exercises, and answer keys included.
+      </p>
+    </div>
+    <div class="rounded-xl bg-white border border-slate-200 p-6">
+      <p class="text-3xl font-black brand-gradient-text mb-2">📝</p>
+      <h3 class="font-bold text-lg mb-1">Assessment Creator</h3>
+      <p class="text-sm text-slate-600 leading-relaxed">
+        Build exam papers from a 150,000+ question bank. Filter by
+        chapter, difficulty, Bloom level, and marks. CBSE-standard
+        section presets included. Live coverage preview before you commit.
+      </p>
+    </div>
+    <div class="rounded-xl bg-white border border-slate-200 p-6">
+      <p class="text-3xl font-black brand-gradient-text mb-2">✍️</p>
+      <h3 class="font-bold text-lg mb-1">AI Evaluator</h3>
+      <p class="text-sm text-slate-600 leading-relaxed">
+        Upload scanned answer sheets. Cortex grades handwritten responses,
+        flags borderline answers for teacher review, and exports a
+        marks sheet ready for the gradebook.
+      </p>
+    </div>
+    <div class="rounded-xl bg-white border border-slate-200 p-6">
+      <p class="text-3xl font-black brand-gradient-text mb-2">💬</p>
+      <h3 class="font-bold text-lg mb-1">Cortex Helper + Study Mode</h3>
+      <p class="text-sm text-slate-600 leading-relaxed">
+        A built-in AI guide on every page (powered by our mascot, Leo).
+        Helper answers product questions; Study mode tutors students
+        through chapters with context-aware Q&A.
+      </p>
+    </div>
+  </div>
+
+  <div class="bg-slate-50 rounded-xl p-5 border border-slate-200 flex items-center gap-5">
+    <div class="text-3xl">⏱️</div>
+    <p class="text-sm text-slate-700 leading-relaxed">
+      <b>Time saved per teacher per week: ~10 hours.</b> Lesson prep, paper-setting,
+      and grading collapse from days into minutes.
+    </p>
+  </div>
+
+  <div class="page-footer">
+    <span>AIvenX · Cortex AI Studio</span>
+    <span>Page 4</span>
+  </div>
+</section>
+
+<!-- =================================================================
+     PAGE 5 — FACE AI ATTENDANCE
+     ================================================================= -->
+<section class="page">
+  <p class="text-xs font-mono uppercase tracking-[0.3em] text-brand-purple mb-3">Attendance, reinvented</p>
+  <h2 class="text-4xl font-black tracking-tight mb-3">
+    Face AI replaces<br/>the biometric machine.
+  </h2>
+  <p class="text-base text-slate-600 leading-relaxed mb-8 max-w-2xl">
+    A single webcam at the classroom door — or a tablet at the gate —
+    marks every student present in under a second. No fingerprint
+    queues, no proxy attendance, no missed entries.
+  </p>
+
+  <div class="grid grid-cols-2 gap-8 mb-8">
+    <div>
+      <h3 class="font-bold text-lg mb-3">How it works</h3>
+      <ol class="space-y-3 text-sm text-slate-700">
+        <li><b class="brand-gradient-text">1. Enrol once.</b> Capture 3-5 photos of each student during admission. Embeddings are stored, photos are not.</li>
+        <li><b class="brand-gradient-text">2. Recognise live.</b> The classroom camera streams frames. Cortex matches faces in real time and writes attendance to the gradebook.</li>
+        <li><b class="brand-gradient-text">3. Default-absent policy.</b> Anyone not seen by the cut-off is automatically marked absent. Parents get an SMS.</li>
+        <li><b class="brand-gradient-text">4. Period-wise tracking.</b> Same logic for every period — absconding mid-day is detected too.</li>
+      </ol>
+    </div>
+    <div class="bg-gradient-to-br from-cyan-50 to-purple-50 rounded-2xl p-6 border border-slate-200">
+      <p class="text-xs uppercase tracking-widest text-slate-500 mb-4">Why it matters</p>
+      <ul class="space-y-3 text-sm">
+        <li class="flex gap-3"><span class="text-brand-cyan font-bold">✓</span><span>Zero teacher time spent on roll-call</span></li>
+        <li class="flex gap-3"><span class="text-brand-cyan font-bold">✓</span><span>Proxy-proof — no impersonation</span></li>
+        <li class="flex gap-3"><span class="text-brand-cyan font-bold">✓</span><span>Hardware-free — uses any webcam</span></li>
+        <li class="flex gap-3"><span class="text-brand-cyan font-bold">✓</span><span>Privacy-first — only embeddings stored</span></li>
+        <li class="flex gap-3"><span class="text-brand-cyan font-bold">✓</span><span>Works offline-first; syncs when online</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="bg-slate-900 text-white rounded-2xl p-7">
+    <p class="text-xs uppercase tracking-widest text-white/60 mb-3">Real-world impact</p>
+    <p class="text-2xl font-extrabold leading-snug">
+      A 1,000-student school saves ~250 staff-hours per term on
+      attendance alone — and gets fully audited records in return.
+    </p>
+  </div>
+
+  <div class="page-footer">
+    <span>AIvenX · Face AI Attendance</span>
+    <span>Page 5</span>
+  </div>
+</section>
+
+<!-- =================================================================
+     PAGE 6 — BUILT FOR EVERY BOARD
+     ================================================================= -->
+<section class="page">
+  <p class="text-xs font-mono uppercase tracking-[0.3em] text-brand-purple mb-3">Built for world-class schools</p>
+  <h2 class="text-4xl font-black tracking-tight mb-3">Curriculum-aligned<br/>out of the box.</h2>
+  <p class="text-base text-slate-600 leading-relaxed mb-10 max-w-2xl">
+    Whether you run an IB World School in Mumbai or a CBSE chain across
+    five states, AIvenX understands your syllabus, grading scale, and
+    report-card format from day one.
+  </p>
+
+  <div class="grid grid-cols-2 gap-5 mb-10">
+    <div class="rounded-2xl border-2 border-slate-200 p-6">
+      <p class="text-xs uppercase tracking-widest text-brand-cyan font-semibold mb-2">International</p>
+      <h3 class="font-bold text-xl mb-3">IB · CAIE · AP</h3>
+      <p class="text-sm text-slate-600 leading-relaxed">
+        Full support for IB PYP / MYP / DP, Cambridge IGCSE & A-Levels,
+        and Advanced Placement. Inquiry-based templates, portfolio
+        rubrics, and DP point conversion built in.
+      </p>
+    </div>
+    <div class="rounded-2xl border-2 border-slate-200 p-6">
+      <p class="text-xs uppercase tracking-widest text-brand-purple font-semibold mb-2">Indian</p>
+      <h3 class="font-bold text-xl mb-3">CBSE · ICSE · ISC · State · NIOS</h3>
+      <p class="text-sm text-slate-600 leading-relaxed">
+        Native support for CBSE, ICSE/ISC, all major State Boards,
+        and NIOS. Term-wise scholastic + co-scholastic report cards,
+        skill grades, and CCE patterns ready out of the box.
+      </p>
+    </div>
+  </div>
+
+  <div class="flex flex-wrap gap-2 mb-8">
+    <span class="px-4 py-2 rounded-full bg-slate-50 border border-slate-200 text-xs font-semibold">IB (PYP · MYP · DP)</span>
+    <span class="px-4 py-2 rounded-full bg-slate-50 border border-slate-200 text-xs font-semibold">CBSE</span>
+    <span class="px-4 py-2 rounded-full bg-slate-50 border border-slate-200 text-xs font-semibold">ICSE / ISC</span>
+    <span class="px-4 py-2 rounded-full bg-slate-50 border border-slate-200 text-xs font-semibold">Cambridge (CAIE)</span>
+    <span class="px-4 py-2 rounded-full bg-slate-50 border border-slate-200 text-xs font-semibold">Advanced Placement</span>
+    <span class="px-4 py-2 rounded-full bg-slate-50 border border-slate-200 text-xs font-semibold">State Boards</span>
+    <span class="px-4 py-2 rounded-full bg-slate-50 border border-slate-200 text-xs font-semibold">NIOS</span>
+  </div>
+
+  <div class="brand-gradient text-white rounded-2xl p-7">
+    <p class="text-xl font-extrabold leading-tight">
+      Don't see yours? Cortex AI adapts to any framework — talk to us
+      and we'll have your school live in 14 days.
+    </p>
+  </div>
+
+  <div class="page-footer">
+    <span>AIvenX · Curriculum Coverage</span>
+    <span>Page 6</span>
+  </div>
+</section>
+
+<!-- =================================================================
+     PAGE 7 — EDITIONS (no prices — contact-driven)
+     ================================================================= -->
+<section class="page">
+  <p class="text-xs font-mono uppercase tracking-[0.3em] text-brand-purple mb-3">Editions</p>
+  <h2 class="text-4xl font-black tracking-tight mb-3">Pick the edition<br/>that fits your school.</h2>
+  <p class="text-base text-slate-600 leading-relaxed mb-8 max-w-2xl">
+    Three editions, one platform. All editions are multi-tenant secure,
+    GDPR-aligned, and include role-based access for admin, principal,
+    teacher, student, and parent.
+  </p>
+
+  <div class="grid grid-cols-3 gap-4">
+    <!-- Starter -->
+    <div class="rounded-2xl border border-slate-200 p-5">
+      <p class="text-xs uppercase tracking-widest text-slate-500 mb-2">Starter</p>
+      <h3 class="font-bold text-2xl mb-3">Operate</h3>
+      <p class="text-sm text-slate-600 leading-relaxed mb-4">
+        For schools moving off spreadsheets. Replace the ERP first.
+      </p>
+      <ul class="space-y-1.5 text-sm text-slate-700">
+        <li class="flex gap-2"><span class="text-brand-cyan">✓</span> Admissions & fees</li>
+        <li class="flex gap-2"><span class="text-brand-cyan">✓</span> HR & payroll</li>
+        <li class="flex gap-2"><span class="text-brand-cyan">✓</span> Timetable & exams</li>
+        <li class="flex gap-2"><span class="text-brand-cyan">✓</span> Report cards</li>
+        <li class="flex gap-2"><span class="text-brand-cyan">✓</span> Parent portal</li>
+        <li class="flex gap-2"><span class="text-brand-cyan">✓</span> Email support</li>
+      </ul>
+    </div>
+    <!-- Pro -->
+    <div class="rounded-2xl border-2 border-brand-purple p-5 relative">
+      <span class="absolute -top-3 left-5 brand-gradient text-white text-[10pt] font-bold uppercase tracking-widest px-3 py-1 rounded-full">Most popular</span>
+      <p class="text-xs uppercase tracking-widest text-brand-purple mb-2">Pro</p>
+      <h3 class="font-bold text-2xl mb-3">Operate + Cortex</h3>
+      <p class="text-sm text-slate-600 leading-relaxed mb-4">
+        Add the AI Studio. Save teachers 10 hours a week.
+      </p>
+      <ul class="space-y-1.5 text-sm text-slate-700">
+        <li class="flex gap-2"><span class="text-brand-cyan">✓</span> Everything in Operate</li>
+        <li class="flex gap-2"><span class="text-brand-cyan">✓</span> Cortex Chapter Generator</li>
+        <li class="flex gap-2"><span class="text-brand-cyan">✓</span> 150k Question Bank</li>
+        <li class="flex gap-2"><span class="text-brand-cyan">✓</span> Assessment Creator</li>
+        <li class="flex gap-2"><span class="text-brand-cyan">✓</span> Lesson plans</li>
+        <li class="flex gap-2"><span class="text-brand-cyan">✓</span> Phone + email support</li>
+      </ul>
+    </div>
+    <!-- Enterprise -->
+    <div class="rounded-2xl border border-slate-200 p-5">
+      <p class="text-xs uppercase tracking-widest text-slate-500 mb-2">Enterprise</p>
+      <h3 class="font-bold text-2xl mb-3">Everything</h3>
+      <p class="text-sm text-slate-600 leading-relaxed mb-4">
+        For multi-campus chains and IB / international schools.
+      </p>
+      <ul class="space-y-1.5 text-sm text-slate-700">
+        <li class="flex gap-2"><span class="text-brand-cyan">✓</span> Everything in Pro</li>
+        <li class="flex gap-2"><span class="text-brand-cyan">✓</span> AI Evaluator</li>
+        <li class="flex gap-2"><span class="text-brand-cyan">✓</span> Face AI Attendance</li>
+        <li class="flex gap-2"><span class="text-brand-cyan">✓</span> Teacher Assist (2026)</li>
+        <li class="flex gap-2"><span class="text-brand-cyan">✓</span> Student Surveillance (2026)</li>
+        <li class="flex gap-2"><span class="text-brand-cyan">✓</span> Priority + dedicated CSM</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="mt-10 bg-slate-50 rounded-2xl p-6 border border-slate-200 text-center">
+    <p class="text-sm text-slate-600 mb-2">Pricing scales with student count and edition.</p>
+    <p class="text-lg font-bold">
+      Email <a href="mailto:sales@aivenx.co.in" class="brand-gradient-text">sales@aivenx.co.in</a>
+      for a quote tailored to your school.
+    </p>
+  </div>
+
+  <div class="page-footer">
+    <span>AIvenX · Editions</span>
+    <span>Page 7</span>
+  </div>
+</section>
+
+<!-- =================================================================
+     PAGE 8 — ROADMAP + CONTACT
+     ================================================================= -->
+<section class="page">
+  <p class="text-xs font-mono uppercase tracking-[0.3em] text-brand-purple mb-3">What's next</p>
+  <h2 class="text-4xl font-black tracking-tight mb-8">Already on the way.</h2>
+
+  <div class="grid grid-cols-2 gap-5 mb-10">
+    <div class="rounded-2xl border-2 border-dashed border-slate-300 p-6">
+      <div class="text-3xl mb-2">🎓</div>
+      <h3 class="font-bold text-lg mb-2">Teacher Assist</h3>
+      <p class="text-sm text-slate-600 leading-relaxed mb-3">
+        Every published chapter automatically gets a slide-by-slide
+        presentation deck — speaker notes, embedded diagrams, and
+        discussion prompts, all built in.
+      </p>
+      <span class="inline-block text-xs font-semibold uppercase tracking-wider text-brand-purple">Shipping H2 2026</span>
+    </div>
+    <div class="rounded-2xl border-2 border-dashed border-slate-300 p-6">
+      <div class="text-3xl mb-2">🛡</div>
+      <h3 class="font-bold text-lg mb-2">Student Surveillance</h3>
+      <p class="text-sm text-slate-600 leading-relaxed mb-3">
+        Live GPS on every bus. Boarding/alighting verification.
+        Parent ETA. Panic button that escalates to admin, guardians,
+        and (optionally) local authorities.
+      </p>
+      <span class="inline-block text-xs font-semibold uppercase tracking-wider text-brand-purple">Shipping H2 2026</span>
+    </div>
+  </div>
+
+  <!-- Contact block -->
+  <div class="brand-gradient rounded-2xl p-8 text-white">
+    <p class="text-xs uppercase tracking-widest text-white/80 mb-3">Let's talk</p>
+    <h3 class="text-3xl font-black leading-tight mb-6">Book a 30-minute demo.<br/>See your school running on AIvenX.</h3>
+
+    <div class="grid grid-cols-2 gap-6 mb-6">
+      <div>
+        <p class="text-xs uppercase tracking-widest text-white/70 mb-1">Sales</p>
+        <p class="font-semibold">sales@aivenx.co.in</p>
+      </div>
+      <div>
+        <p class="text-xs uppercase tracking-widest text-white/70 mb-1">General</p>
+        <p class="font-semibold">hello@aivenx.co.in</p>
+      </div>
+      <div>
+        <p class="text-xs uppercase tracking-widest text-white/70 mb-1">Support</p>
+        <p class="font-semibold">support@aivenx.co.in</p>
+      </div>
+      <div>
+        <p class="text-xs uppercase tracking-widest text-white/70 mb-1">Web</p>
+        <p class="font-semibold">aivenx.co.in</p>
+      </div>
+    </div>
+
+    <p class="text-sm text-white/80">
+      AIvenX Technologies · Mumbai, India · © 2026
+    </p>
+  </div>
+
+  <div class="page-footer">
+    <span>AIvenX · Roadmap & Contact</span>
+    <span>Page 8</span>
+  </div>
+</section>
+
+</body>
+</html>
