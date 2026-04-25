@@ -548,6 +548,121 @@ sectionDivider("SECTION 4 OF 4", "Engagement & Operations.", "Communication · L
   });
 }
 
+// ============================================================ ROADMAP DIVIDER
+{
+  const s = pptx.addSlide();
+  gradientCoverSlide(s);
+  s.addText("2026 — 2027 ROADMAP", { x: 0.6, y: 1.6, w: 12, h: 0.4, fontFace: "Inter", fontSize: 12, bold: true, color: "FFFFFF", charSpacing: 8 });
+  s.addText("Three new pillars,\nalready on the way.", { x: 0.6, y: 2.2, w: 12, h: 2.5, fontFace: "Inter", fontSize: 56, bold: true, color: "FFFFFF" });
+  s.addText("All included in your subscription when they ship — no upsell, no module fee.", {
+    x: 0.6, y: 5.5, w: 12, h: 1.0, fontFace: "Inter", fontSize: 18, color: "FFFFFF",
+  });
+}
+
+// ============================================================ ROADMAP A · GUARDIAN
+{
+  const s = pptx.addSlide();
+  eyebrow(s, "ROADMAP · AIVENX GUARDIAN");
+  titleText(s, "A safety net around every student.");
+  lede(s, "A single suite covering the bus, the gate, and the moments in between. Beta now in two pilot schools; pilot rollout H2 2026.", 2.0);
+
+  const cards = [
+    ["🚌 Live bus tracking", [
+      "GPS pings every 10 sec",
+      "Boarding / alighting verification",
+      "Parent ETA on the home screen",
+      "Route deviation alerts",
+      "Driver app for pickup confirmation",
+    ]],
+    ["🚪 Campus gate access", [
+      "Face-AI in/out at every gate",
+      "Live who's-on-campus headcount",
+      "Visitor sign-in with audit trail",
+      "Unknown-face flagging",
+      "Per-period attendance reconciliation",
+    ]],
+    ["🛡️ In-bus safety AI", [
+      "Bullying / harassment detection",
+      "Audio + video classifier",
+      "Real-time alert to admin + driver",
+      "Panic button on the parent app",
+      "Encrypted footage retained 30 days",
+    ]],
+  ];
+  cards.forEach(([h, items], i) => {
+    const x = 0.5 + i * 4.25;
+    s.addShape("roundRect", { x, y: 3.2, w: 4.0, h: 3.0, fill: { color: "FFFFFF" }, line: { color: CYAN, width: 2 }, rectRadius: 0.15 });
+    s.addText(h, { x: x + 0.2, y: 3.35, w: 3.6, h: 0.45, fontFace: "Inter", fontSize: 16, bold: true, color: INK });
+    bulletList(s, x + 0.2, 3.85, 3.6, 2.3, items, { size: 11 });
+  });
+
+  s.addShape("roundRect", { x: 0.5, y: 6.4, w: 12.35, h: 0.85, fill: { color: PURPLE }, line: { color: PURPLE, width: 1 }, rectRadius: 0.1 });
+  s.addText("Why parents care: the parent's phone tells them where their child is — before anyone has to ask.",
+    { x: 0.7, y: 6.5, w: 12.0, h: 0.7, fontFace: "Inter", fontSize: 13, bold: true, color: "FFFFFF" });
+}
+
+// ============================================================ ROADMAP B · CONNECT
+{
+  const s = pptx.addSlide();
+  eyebrow(s, "ROADMAP · AIVENX CONNECT");
+  titleText(s, "Every batch. Still in touch.");
+  lede(s, "An alumni network built into the school's own platform. Live in pilot now; GA H2 2026.", 2.0);
+
+  s.addShape("roundRect", { x: 0.5, y: 3.2, w: 6.0, h: 3.7, fill: { color: "FFFFFF" }, line: { color: SLATE200, width: 1 }, rectRadius: 0.15 });
+  s.addText("What alumni get", { x: 0.7, y: 3.35, w: 5.6, h: 0.4, fontFace: "Inter", fontSize: 16, bold: true, color: INK });
+  bulletList(s, 0.7, 3.85, 5.6, 2.9, [
+    "A polished profile that travels — even after the school email expires",
+    "Mentorship requests from current students they actually want to help",
+    "A job board they post to (and that current students actually read)",
+    "Reunions, fundraisers, and events with one-tap RSVP",
+  ], { size: 12 });
+
+  s.addShape("roundRect", { x: 6.85, y: 3.2, w: 6.0, h: 3.7, fill: { color: "FFFFFF" }, line: { color: PURPLE, width: 2 }, rectRadius: 0.15 });
+  s.addText("What the school gets", { x: 7.05, y: 3.35, w: 5.6, h: 0.4, fontFace: "Inter", fontSize: 16, bold: true, color: INK });
+  bulletList(s, 7.05, 3.85, 5.6, 2.9, [
+    "Searchable directory by batch, industry, location, role",
+    "Mentor matching engine — students filter by area; alumni opt in",
+    "Verified profiles — admin-stamped to prevent impersonation",
+    "Engagement analytics — which batches are active",
+    "Privacy controls — school-only or public visibility",
+  ], { size: 12 });
+}
+
+// ============================================================ ROADMAP C · MOBILE
+{
+  const s = pptx.addSlide();
+  eyebrow(s, "ROADMAP · AIVENX MOBILE");
+  titleText(s, "Two apps. One platform.");
+  lede(s, "Native iOS + Android for students and parents. Single sign-on with the school portal. Shipping early 2027.", 2.0);
+
+  s.addShape("roundRect", { x: 0.5, y: 3.2, w: 6.0, h: 3.9, fill: { color: "FFFFFF" }, line: { color: CYAN, width: 2 }, rectRadius: 0.15 });
+  s.addText("📚 Student app", { x: 0.7, y: 3.35, w: 5.6, h: 0.5, fontFace: "Inter", fontSize: 18, bold: true, color: INK });
+  s.addText("For grades 4 and up. A learning companion, not a portal.", {
+    x: 0.7, y: 3.9, w: 5.6, h: 0.45, fontFace: "Inter", fontSize: 11, color: SLATE600, italic: true,
+  });
+  bulletList(s, 0.7, 4.4, 5.6, 2.6, [
+    "Today's chapters in their preferred mode (Focus / Spark / Quest / Saga)",
+    "Leo, the AI tutor, on every page",
+    "Self-paced practice with the question bank",
+    "Timetable, results, exam schedules at a tap",
+    "Personal portfolio — projects, achievements, badges",
+  ], { size: 11 });
+
+  s.addShape("roundRect", { x: 6.85, y: 3.2, w: 6.0, h: 3.9, fill: { color: "FFFFFF" }, line: { color: PURPLE, width: 2 }, rectRadius: 0.15 });
+  s.addText("👨‍👩‍👧 Parent app", { x: 7.05, y: 3.35, w: 5.6, h: 0.5, fontFace: "Inter", fontSize: 18, bold: true, color: INK });
+  s.addText("Calm, confident updates — no more guessing.", {
+    x: 7.05, y: 3.9, w: 5.6, h: 0.45, fontFace: "Inter", fontSize: 11, color: SLATE600, italic: true,
+  });
+  bulletList(s, 7.05, 4.4, 5.6, 2.6, [
+    "Live attendance — gate-confirmed, not teacher-typed",
+    "Fee invoices + UPI payment in two taps",
+    "Bus tracker — live ETA + boarding alerts",
+    "Threaded teacher chat",
+    "Wellbeing & safety alerts (Guardian-powered)",
+    "Term-end performance summary, no PDFs",
+  ], { size: 11 });
+}
+
 // ============================================================ 17. SECURITY
 {
   const s = pptx.addSlide();
