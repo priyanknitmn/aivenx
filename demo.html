@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AIvenX — Demo Deck</title>
+<link rel="icon" type="image/png" href="/assets/aivenx-mark.png" />
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          'brand-cyan': '#22D3EE',
+          'brand-purple': '#A855F7',
+          'brand-ink': '#0F172A',
+        },
+        fontFamily: { sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'] },
+      },
+    },
+  };
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+<style>
+  html, body { margin: 0; padding: 0; background: #0F172A; font-family: 'Inter', system-ui, sans-serif; color: #0F172A; overflow: hidden; }
+  .deck { position: relative; width: 100vw; height: 100vh; overflow: hidden; }
+  .slide {
+    position: absolute; inset: 0;
+    background: #ffffff;
+    padding: 44px 64px;
+    display: none; flex-direction: column;
+    overflow: hidden;
+  }
+  .slide.active { display: flex; }
+  .brand-gradient { background: linear-gradient(135deg, #22D3EE 0%, #A855F7 100%); }
+  .brand-gradient-text {
+    background: linear-gradient(135deg, #22D3EE 0%, #A855F7 100%);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* Section dividers — full-bleed coloured slides used to mark a new feature group */
+  .slide-cover {
+    background: linear-gradient(135deg, #22D3EE 0%, #A855F7 100%);
+    color: white; padding: 64px 80px;
+    justify-content: center;
+  }
+  .slide-dark { background: #0F172A; color: white; justify-content: center; }
+  .cover-grid {
+    background-image:
+      linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+
+  /* Feature slide template — header strip + body grid */
+  .feature-eyebrow { font-size: 11pt; font-family: ui-monospace, monospace; text-transform: uppercase; letter-spacing: 0.3em; color: #A855F7; margin-bottom: 8px; }
+  .feature-title { font-size: 44pt; font-weight: 900; letter-spacing: -0.02em; line-height: 1.05; margin-bottom: 16px; }
+  .feature-lede { font-size: 16pt; color: #475569; line-height: 1.5; max-width: 64ch; }
+
+  /* Bullet pill */
+  .pill { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 999px; background: #F1F5F9; border: 1px solid #E2E8F0; font-size: 11pt; font-weight: 600; color: #334155; }
+
+  .nav-chrome {
+    position: fixed; bottom: 16px; right: 16px; z-index: 100;
+    display: flex; align-items: center; gap: 8px;
+    background: rgba(15, 23, 42, 0.85); color: white;
+    padding: 6px 10px; border-radius: 999px;
+    font-size: 12px; backdrop-filter: blur(8px);
+  }
+  .nav-chrome button {
+    background: rgba(255,255,255,0.1); border: none; color: white;
+    width: 24px; height: 24px; border-radius: 999px;
+    cursor: pointer; font-size: 14px; line-height: 1;
+  }
+  .nav-chrome button:hover { background: rgba(255,255,255,0.2); }
+
+  .slide.active > * { animation: fade 0.4s ease-out both; }
+  @keyframes fade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  @page { size: 1280px 720px; margin: 0; }
+  @media print {
+    html, body { background: white; overflow: visible; }
+    .deck { width: auto; height: auto; }
+    .slide { display: flex !important; position: relative; page-break-after: always; width: 1280px; height: 720px; }
+    .nav-chrome, .help-overlay { display: none !important; }
+  }
+
+  .help-overlay {
+    position: fixed; inset: 0;
+    background: rgba(15,23,42,0.92); color: white; z-index: 200;
+    display: none; align-items: center; justify-content: center; font-size: 18px;
+  }
+  .help-overlay.show { display: flex; }
+  .help-overlay .panel { max-width: 480px; padding: 32px; }
+  .key { display: inline-block; min-width: 28px; padding: 2px 8px; background: rgba(255,255,255,0.15); border-radius: 4px; font-family: monospace; font-size: 14px; margin-right: 8px; }
+</style>
+</head>
+<body>
+
+<div class="deck" id="deck">
+
+  <!-- ============================== 1. TITLE -->
+  <section class="slide slide-cover active">
+    <div class="cover-grid absolute inset-0"></div>
+    <div class="relative z-10 flex flex-col h-full justify-between">
+      <img src="/assets/aivenx-logo.png" alt="AIvenX" style="height: 48px; filter: brightness(0) invert(1);" />
+      <div>
+        <p class="text-sm font-mono uppercase tracking-[0.3em] text-white/80 mb-6">Live demo · 2026</p>
+        <h1 class="text-7xl font-black leading-[1.05] tracking-tight mb-8">
+          The AI-native<br/>school,<br/>in one login.
+        </h1>
+        <p class="text-2xl text-white/90 max-w-2xl leading-relaxed">
+          A walkthrough prepared for <span id="schoolName" class="font-bold">[School Name]</span>.
+        </p>
+      </div>
+      <div class="flex items-end justify-between text-sm text-white/70">
+        <div>aivenx.co.in · hello@aivenx.co.in</div>
+        <div>Mumbai, India</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== 2. AGENDA -->
+  <section class="slide">
+    <p class="feature-eyebrow">What we'll cover</p>
+    <h2 class="feature-title mb-10">A guided tour, feature by feature.</h2>
+    <div class="grid grid-cols-2 gap-x-12 gap-y-4 text-lg max-w-6xl">
+      <div class="flex gap-4"><span class="brand-gradient-text font-black text-2xl w-10">01</span><div>The problem we solve</div></div>
+      <div class="flex gap-4"><span class="brand-gradient-text font-black text-2xl w-10">02</span><div>Admissions & enquiry</div></div>
+      <div class="flex gap-4"><span class="brand-gradient-text font-black text-2xl w-10">03</span><div>Fees & invoicing</div></div>
+      <div class="flex gap-4"><span class="brand-gradient-text font-black text-2xl w-10">04</span><div>HR & payroll</div></div>
+      <div class="flex gap-4"><span class="brand-gradient-text font-black text-2xl w-10">05</span><div>Timetable & exams</div></div>
+      <div class="flex gap-4"><span class="brand-gradient-text font-black text-2xl w-10">06</span><div>Report cards (multi-board)</div></div>
+      <div class="flex gap-4"><span class="brand-gradient-text font-black text-2xl w-10">07</span><div>Cortex — Chapter Generator</div></div>
+      <div class="flex gap-4"><span class="brand-gradient-text font-black text-2xl w-10">08</span><div>Cortex — Question Bank (150k)</div></div>
+      <div class="flex gap-4"><span class="brand-gradient-text font-black text-2xl w-10">09</span><div>Cortex — Assessment Creator</div></div>
+      <div class="flex gap-4"><span class="brand-gradient-text font-black text-2xl w-10">10</span><div>Cortex — AI Evaluator</div></div>
+      <div class="flex gap-4"><span class="brand-gradient-text font-black text-2xl w-10">11</span><div>Cortex Helper + Study mode</div></div>
+      <div class="flex gap-4"><span class="brand-gradient-text font-black text-2xl w-10">12</span><div>Face AI attendance (live)</div></div>
+      <div class="flex gap-4"><span class="brand-gradient-text font-black text-2xl w-10">13</span><div>Parent communication</div></div>
+      <div class="flex gap-4"><span class="brand-gradient-text font-black text-2xl w-10">14</span><div>Library · Transport · Hostel</div></div>
+      <div class="flex gap-4"><span class="brand-gradient-text font-black text-2xl w-10">15</span><div>Security & data</div></div>
+      <div class="flex gap-4"><span class="brand-gradient-text font-black text-2xl w-10">16</span><div>Editions, onboarding, next steps</div></div>
+    </div>
+  </section>
+
+  <!-- ============================== 3. PROBLEM -->
+  <section class="slide">
+    <p class="feature-eyebrow">The problem</p>
+    <h2 class="feature-title">Schools juggle <span class="brand-gradient-text">5 vendors.</span></h2>
+    <p class="feature-lede mb-10">Each charges per-module, has its own login, its own data silo, its own outage window. AIvenX replaces all five with one platform.</p>
+    <div class="grid grid-cols-5 gap-3 max-w-5xl">
+      <div class="rounded-xl bg-slate-50 border border-slate-200 p-5 text-center"><div class="text-xs text-slate-500 uppercase tracking-widest mb-1">Vendor 1</div><div class="font-bold">ERP</div></div>
+      <div class="rounded-xl bg-slate-50 border border-slate-200 p-5 text-center"><div class="text-xs text-slate-500 uppercase tracking-widest mb-1">Vendor 2</div><div class="font-bold">LMS</div></div>
+      <div class="rounded-xl bg-slate-50 border border-slate-200 p-5 text-center"><div class="text-xs text-slate-500 uppercase tracking-widest mb-1">Vendor 3</div><div class="font-bold">Biometric</div></div>
+      <div class="rounded-xl bg-slate-50 border border-slate-200 p-5 text-center"><div class="text-xs text-slate-500 uppercase tracking-widest mb-1">Vendor 4</div><div class="font-bold">Exams</div></div>
+      <div class="rounded-xl bg-slate-50 border border-slate-200 p-5 text-center"><div class="text-xs text-slate-500 uppercase tracking-widest mb-1">Vendor 5</div><div class="font-bold">Transport</div></div>
+    </div>
+  </section>
+
+  <!-- ============================== SECTION DIVIDER : SCHOOL OPS -->
+  <section class="slide slide-dark">
+    <p class="text-xs font-mono uppercase tracking-[0.3em] text-brand-cyan mb-4">Section 1 of 4</p>
+    <h2 class="text-7xl font-black leading-[1.05] tracking-tight">School Operations.</h2>
+    <p class="text-2xl text-white/70 mt-6 max-w-3xl">Admissions · Fees · HR · Library · Transport · Hostel.</p>
+  </section>
+
+  <!-- ============================== 4. ADMISSIONS -->
+  <section class="slide">
+    <p class="feature-eyebrow">Feature 01 · Admissions</p>
+    <h2 class="feature-title">Capture every enquiry. Convert more of them.</h2>
+    <p class="feature-lede mb-8">A full enquiry-to-enrolment funnel. Every walk-in, web form, and phone call lands in one queue with follow-up reminders.</p>
+    <div class="grid grid-cols-2 gap-6 max-w-6xl">
+      <div>
+        <h3 class="text-xl font-bold mb-3">What it does</h3>
+        <ul class="space-y-2 text-base text-slate-700">
+          <li>• Online enquiry form embedded on your school website</li>
+          <li>• Walk-in capture by the front desk in 30 seconds</li>
+          <li>• Stage-tracked pipeline: Enquired → Visited → Tested → Offered → Enrolled</li>
+          <li>• Auto-reminders for follow-up calls, missed steps</li>
+          <li>• Document uploads (birth cert, previous report card, photo) — all in one record</li>
+          <li>• Direct conversion to a student record on enrolment — no re-typing</li>
+        </ul>
+      </div>
+      <div class="bg-slate-50 rounded-2xl p-6 border border-slate-200">
+        <p class="text-xs uppercase tracking-widest text-slate-500 mb-3">Why it matters</p>
+        <p class="text-base text-slate-700 leading-relaxed mb-4">
+          Most schools lose 30% of enquiries between the form and the
+          first follow-up call. AIvenX prevents that by making every
+          enquiry visible to admin, principal, and the front desk on day one.
+        </p>
+        <div class="flex gap-2 flex-wrap">
+          <span class="pill">Drag-drop pipeline</span>
+          <span class="pill">SMS / email templates</span>
+          <span class="pill">Conversion analytics</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== 5. FEES & INVOICING -->
+  <section class="slide">
+    <p class="feature-eyebrow">Feature 02 · Fees & Invoicing</p>
+    <h2 class="feature-title">Every rupee, accounted.</h2>
+    <p class="feature-lede mb-8">Term-based fee structures, online payments, automated dues reminders, and a finance dashboard the principal can read in 10 seconds.</p>
+    <div class="grid grid-cols-3 gap-4">
+      <div class="rounded-xl border border-slate-200 p-5"><h4 class="font-bold mb-2">Flexible structures</h4><p class="text-sm text-slate-600">Term · Monthly · Annual. Sibling discounts, scholarship rules, late-payment penalties — all configurable.</p></div>
+      <div class="rounded-xl border border-slate-200 p-5"><h4 class="font-bold mb-2">Online payments</h4><p class="text-sm text-slate-600">UPI, cards, netbanking. Payment links over WhatsApp. Auto-reconciled — no manual tallying.</p></div>
+      <div class="rounded-xl border border-slate-200 p-5"><h4 class="font-bold mb-2">Auto reminders</h4><p class="text-sm text-slate-600">Dues SMS / email at T-7, T-3, T-0 days. Custom templates. Principal can pause for individual cases.</p></div>
+      <div class="rounded-xl border border-slate-200 p-5"><h4 class="font-bold mb-2">Receipts & invoices</h4><p class="text-sm text-slate-600">GST-compliant. Branded with your school's logo and signature. Bulk-export for the auditor.</p></div>
+      <div class="rounded-xl border border-slate-200 p-5"><h4 class="font-bold mb-2">Finance dashboard</h4><p class="text-sm text-slate-600">Collected vs. outstanding by class, term, fee head. Drill-down to the student in two clicks.</p></div>
+      <div class="rounded-xl border border-slate-200 p-5"><h4 class="font-bold mb-2">Refunds & adjustments</h4><p class="text-sm text-slate-600">Audit-logged. Approval workflow keeps the principal in the loop on every reversal.</p></div>
+    </div>
+  </section>
+
+  <!-- ============================== 6. HR & PAYROLL -->
+  <section class="slide">
+    <p class="feature-eyebrow">Feature 03 · HR & Payroll</p>
+    <h2 class="feature-title">Staff records, salaries, and statutory — in one tab.</h2>
+    <p class="feature-lede mb-8">From the day a teacher joins to the day they retire — appointment letters, leave, payroll, PF, ESI, TDS.</p>
+    <div class="grid grid-cols-2 gap-6 max-w-6xl">
+      <div class="rounded-xl border border-slate-200 p-6">
+        <h4 class="font-bold text-lg mb-3">Staff lifecycle</h4>
+        <ul class="space-y-1.5 text-sm text-slate-700">
+          <li>• Onboarding: appointment letter, ID card, document checklist</li>
+          <li>• Attendance: face-AI for staff too</li>
+          <li>• Leave types: CL · SL · PL · maternity · LOP — with workflow approvals</li>
+          <li>• Performance reviews: end-of-term, principal-driven</li>
+          <li>• Exit: relieving letter, full-and-final settlement, archive</li>
+        </ul>
+      </div>
+      <div class="rounded-xl border border-slate-200 p-6">
+        <h4 class="font-bold text-lg mb-3">Payroll & statutory</h4>
+        <ul class="space-y-1.5 text-sm text-slate-700">
+          <li>• Salary structures: basic, HRA, allowances, deductions</li>
+          <li>• PF + ESI auto-calculated; challans generated</li>
+          <li>• TDS: monthly deduction, Form 16 at year-end</li>
+          <li>• Bank-ready salary file in one click</li>
+          <li>• Payslips emailed; staff can download anytime from their portal</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== 7. TIMETABLE & EXAMS -->
+  <section class="slide">
+    <p class="feature-eyebrow">Feature 04 · Timetable & Exams</p>
+    <h2 class="feature-title">Build a clash-free timetable in 20 minutes.</h2>
+    <p class="feature-lede mb-8">Auto-generation respects teacher availability, lab capacity, and subject hours. Exam scheduling and seating plans included.</p>
+    <div class="grid grid-cols-3 gap-4">
+      <div class="rounded-xl border border-slate-200 p-5"><h4 class="font-bold mb-2">Auto-generation</h4><p class="text-sm text-slate-600">Set constraints once: teacher loads, room types, free-period rules. AIvenX builds the grid — no clashes.</p></div>
+      <div class="rounded-xl border border-slate-200 p-5"><h4 class="font-bold mb-2">Substitutions</h4><p class="text-sm text-slate-600">Mark a teacher absent → system suggests a substitute from free periods → SMS to substitute & class.</p></div>
+      <div class="rounded-xl border border-slate-200 p-5"><h4 class="font-bold mb-2">Exam schedules</h4><p class="text-sm text-slate-600">Term + final + unit tests. Auto-checks against syllabus completion. Hall-ticket generation.</p></div>
+      <div class="rounded-xl border border-slate-200 p-5"><h4 class="font-bold mb-2">Seating plans</h4><p class="text-sm text-slate-600">Mixed-class seating with one click. Roll-number rules, distance constraints, supervisor assignments.</p></div>
+      <div class="rounded-xl border border-slate-200 p-5"><h4 class="font-bold mb-2">Marks entry</h4><p class="text-sm text-slate-600">Teacher portal with bulk-paste from spreadsheets, validation, and lock-after-submission.</p></div>
+      <div class="rounded-xl border border-slate-200 p-5"><h4 class="font-bold mb-2">Result analytics</h4><p class="text-sm text-slate-600">Class average, pass %, top scorers, weak areas — per subject, per chapter.</p></div>
+    </div>
+  </section>
+
+  <!-- ============================== 8. REPORT CARDS / MULTI-BOARD -->
+  <section class="slide">
+    <p class="feature-eyebrow">Feature 05 · Report Cards (multi-board)</p>
+    <h2 class="feature-title">Native formats for every board.</h2>
+    <p class="feature-lede mb-8">Not a one-size-fits-all template. Each board's official structure, grading scale, and skill rubric — out of the box.</p>
+    <div class="grid grid-cols-2 gap-6 max-w-6xl mb-6">
+      <div class="rounded-xl border border-slate-200 p-6">
+        <h4 class="font-bold text-lg mb-3">International</h4>
+        <ul class="space-y-1.5 text-sm text-slate-700">
+          <li>• <b>IB PYP</b> — inquiry-based learning rubric</li>
+          <li>• <b>IB MYP</b> — criterion grades A–E across 4 strands</li>
+          <li>• <b>IB DP</b> — 1–7 + TOK / EE / CAS</li>
+          <li>• <b>Cambridge IGCSE / A-Levels</b> — A* to G</li>
+          <li>• <b>Advanced Placement</b> — AP score, course grade</li>
+        </ul>
+      </div>
+      <div class="rounded-xl border border-slate-200 p-6">
+        <h4 class="font-bold text-lg mb-3">Indian</h4>
+        <ul class="space-y-1.5 text-sm text-slate-700">
+          <li>• <b>CBSE</b> — Term + final, scholastic + co-scholastic, CCE</li>
+          <li>• <b>ICSE / ISC</b> — Marks-based, ICSE skill grading</li>
+          <li>• <b>State Boards</b> — Maharashtra, Karnataka, TN, UP, etc.</li>
+          <li>• <b>NIOS</b> — Distance / open schooling</li>
+        </ul>
+      </div>
+    </div>
+    <div class="bg-slate-50 rounded-xl p-5 border border-slate-200">
+      <p class="text-base text-slate-700"><b>Don't see yours?</b> Cortex AI adapts to any framework. We've onboarded a Steiner / Waldorf school using a custom rubric in 5 days.</p>
+    </div>
+  </section>
+
+  <!-- ============================== SECTION DIVIDER : CORTEX -->
+  <section class="slide slide-cover">
+    <div class="cover-grid absolute inset-0"></div>
+    <div class="relative z-10">
+      <p class="text-sm font-mono uppercase tracking-[0.3em] text-white/80 mb-4">Section 2 of 4</p>
+      <h2 class="text-7xl font-black leading-[1.05] tracking-tight">Cortex AI Studio.</h2>
+      <p class="text-2xl text-white/90 mt-6 max-w-3xl">The flagship. Five tools that save every teacher 10 hours a week.</p>
+    </div>
+  </section>
+
+  <!-- ============================== 9. CHAPTER GENERATOR -->
+  <section class="slide">
+    <p class="feature-eyebrow">Feature 06 · Chapter Generator</p>
+    <h2 class="feature-title">A board-aligned chapter, in 30 seconds.</h2>
+    <p class="feature-lede mb-8">Pick subject, grade, topic. Cortex produces a full chapter — text, diagrams, exercises, answer keys — written in one of four learning modes.</p>
+    <div class="grid grid-cols-4 gap-4 mb-6">
+      <div class="rounded-xl border-2 border-brand-cyan/30 p-5">
+        <div class="text-2xl mb-2">🎯</div>
+        <h4 class="font-bold text-lg mb-1 brand-gradient-text">Focus</h4>
+        <p class="text-sm text-slate-600">Clear, structured, exam-ready. Definitions → examples → practice.</p>
+      </div>
+      <div class="rounded-xl border-2 border-brand-cyan/30 p-5">
+        <div class="text-2xl mb-2">⚡</div>
+        <h4 class="font-bold text-lg mb-1 brand-gradient-text">Spark</h4>
+        <p class="text-sm text-slate-600">Engaging analogies, real-world hooks, "why does this matter" framing.</p>
+      </div>
+      <div class="rounded-xl border-2 border-brand-purple/30 p-5">
+        <div class="text-2xl mb-2">🎮</div>
+        <h4 class="font-bold text-lg mb-1 brand-gradient-text">Quest</h4>
+        <p class="text-sm text-slate-600">Gamified — challenges, streaks, levels. Best for grades 4-8.</p>
+      </div>
+      <div class="rounded-xl border-2 border-brand-purple/30 p-5">
+        <div class="text-2xl mb-2">📖</div>
+        <h4 class="font-bold text-lg mb-1 brand-gradient-text">Saga</h4>
+        <p class="text-sm text-slate-600">Narrative-driven. Concepts taught through story arcs and characters.</p>
+      </div>
+    </div>
+    <div class="grid grid-cols-2 gap-6">
+      <div class="bg-slate-50 rounded-xl p-5 border border-slate-200">
+        <p class="text-xs uppercase tracking-widest text-slate-500 mb-2">What's included in every chapter</p>
+        <p class="text-sm text-slate-700">Body text · Embedded diagrams · Worked examples · End-of-chapter exercises · Answer keys · Glossary · Cross-links to prior chapters.</p>
+      </div>
+      <div class="bg-slate-50 rounded-xl p-5 border border-slate-200">
+        <p class="text-xs uppercase tracking-widest text-slate-500 mb-2">Teacher review workflow</p>
+        <p class="text-sm text-slate-700">Generate → review → edit any line → publish to class. Versioned. Re-generation preserves your edits.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== 10. QUESTION BANK -->
+  <section class="slide">
+    <p class="feature-eyebrow">Feature 07 · Question Bank</p>
+    <h2 class="feature-title">150,000<span class="brand-gradient-text">+</span> pre-loaded questions.</h2>
+    <p class="feature-lede mb-8">Curated, tagged, and board-mapped. The library that took us 18 months to build is yours from day one.</p>
+    <div class="grid grid-cols-3 gap-4">
+      <div class="rounded-xl border border-slate-200 p-5"><h4 class="font-bold mb-2">Every type</h4><p class="text-sm text-slate-600">MCQ · Fill-in-the-blank · Short answer · Long answer · Match · True/False · Diagram-based · Numerical.</p></div>
+      <div class="rounded-xl border border-slate-200 p-5"><h4 class="font-bold mb-2">Tagged deeply</h4><p class="text-sm text-slate-600">Subject · Grade · Chapter · Difficulty (1-5) · Bloom's level · Marks · Time estimate.</p></div>
+      <div class="rounded-xl border border-slate-200 p-5"><h4 class="font-bold mb-2">Board-mapped</h4><p class="text-sm text-slate-600">Each question linked to CBSE / ICSE / IB / CAIE / State Board syllabus codes for guaranteed alignment.</p></div>
+      <div class="rounded-xl border border-slate-200 p-5"><h4 class="font-bold mb-2">Past-paper rooted</h4><p class="text-sm text-slate-600">Includes 10 years of board exam questions, marked, with model answers.</p></div>
+      <div class="rounded-xl border border-slate-200 p-5"><h4 class="font-bold mb-2">Add your own</h4><p class="text-sm text-slate-600">Teachers contribute private questions to a school-only pool. Stays inside your tenant.</p></div>
+      <div class="rounded-xl border border-slate-200 p-5"><h4 class="font-bold mb-2">Continuously updated</h4><p class="text-sm text-slate-600">New questions every month. Existing ones re-rated when student data shows mis-calibration.</p></div>
+    </div>
+  </section>
+
+  <!-- ============================== 11. ASSESSMENT CREATOR -->
+  <section class="slide">
+    <p class="feature-eyebrow">Feature 08 · Assessment Creator</p>
+    <h2 class="feature-title">Build a 3-hour board-style paper in 4 minutes.</h2>
+    <p class="feature-lede mb-8">Pick filters → preview coverage → publish. CBSE-standard section presets included. Live distribution chart shows you exactly what students will face.</p>
+    <div class="grid grid-cols-2 gap-6 max-w-6xl">
+      <div>
+        <h3 class="text-xl font-bold mb-3">How it works</h3>
+        <ol class="space-y-2 text-base text-slate-700">
+          <li><b>1.</b> Pick subject, grade, total marks, duration.</li>
+          <li><b>2.</b> Choose section structure — or load a preset (CBSE Sec A/B/C/D/E).</li>
+          <li><b>3.</b> Per section, set: question type, count, marks each, chapter & difficulty filters.</li>
+          <li><b>4.</b> Live preview shows: chapter coverage %, Bloom distribution, expected difficulty curve.</li>
+          <li><b>5.</b> Auto-fill from question bank, or hand-pick. Mix freely.</li>
+          <li><b>6.</b> Publish → printable PDF + answer key + student-portal link.</li>
+        </ol>
+      </div>
+      <div class="bg-slate-50 rounded-xl p-6 border border-slate-200">
+        <p class="text-xs uppercase tracking-widest text-slate-500 mb-3">Why teachers love it</p>
+        <p class="text-base text-slate-700 leading-relaxed mb-4">
+          Paper-setting used to take 4-6 hours. With Cortex it's under 10 minutes —
+          and the coverage preview catches mistakes before they reach students.
+          Two teachers can collaborate live on the same paper.
+        </p>
+        <div class="flex gap-2 flex-wrap">
+          <span class="pill">CBSE preset built-in</span>
+          <span class="pill">Live coverage chart</span>
+          <span class="pill">Two-click duplicate</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== 12. AI EVALUATOR -->
+  <section class="slide">
+    <p class="feature-eyebrow">Feature 09 · AI Evaluator</p>
+    <h2 class="feature-title">Grade 200 answer sheets in an hour, not a weekend.</h2>
+    <p class="feature-lede mb-8">Upload scanned sheets — Cortex grades MCQs in seconds and short / long answers using rubric-aware AI. Borderline cases route to the teacher for review.</p>
+    <div class="grid grid-cols-3 gap-4 mb-6">
+      <div class="rounded-xl border border-slate-200 p-5"><h4 class="font-bold mb-2">OCR for handwriting</h4><p class="text-sm text-slate-600">Trained on Indian student handwriting. Works on regular A4 scans — no special paper.</p></div>
+      <div class="rounded-xl border border-slate-200 p-5"><h4 class="font-bold mb-2">Rubric-aware grading</h4><p class="text-sm text-slate-600">Compares to model answer + rubric. Awards partial marks; explains every deduction.</p></div>
+      <div class="rounded-xl border border-slate-200 p-5"><h4 class="font-bold mb-2">Teacher-in-the-loop</h4><p class="text-sm text-slate-600">Confidence-scored. Borderline answers (~10%) are routed to the teacher; rest are auto-finalised.</p></div>
+      <div class="rounded-xl border border-slate-200 p-5"><h4 class="font-bold mb-2">Plagiarism check</h4><p class="text-sm text-slate-600">Flags suspiciously similar answers across the same class — catches copying.</p></div>
+      <div class="rounded-xl border border-slate-200 p-5"><h4 class="font-bold mb-2">Auto-write to gradebook</h4><p class="text-sm text-slate-600">Marks land in the exam record. Report cards generate themselves.</p></div>
+      <div class="rounded-xl border border-slate-200 p-5"><h4 class="font-bold mb-2">Insights for teachers</h4><p class="text-sm text-slate-600">Per-question analytics: which concept needs re-teaching, which student needs help.</p></div>
+    </div>
+  </section>
+
+  <!-- ============================== 13. CORTEX HELPER + STUDY -->
+  <section class="slide">
+    <p class="feature-eyebrow">Feature 10 · Cortex Helper + Study Mode</p>
+    <h2 class="feature-title">An AI guide on every page. <span class="brand-gradient-text">Meet Leo.</span></h2>
+    <p class="feature-lede mb-8">A floating chat button that knows what page you're on. For staff, it's product help. For students, it's a chapter tutor.</p>
+    <div class="grid grid-cols-2 gap-6">
+      <div class="rounded-xl border-2 border-brand-cyan/30 p-6">
+        <h4 class="font-bold text-xl mb-2">Helper mode (staff)</h4>
+        <ul class="space-y-1.5 text-sm text-slate-700">
+          <li>• "How do I generate a fee invoice?"</li>
+          <li>• "Why is this student showing absent?"</li>
+          <li>• "Take me to the timetable for Class 7B"</li>
+          <li>• Streams answers live · cites the right module</li>
+          <li>• Persists across pages — context carries</li>
+        </ul>
+      </div>
+      <div class="rounded-xl border-2 border-brand-purple/30 p-6">
+        <h4 class="font-bold text-xl mb-2">Study mode (students)</h4>
+        <ul class="space-y-1.5 text-sm text-slate-700">
+          <li>• Auto-activates on chapter pages</li>
+          <li>• "Explain photosynthesis like I'm in grade 7"</li>
+          <li>• "Quiz me on this chapter"</li>
+          <li>• "What did this paragraph mean?"</li>
+          <li>• Stays on-syllabus — never goes off-topic</li>
+        </ul>
+      </div>
+    </div>
+    <div class="mt-6 bg-slate-50 rounded-xl p-4 border border-slate-200 max-w-4xl">
+      <p class="text-sm text-slate-700"><b>Privacy:</b> Student conversations never train external models. School data stays inside your tenant.</p>
+    </div>
+  </section>
+
+  <!-- ============================== SECTION DIVIDER : ATTENDANCE -->
+  <section class="slide slide-dark">
+    <p class="text-xs font-mono uppercase tracking-[0.3em] text-brand-cyan mb-4">Section 3 of 4</p>
+    <h2 class="text-7xl font-black leading-[1.05] tracking-tight">Face AI Attendance.</h2>
+    <p class="text-2xl text-white/70 mt-6 max-w-3xl">The biometric machine, replaced by a webcam.</p>
+  </section>
+
+  <!-- ============================== 14. FACE AI -->
+  <section class="slide">
+    <p class="feature-eyebrow">Feature 11 · Face AI Attendance</p>
+    <h2 class="feature-title">Under a second per student. No queue.</h2>
+    <p class="feature-lede mb-8">Live demo follows. A single webcam at the door marks every student present in real time, while teachers walk in and start teaching.</p>
+    <div class="grid grid-cols-4 gap-4 mb-6">
+      <div class="rounded-xl border border-slate-200 p-5">
+        <div class="text-2xl font-black brand-gradient-text mb-2">1</div>
+        <h4 class="font-bold mb-1">Enrol once</h4>
+        <p class="text-sm text-slate-600">3-5 photos at admission. Embeddings stored, photos discarded.</p>
+      </div>
+      <div class="rounded-xl border border-slate-200 p-5">
+        <div class="text-2xl font-black brand-gradient-text mb-2">2</div>
+        <h4 class="font-bold mb-1">Recognise live</h4>
+        <p class="text-sm text-slate-600">Camera streams to the AIvenX recognizer. Faces matched in &lt;1 sec.</p>
+      </div>
+      <div class="rounded-xl border border-slate-200 p-5">
+        <div class="text-2xl font-black brand-gradient-text mb-2">3</div>
+        <h4 class="font-bold mb-1">Default-absent</h4>
+        <p class="text-sm text-slate-600">Anyone not seen by cut-off → marked absent → SMS to parent.</p>
+      </div>
+      <div class="rounded-xl border border-slate-200 p-5">
+        <div class="text-2xl font-black brand-gradient-text mb-2">4</div>
+        <h4 class="font-bold mb-1">Period-wise</h4>
+        <p class="text-sm text-slate-600">Re-runs every period. Catches mid-day absconding too.</p>
+      </div>
+    </div>
+    <div class="bg-slate-50 rounded-xl p-5 border border-slate-200">
+      <p class="text-base text-slate-700">
+        <b>Privacy by design:</b> only mathematical embeddings are stored — never raw photos.
+        Local ID-card scanning continues to work as a backup. Camera frames are processed and discarded.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============================== SECTION DIVIDER : ENGAGEMENT -->
+  <section class="slide slide-dark">
+    <p class="text-xs font-mono uppercase tracking-[0.3em] text-brand-cyan mb-4">Section 4 of 4</p>
+    <h2 class="text-7xl font-black leading-[1.05] tracking-tight">Engagement & Operations.</h2>
+    <p class="text-2xl text-white/70 mt-6 max-w-3xl">Communication · Library · Transport · Hostel · Foundations.</p>
+  </section>
+
+  <!-- ============================== 15. COMMUNICATION -->
+  <section class="slide">
+    <p class="feature-eyebrow">Feature 12 · Parent Communication</p>
+    <h2 class="feature-title">One channel for every parent message.</h2>
+    <p class="feature-lede mb-8">Notice board, SMS, email, in-app, and (optionally) WhatsApp Business. Every message logged, every delivery tracked.</p>
+    <div class="grid grid-cols-3 gap-4">
+      <div class="rounded-xl border border-slate-200 p-5"><h4 class="font-bold mb-2">Notice board</h4><p class="text-sm text-slate-600">School-wide, class-wise, or individual. Pin-to-top, expiry dates, attachments supported.</p></div>
+      <div class="rounded-xl border border-slate-200 p-5"><h4 class="font-bold mb-2">Templates</h4><p class="text-sm text-slate-600">Pre-built for: absent SMS, fee dues, exam reminders, parent-teacher meetings, holidays.</p></div>
+      <div class="rounded-xl border border-slate-200 p-5"><h4 class="font-bold mb-2">Multi-language</h4><p class="text-sm text-slate-600">English, Hindi, Marathi, Tamil, Bengali — one message, auto-translated per parent's preference.</p></div>
+      <div class="rounded-xl border border-slate-200 p-5"><h4 class="font-bold mb-2">Two-way</h4><p class="text-sm text-slate-600">Parents reply from their portal. Teacher sees a threaded conversation, never lost in WhatsApp.</p></div>
+      <div class="rounded-xl border border-slate-200 p-5"><h4 class="font-bold mb-2">Event calendar</h4><p class="text-sm text-slate-600">Sync to Google Calendar / Apple Calendar. PTM bookings handled in-portal.</p></div>
+      <div class="rounded-xl border border-slate-200 p-5"><h4 class="font-bold mb-2">Delivery tracking</h4><p class="text-sm text-slate-600">Sent · Delivered · Read · Replied. Auditable, exportable.</p></div>
+    </div>
+  </section>
+
+  <!-- ============================== 16. LIBRARY / TRANSPORT / HOSTEL -->
+  <section class="slide">
+    <p class="feature-eyebrow">Feature 13 · Library · Transport · Hostel</p>
+    <h2 class="feature-title">The operational long tail, handled.</h2>
+    <p class="feature-lede mb-8">Three modules that other ERPs charge extra for — included in AIvenX from the Operate edition onwards.</p>
+    <div class="grid grid-cols-3 gap-5">
+      <div class="rounded-xl border border-slate-200 p-6">
+        <div class="text-3xl mb-3">📚</div>
+        <h4 class="font-bold text-xl mb-2">Library</h4>
+        <ul class="space-y-1 text-sm text-slate-700">
+          <li>• Catalogue with ISBN auto-fetch</li>
+          <li>• Issue / return via barcode or QR</li>
+          <li>• Fines auto-calculated, charged to fees</li>
+          <li>• Reading lists per class</li>
+          <li>• Inventory audits, reservations</li>
+        </ul>
+      </div>
+      <div class="rounded-xl border border-slate-200 p-6">
+        <div class="text-3xl mb-3">🚌</div>
+        <h4 class="font-bold text-xl mb-2">Transport</h4>
+        <ul class="space-y-1 text-sm text-slate-700">
+          <li>• Routes & stops with student assignment</li>
+          <li>• Driver app for pickup confirmation</li>
+          <li>• Live GPS (with hardware partner)</li>
+          <li>• Parent ETA + boarding/alighting alerts</li>
+          <li>• Bus fees integrated with fee module</li>
+        </ul>
+      </div>
+      <div class="rounded-xl border border-slate-200 p-6">
+        <div class="text-3xl mb-3">🛏️</div>
+        <h4 class="font-bold text-xl mb-2">Hostel</h4>
+        <ul class="space-y-1 text-sm text-slate-700">
+          <li>• Room allocation, roommate matching</li>
+          <li>• In/out register with face check-in</li>
+          <li>• Mess attendance & menu</li>
+          <li>• Visitor log, leave applications</li>
+          <li>• Hostel fees + mess charges integrated</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== 17. SECURITY & DATA -->
+  <section class="slide">
+    <p class="feature-eyebrow">Feature 14 · Security & Data</p>
+    <h2 class="feature-title">Built for the data you can't lose.</h2>
+    <p class="feature-lede mb-8">Schools handle some of the most sensitive personal data anywhere — minors' photos, medical records, fee histories. AIvenX is engineered around that responsibility.</p>
+    <div class="grid grid-cols-3 gap-4">
+      <div class="rounded-xl border border-slate-200 p-5"><div class="text-2xl mb-2">🔒</div><h4 class="font-bold mb-1">Multi-tenant secure</h4><p class="text-sm text-slate-600">Each school is fully isolated at the database level. No cross-tenant leakage, ever.</p></div>
+      <div class="rounded-xl border border-slate-200 p-5"><div class="text-2xl mb-2">👥</div><h4 class="font-bold mb-1">Role-based access</h4><p class="text-sm text-slate-600">Admin · Principal · Teacher · Student · Parent — every action audited.</p></div>
+      <div class="rounded-xl border border-slate-200 p-5"><div class="text-2xl mb-2">💾</div><h4 class="font-bold mb-1">Daily backups</h4><p class="text-sm text-slate-600">Encrypted, point-in-time recovery. One-click data export — no lock-in.</p></div>
+      <div class="rounded-xl border border-slate-200 p-5"><div class="text-2xl mb-2">🇮🇳</div><h4 class="font-bold mb-1">Hosted in India</h4><p class="text-sm text-slate-600">Data residency, low latency, DPDP-aligned for Indian schools.</p></div>
+      <div class="rounded-xl border border-slate-200 p-5"><div class="text-2xl mb-2">🛡️</div><h4 class="font-bold mb-1">Privacy-first AI</h4><p class="text-sm text-slate-600">Face embeddings only. Student data never trains third-party models.</p></div>
+      <div class="rounded-xl border border-slate-200 p-5"><div class="text-2xl mb-2">📋</div><h4 class="font-bold mb-1">Audit logs</h4><p class="text-sm text-slate-600">Every login, edit, and export logged for compliance and forensics.</p></div>
+    </div>
+  </section>
+
+  <!-- ============================== 18. EDITIONS -->
+  <section class="slide">
+    <p class="feature-eyebrow">Editions</p>
+    <h2 class="feature-title mb-8">Pick the edition that fits your school.</h2>
+    <div class="grid grid-cols-3 gap-5 max-w-6xl">
+      <div class="rounded-2xl border border-slate-200 p-6">
+        <p class="text-xs uppercase tracking-widest text-slate-500 mb-1">Starter</p>
+        <h3 class="font-bold text-2xl mb-3">Operate</h3>
+        <ul class="space-y-1 text-sm text-slate-700">
+          <li>✓ Admissions & fees</li>
+          <li>✓ HR & payroll</li>
+          <li>✓ Timetable & exams</li>
+          <li>✓ Report cards</li>
+          <li>✓ Library · Transport · Hostel</li>
+          <li>✓ Parent portal</li>
+        </ul>
+      </div>
+      <div class="rounded-2xl border-2 border-brand-purple p-6 relative">
+        <span class="absolute -top-3 left-5 brand-gradient text-white text-[10pt] font-bold uppercase tracking-widest px-3 py-1 rounded-full">Most popular</span>
+        <p class="text-xs uppercase tracking-widest text-brand-purple mb-1">Pro</p>
+        <h3 class="font-bold text-2xl mb-3">Operate + Cortex</h3>
+        <ul class="space-y-1 text-sm text-slate-700">
+          <li>✓ Everything in Operate</li>
+          <li>✓ Chapter Generator</li>
+          <li>✓ 150k Question Bank</li>
+          <li>✓ Assessment Creator</li>
+          <li>✓ Lesson plans</li>
+          <li>✓ Cortex Helper bot</li>
+        </ul>
+      </div>
+      <div class="rounded-2xl border border-slate-200 p-6">
+        <p class="text-xs uppercase tracking-widest text-slate-500 mb-1">Enterprise</p>
+        <h3 class="font-bold text-2xl mb-3">Everything</h3>
+        <ul class="space-y-1 text-sm text-slate-700">
+          <li>✓ Everything in Pro</li>
+          <li>✓ AI Evaluator</li>
+          <li>✓ Face AI Attendance</li>
+          <li>✓ Teacher Assist (2026)</li>
+          <li>✓ Student Surveillance (2026)</li>
+          <li>✓ Dedicated CSM</li>
+        </ul>
+      </div>
+    </div>
+    <p class="text-base text-slate-600 mt-8">Pricing scales with student count. We'll send a tailored quote within 48 hours of this demo.</p>
+  </section>
+
+  <!-- ============================== 19. ONBOARDING -->
+  <section class="slide">
+    <p class="feature-eyebrow">Onboarding</p>
+    <h2 class="feature-title mb-8">From contract to live in 14 days.</h2>
+    <div class="grid grid-cols-4 gap-4 max-w-6xl">
+      <div class="rounded-xl border border-slate-200 p-6"><p class="text-xs uppercase tracking-widest text-slate-500 mb-2">Day 1-3</p><h3 class="font-bold text-lg mb-2">Setup</h3><p class="text-sm text-slate-600 leading-relaxed">Tenant provisioned. Branding, classes, sections, fee structure imported.</p></div>
+      <div class="rounded-xl border border-slate-200 p-6"><p class="text-xs uppercase tracking-widest text-slate-500 mb-2">Day 4-7</p><h3 class="font-bold text-lg mb-2">Data migration</h3><p class="text-sm text-slate-600 leading-relaxed">Student & staff records imported from your existing system. Validated by AIvenX team.</p></div>
+      <div class="rounded-xl border border-slate-200 p-6"><p class="text-xs uppercase tracking-widest text-slate-500 mb-2">Day 8-11</p><h3 class="font-bold text-lg mb-2">Training</h3><p class="text-sm text-slate-600 leading-relaxed">Admin · Principal · Teacher · Parent walkthroughs. Recorded, role-specific.</p></div>
+      <div class="rounded-xl border border-slate-200 p-6"><p class="text-xs uppercase tracking-widest text-slate-500 mb-2">Day 12-14</p><h3 class="font-bold text-lg mb-2">Go-live</h3><p class="text-sm text-slate-600 leading-relaxed">Soft launch with one class → full rollout. Dedicated CSM on call.</p></div>
+    </div>
+    <div class="mt-10 bg-slate-50 rounded-2xl p-5 border border-slate-200 max-w-5xl">
+      <p class="text-base text-slate-700"><b>White-glove migration is included.</b> We handle CSV imports from your current ERP / LMS — your team isn't stuck reformatting spreadsheets.</p>
+    </div>
+  </section>
+
+  <!-- ============================== 20. NEXT STEPS -->
+  <section class="slide slide-cover">
+    <div class="cover-grid absolute inset-0"></div>
+    <div class="relative z-10">
+      <p class="text-sm font-mono uppercase tracking-[0.3em] text-white/80 mb-6">Next steps</p>
+      <h2 class="text-6xl font-black leading-[1.05] tracking-tight mb-10">Three things, this week.</h2>
+      <div class="space-y-6 text-2xl">
+        <div class="flex gap-6"><span class="font-black text-4xl text-white/60">01</span><div><div class="font-bold">Tailored quote</div><div class="text-lg text-white/80">Pricing for your edition + student count within 48 hours.</div></div></div>
+        <div class="flex gap-6"><span class="font-black text-4xl text-white/60">02</span><div><div class="font-bold">Pilot setup</div><div class="text-lg text-white/80">Free 14-day pilot tenant with one class — your data, your branding.</div></div></div>
+        <div class="flex gap-6"><span class="font-black text-4xl text-white/60">03</span><div><div class="font-bold">Decision call</div><div class="text-lg text-white/80">Reconvene at the end of the pilot to plan rollout or close out.</div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== 21. THANK YOU -->
+  <section class="slide slide-cover">
+    <div class="cover-grid absolute inset-0"></div>
+    <div class="relative z-10 flex flex-col h-full justify-between">
+      <img src="/assets/aivenx-logo.png" alt="AIvenX" style="height: 48px; filter: brightness(0) invert(1);" />
+      <div>
+        <h2 class="text-8xl font-black leading-[1.05] tracking-tight mb-8">Thank you.</h2>
+        <p class="text-3xl text-white/90">Questions?</p>
+      </div>
+      <div class="grid grid-cols-3 gap-8 text-base">
+        <div><p class="text-xs uppercase tracking-widest text-white/70 mb-1">Sales</p><p class="font-bold text-lg">sales@aivenx.co.in</p></div>
+        <div><p class="text-xs uppercase tracking-widest text-white/70 mb-1">General</p><p class="font-bold text-lg">hello@aivenx.co.in</p></div>
+        <div><p class="text-xs uppercase tracking-widest text-white/70 mb-1">Web</p><p class="font-bold text-lg">aivenx.co.in</p></div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<div class="nav-chrome">
+  <button onclick="prev()" title="Previous (←)">‹</button>
+  <span><span id="curIdx">1</span> / <span id="totalIdx">21</span></span>
+  <button onclick="next()" title="Next (→ / Space)">›</button>
+  <button onclick="toggleHelp()" title="Help (?)">?</button>
+</div>
+
+<div class="help-overlay" id="helpOverlay" onclick="toggleHelp()">
+  <div class="panel">
+    <h3 style="font-size: 28px; font-weight: 800; margin-bottom: 24px;">Keyboard shortcuts</h3>
+    <div style="line-height: 2;">
+      <div><span class="key">→</span> <span class="key">Space</span> Next slide</div>
+      <div><span class="key">←</span> Previous slide</div>
+      <div><span class="key">Home</span> First · <span class="key">End</span> Last</div>
+      <div><span class="key">F</span> Fullscreen</div>
+      <div><span class="key">P</span> Print / Save PDF</div>
+      <div><span class="key">?</span> This help</div>
+    </div>
+    <p style="margin-top: 28px; font-size: 14px; opacity: 0.7;">
+      Tip: append <code>?school=Springdale</code> to the URL to personalise the cover slide.
+    </p>
+  </div>
+</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+  document.getElementById('totalIdx').textContent = total;
+  let cur = 0;
+
+  function show(i) {
+    cur = Math.max(0, Math.min(total - 1, i));
+    slides.forEach((s, idx) => s.classList.toggle('active', idx === cur));
+    document.getElementById('curIdx').textContent = cur + 1;
+    location.hash = '#' + (cur + 1);
+  }
+  function next() { show(cur + 1); }
+  function prev() { show(cur - 1); }
+  function toggleHelp() { document.getElementById('helpOverlay').classList.toggle('show'); }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { next(); e.preventDefault(); }
+    else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { prev(); e.preventDefault(); }
+    else if (e.key === 'Home') { show(0); }
+    else if (e.key === 'End') { show(total - 1); }
+    else if (e.key === 'f' || e.key === 'F') { document.documentElement.requestFullscreen?.(); }
+    else if (e.key === 'p' || e.key === 'P') { window.print(); }
+    else if (e.key === '?' || e.key === '/') { toggleHelp(); }
+    else if (e.key === 'Escape') { document.getElementById('helpOverlay').classList.remove('show'); }
+  });
+
+  const params = new URLSearchParams(location.search);
+  const school = params.get('school');
+  if (school) document.getElementById('schoolName').textContent = school;
+
+  const hashN = parseInt(location.hash.slice(1));
+  if (hashN >= 1 && hashN <= total) show(hashN - 1);
+</script>
+
+</body>
+</html>
