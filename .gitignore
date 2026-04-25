@@ -1,0 +1,18 @@
+# OS / editor noise
+.DS_Store
+Thumbs.db
+*.swp
+*~
+.vscode/
+.idea/
+
+# Build / preview cache (we have no build step, but Cloudflare may add one)
+.cloudflare/
+node_modules/
+dist/
+.cache/
+
+# Local secrets — none expected in a static landing page, but defensive
+.env
+.env.local
+*.local
