@@ -1,0 +1,22 @@
+/**
+ * Cloudflare Workers config for the AIvenX landing site.
+ *
+ * We aren't writing any Worker code — this site is pure static HTML.
+ * The `assets` block tells Cloudflare's Workers runtime to serve every
+ * file in the project root as a static asset, with index.html as the
+ * default document. No build step required.
+ *
+ * Why we have this file at all: Cloudflare's new "Workers Builds" flow
+ * (the one that asks for a Project name + Deploy command) requires a
+ * wrangler config to know what to deploy. Without it you get
+ * "Could not find a wrangler.json, wrangler.jsonc, or wrangler.toml file".
+ */
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "aivenx",
+  "compatibility_date": "2024-12-01",
+  "assets": {
+    "directory": "./",
+    "not_found_handling": "404-page"
+  }
+}
