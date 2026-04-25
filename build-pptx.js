@@ -326,7 +326,7 @@ sectionDivider("SECTION 1 OF 4", "School Operations.", "Admissions · Fees · HR
   ], { size: 12 });
 
   s.addShape("roundRect", { x: 0.5, y: 6.85, w: 12.35, h: 0.55, fill: { color: SLATE50 }, line: { color: SLATE200, width: 1 }, rectRadius: 0.1 });
-  s.addText("Don't see yours? Cortex AI adapts to any framework — we've onboarded a Steiner / Waldorf school using a custom rubric in 5 days.",
+  s.addText("Don't see yours? Cortex AI is built to adapt to any framework — share your school's rubric and we'll configure it during onboarding.",
     { x: 0.7, y: 6.9, w: 12.0, h: 0.45, fontFace: "Inter", fontSize: 12, color: INK });
 }
 
