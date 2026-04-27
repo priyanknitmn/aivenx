@@ -44,10 +44,22 @@
      on screen so pages read as physical sheets; print drops it.
      ==================================================================== */
   @page { size: A4; margin: 0; }
-  html, body { background: #E5E7EB; }
+  html, body { background: #E5E7EB; margin: 0; padding: 0; }
   body { font-family: 'Inter', system-ui, sans-serif; color: #0F172A; }
 
+  /* === Print-page geometry ===
+     Two earlier issues caused phantom blank pages when saving as PDF:
+       1. Without `box-sizing: border-box`, the 18mm padding pushed each
+          page to ~246mm width / ~333mm height — Chrome then forced an
+          overflow page-break that rendered as blank because of `overflow: hidden`.
+       2. `min-height: 297mm` (vs. fixed height) let pages grow when
+          content was borderline — the grown box spilled onto a fresh
+          page, leaving the original looking nearly full but emitting a
+          blank trailing sheet.
+     Fix: explicit border-box + fixed-height pages in print + modern
+     `break-after: page` with the legacy alias for older renderers. */
   .page {
+    box-sizing: border-box;
     width: 210mm;
     min-height: 297mm;
     margin: 12mm auto;
@@ -56,9 +68,10 @@
     padding: 18mm 18mm;
     position: relative;
     overflow: hidden;
+    break-after: page;
     page-break-after: always;
   }
-  .page:last-child { page-break-after: auto; }
+  .page:last-child { break-after: auto; page-break-after: auto; }
 
   /* Cover + back cover use the dark brand surface so the printed book
      opens with a gradient cover, then settles into clean white content
@@ -111,11 +124,22 @@
   .page-footer .brand-mini { display: inline-flex; align-items: center; gap: 6px; color: #64748B; font-weight: 600; }
 
   @media print {
-    html, body { background: #ffffff; }
-    .page { margin: 0; box-shadow: none; width: 210mm; min-height: 297mm; }
+    html, body { background: #ffffff; margin: 0; padding: 0; }
+    /* In print we LOCK each .page to exactly A4 so content can't grow
+       past 297mm and trigger a phantom blank page. `overflow: hidden`
+       clips anything that doesn't fit (rare — pages are designed for
+       the safe area). The last page also drops its trailing page-break
+       so the PDF doesn't emit one extra empty sheet at the very end. */
+    .page {
+      margin: 0;
+      box-shadow: none;
+      width: 210mm;
+      height: 297mm;
+      min-height: 297mm;
+      max-height: 297mm;
+      overflow: hidden;
+    }
     .no-print { display: none !important; }
-    /* Force background colour on dark pages — Chrome/Edge strip
-       backgrounds in print to save ink unless we explicitly opt in. */
     .page-dark, .cover-grid {
       -webkit-print-color-adjust: exact;
       print-color-adjust: exact;
