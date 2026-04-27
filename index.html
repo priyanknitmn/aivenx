@@ -184,10 +184,8 @@
   <div class="max-w-7xl mx-auto px-5 py-3.5 flex items-center justify-between">
     <a href="#top" class="flex items-center gap-2.5 group">
       <div class="relative">
-        <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-brand-cyan to-brand-purple flex items-center justify-center shadow-lg">
-          <span class="text-white font-black text-base">A</span>
-        </div>
-        <div class="absolute inset-0 rounded-lg bg-gradient-to-br from-brand-cyan to-brand-purple blur-md opacity-50 -z-10 group-hover:opacity-80 transition-opacity"></div>
+        <img src="/assets/aivenx-mark.png" alt="AIvenX" class="w-9 h-9 rounded-lg shadow-lg" />
+        <div class="absolute inset-0 rounded-lg bg-gradient-to-br from-brand-cyan to-brand-purple blur-md opacity-30 -z-10 group-hover:opacity-60 transition-opacity"></div>
       </div>
       <span class="font-display font-bold text-lg tracking-tight">AIvenX</span>
     </a>
@@ -416,24 +414,34 @@
     <div class="mt-20 overflow-hidden relative">
       <div class="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-brand-ink to-transparent z-10 pointer-events-none"></div>
       <div class="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-brand-ink to-transparent z-10 pointer-events-none"></div>
-      <div class="text-center text-xs uppercase tracking-[0.3em] text-slate-500 mb-5">Built for · CBSE · ICSE · IB · State boards · Grades 1–12</div>
+      <!-- Marquee swapped from compliance-acts to capability-led copy.
+           The acts read like a legal disclaimer; capabilities read like
+           a product story and pair better with the upbeat hero. We keep
+           a couple of board names so the strip still feels grounded in
+           the Indian K-12 stack. -->
+      <div class="text-center text-xs uppercase tracking-[0.3em] text-slate-500 mb-5">Designed for Indian classrooms · CBSE · ICSE · IB · State boards · Grades 1–12</div>
       <div class="marquee-track animate-marquee gap-12 text-slate-500 whitespace-nowrap">
-        <span class="ticker-line">CBSE 2024-25 sample papers</span><span>·</span>
-        <span class="ticker-line">NEP 2020 Holistic Progress Card</span><span>·</span>
-        <span class="ticker-line">DPDP Act 2023</span><span>·</span>
-        <span class="ticker-line">RTE Section 12</span><span>·</span>
-        <span class="ticker-line">RPwD Act 2016</span><span>·</span>
-        <span class="ticker-line">CISCE 2025 syllabus</span><span>·</span>
-        <span class="ticker-line">NCERT exemplars</span><span>·</span>
-        <span class="ticker-line">JEE/NEET aligned</span><span>·</span>
-        <span class="ticker-line">CBSE 2024-25 sample papers</span><span>·</span>
-        <span class="ticker-line">NEP 2020 Holistic Progress Card</span><span>·</span>
-        <span class="ticker-line">DPDP Act 2023</span><span>·</span>
-        <span class="ticker-line">RTE Section 12</span><span>·</span>
-        <span class="ticker-line">RPwD Act 2016</span><span>·</span>
-        <span class="ticker-line">CISCE 2025 syllabus</span><span>·</span>
-        <span class="ticker-line">NCERT exemplars</span><span>·</span>
-        <span class="ticker-line">JEE/NEET aligned</span><span>·</span>
+        <span class="ticker-line">AI Evaluator</span><span>·</span>
+        <span class="ticker-line">Cortex AI Studio</span><span>·</span>
+        <span class="ticker-line">146,253 questions</span><span>·</span>
+        <span class="ticker-line">Face-AI attendance</span><span>·</span>
+        <span class="ticker-line">Live bus tracking</span><span>·</span>
+        <span class="ticker-line">Audio chapter playlists</span><span>·</span>
+        <span class="ticker-line">4 persona modes</span><span>·</span>
+        <span class="ticker-line">30-second chapter generation</span><span>·</span>
+        <span class="ticker-line">Holistic Progress Card</span><span>·</span>
+        <span class="ticker-line">UPI-first fees</span><span>·</span>
+        <!-- duplicate set for seamless loop -->
+        <span class="ticker-line">AI Evaluator</span><span>·</span>
+        <span class="ticker-line">Cortex AI Studio</span><span>·</span>
+        <span class="ticker-line">146,253 questions</span><span>·</span>
+        <span class="ticker-line">Face-AI attendance</span><span>·</span>
+        <span class="ticker-line">Live bus tracking</span><span>·</span>
+        <span class="ticker-line">Audio chapter playlists</span><span>·</span>
+        <span class="ticker-line">4 persona modes</span><span>·</span>
+        <span class="ticker-line">30-second chapter generation</span><span>·</span>
+        <span class="ticker-line">Holistic Progress Card</span><span>·</span>
+        <span class="ticker-line">UPI-first fees</span><span>·</span>
       </div>
     </div>
   </div>
@@ -508,8 +516,14 @@
   <div class="max-w-7xl mx-auto px-5">
     <div class="reveal max-w-3xl mb-16">
       <div class="sec-num mb-3">02 · Why this. Why now.</div>
+      <!-- The trailing period used to sit OUTSIDE the underline-trace
+           span. Because that span is `display: inline-block`, the orphan
+           "." would wrap onto its own line on narrow viewports, leaving
+           a lonely bullet between the gradient phrase and the second
+           line. Pulling the period inside the gradient span keeps it
+           glued to "tools" and removes the layout break entirely. -->
       <h2 class="sec-h font-display">
-        Schools are <span class="gradient-text underline-trace">drowning in tools</span>.<br/>
+        Schools are <span class="gradient-text underline-trace">drowning in tools.</span><br/>
         <span class="text-slate-400">Teachers, in tabs.</span>
       </h2>
       <p class="text-slate-400 mt-6 text-lg leading-relaxed">
@@ -586,9 +600,7 @@
         <div class="absolute -inset-4 bg-gradient-to-r from-brand-cyan via-brand-purple to-brand-pink blur-2xl opacity-30"></div>
         <div class="relative shine glass-strong rounded-3xl p-8 md:p-10">
           <div class="flex items-center gap-4 mb-6">
-            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-brand-cyan to-brand-purple flex items-center justify-center shadow-2xl">
-              <span class="text-white font-black text-2xl">A</span>
-            </div>
+            <img src="/assets/aivenx-mark.png" alt="AIvenX" class="w-14 h-14 rounded-2xl shadow-2xl" />
             <div>
               <div class="text-xs text-brand-cyan uppercase tracking-widest font-bold">AIvenX · all-in-one</div>
               <div class="font-display font-bold text-2xl">The AI-native school OS</div>
@@ -754,7 +766,7 @@
       <div class="bento glass rounded-2xl p-5"><div class="flex items-start gap-3"><div class="w-9 h-9 rounded-lg bg-purple-500/15 flex items-center justify-center text-purple-300">📊</div><div class="flex-1"><div class="font-bold text-sm">Class engagement heatmap</div><div class="text-xs text-slate-400 mt-1">Correctness × time × completion</div><div class="text-[10px] text-emerald-300 mt-2 font-bold uppercase tracking-wider">Shipped</div></div></div></div>
       <div class="bento glass rounded-2xl p-5"><div class="flex items-start gap-3"><div class="w-9 h-9 rounded-lg bg-amber-500/15 flex items-center justify-center text-amber-300">🚌</div><div class="flex-1"><div class="font-bold text-sm">In-bus aggression detection</div><div class="text-xs text-slate-400 mt-1">Audio + vision · pilot routes</div><div class="text-[10px] text-amber-300 mt-2 font-bold uppercase tracking-wider">Beta</div></div></div></div>
       <div class="bento glass rounded-2xl p-5"><div class="flex items-start gap-3"><div class="w-9 h-9 rounded-lg bg-rose-500/15 flex items-center justify-center text-rose-300">💬</div><div class="flex-1"><div class="font-bold text-sm">Multi-language translation</div><div class="text-xs text-slate-400 mt-1">Hindi · Tamil · Telugu · Bengali +</div><div class="text-[10px] text-cyan-300 mt-2 font-bold uppercase tracking-wider">Roadmap · Q3</div></div></div></div>
-      <div class="bento glass rounded-2xl p-5"><div class="flex items-start gap-3"><div class="w-9 h-9 rounded-lg bg-emerald-500/15 flex items-center justify-center text-emerald-300">🦁</div><div class="flex-1"><div class="font-bold text-sm">Leo · chapter-aware tutor</div><div class="text-xs text-slate-400 mt-1">Asks-anything chat scoped to current page</div><div class="text-[10px] text-cyan-300 mt-2 font-bold uppercase tracking-wider">Roadmap · Q4</div></div></div></div>
+      <div class="bento glass rounded-2xl p-5"><div class="flex items-start gap-3"><div class="w-9 h-9 rounded-lg bg-emerald-500/15 flex items-center justify-center text-emerald-300">🦁</div><div class="flex-1"><div class="font-bold text-sm">Leo · chapter-aware tutor</div><div class="text-xs text-slate-400 mt-1">Asks-anything chat scoped to current page</div><div class="text-[10px] text-emerald-300 mt-2 font-bold uppercase tracking-wider">Shipped</div></div></div></div>
       <div class="bento glass rounded-2xl p-5"><div class="flex items-start gap-3"><div class="w-9 h-9 rounded-lg bg-cyan-500/15 flex items-center justify-center text-cyan-300">🛟</div><div class="flex-1"><div class="font-bold text-sm">Wellbeing beacon</div><div class="text-xs text-slate-400 mt-1">Distress detection on submitted writing</div><div class="text-[10px] text-cyan-300 mt-2 font-bold uppercase tracking-wider">Roadmap · 2027</div></div></div></div>
       <div class="bento glass rounded-2xl p-5"><div class="flex items-start gap-3"><div class="w-9 h-9 rounded-lg bg-pink-500/15 flex items-center justify-center text-pink-300">✍️</div><div class="flex-1"><div class="font-bold text-sm">Class-writing AI feedback</div><div class="text-xs text-slate-400 mt-1">Rubric-grounded comments · teacher edits</div><div class="text-[10px] text-cyan-300 mt-2 font-bold uppercase tracking-wider">Roadmap · Q3</div></div></div></div>
     </div>
@@ -955,8 +967,8 @@
           Book a demo
           <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
         </a>
-        <a href="tel:+919999999999" class="inline-flex items-center gap-2 px-7 py-4 rounded-xl glass text-white font-semibold text-base hover:bg-white/10 transition-colors">
-          📞 +91 99999 99999
+        <a href="mailto:hello@aivenx.co.in" class="inline-flex items-center gap-2 px-7 py-4 rounded-xl glass text-white font-semibold text-base hover:bg-white/10 transition-colors">
+          ✉️ hello@aivenx.co.in
         </a>
       </div>
 
@@ -977,9 +989,7 @@
   <div class="max-w-7xl mx-auto px-5 grid grid-cols-2 md:grid-cols-5 gap-8">
     <div class="col-span-2">
       <div class="flex items-center gap-2.5 mb-4">
-        <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-brand-cyan to-brand-purple flex items-center justify-center">
-          <span class="text-white font-black text-base">A</span>
-        </div>
+        <img src="/assets/aivenx-mark.png" alt="AIvenX" class="w-9 h-9 rounded-lg" />
         <span class="font-display font-bold text-lg">AIvenX</span>
       </div>
       <p class="text-sm text-slate-400 max-w-sm leading-relaxed">
@@ -1011,8 +1021,7 @@
       <div class="text-xs uppercase tracking-widest text-slate-500 font-bold mb-3">Contact</div>
       <ul class="space-y-1.5 text-sm">
         <li><a href="mailto:hello@aivenx.co.in" class="text-slate-300 hover:text-white">hello@aivenx.co.in</a></li>
-        <li><a href="tel:+919999999999" class="text-slate-300 hover:text-white">+91 99999 99999</a></li>
-        <li class="text-slate-300">Bengaluru · India</li>
+        <li class="text-slate-300">Hyderabad · Telangana, India</li>
       </ul>
     </div>
   </div>
