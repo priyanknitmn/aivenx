@@ -190,13 +190,12 @@
       <span class="font-display font-bold text-lg tracking-tight">AIvenX</span>
     </a>
     <div class="hidden lg:flex items-center gap-7 text-sm text-slate-300">
-      <a href="#evaluator" class="hover:text-white transition-colors">Evaluator</a>
-      <a href="#pain" class="hover:text-white transition-colors">Why now</a>
-      <a href="#products" class="hover:text-white transition-colors">Products</a>
-      <a href="#features" class="hover:text-white transition-colors">Features</a>
+      <a href="#who" class="hover:text-white transition-colors">About</a>
+      <a href="#pain" class="hover:text-white transition-colors">Issues</a>
+      <a href="#products" class="hover:text-white transition-colors">Offerings</a>
+      <a href="#evaluator" class="hover:text-white transition-colors">How it works</a>
       <a href="#india" class="hover:text-white transition-colors">For India</a>
       <a href="#pricing" class="hover:text-white transition-colors">Editions</a>
-      <a href="#who" class="hover:text-white transition-colors">About</a>
     </div>
     <a href="#demo" class="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white text-brand-ink text-sm font-bold hover:bg-brand-cream transition-colors">Book a demo →</a>
   </div>
@@ -449,61 +448,66 @@
 </section>
 
 <!-- ============================================================
-     2 · EVALUATOR · 4-step pipeline
+     ~ · WHO WE ARE
+     Section number intentionally not bumped — we leave the existing
+     numbering in place (07 · Pricing → 09 · FAQ → 10 · Contact us)
+     and slot identity in between as a calmer intermission. The eye
+     reads pricing → who's behind this → frequent questions → demo,
+     which is the natural buyer-trust arc.
      ============================================================ -->
-<section id="evaluator" class="relative py-28 overflow-hidden">
-  <div class="max-w-7xl mx-auto px-5">
-    <div class="reveal max-w-3xl mb-14">
-      <div class="sec-num mb-3">01 · How the evaluator works</div>
-      <h2 class="sec-h font-display">
-        Four steps.<br/>
-        <span class="gradient-text underline-trace">Zero teacher heartbreak.</span>
-      </h2>
-      <p class="text-slate-400 mt-6 text-lg leading-relaxed">
-        Cortex Evaluator is the only AI grading tool built around an Indian board's actual marking scheme. Step-wise rubrics, partial credit, manual override at every stage — and a teacher in the loop, not on the sidelines.
-      </p>
-    </div>
+<section id="who" class="relative py-28 overflow-hidden">
+  <div class="max-w-6xl mx-auto px-5">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+      <!-- LEFT: heading + manifesto -->
+      <div class="lg:col-span-5 reveal">
+        <div class="sec-num mb-3">01 · Who we are</div>
+        <h2 class="sec-h font-display">
+          A company<br/>
+          <span class="gradient-text">obsessed with</span><br/>
+          <span class="text-slate-400">Indian classrooms.</span>
+        </h2>
+        <p class="text-slate-300 mt-7 text-lg leading-relaxed">
+          AIvenX is built by educators, technologists, and parents who lived
+          the school-software pain firsthand. We aren't bolting AI onto a
+          legacy ERP — we're building the school operating system the way
+          we wished it existed when our own kids started Class 1.
+        </p>
+        <p class="text-slate-400 mt-5 leading-relaxed">
+          Designed in <strong class="text-white">Hyderabad</strong>, engineered for
+          every Indian board, shipped with NEP&nbsp;2020 and DPDP Act compliance
+          baked in — not retrofitted.
+        </p>
+      </div>
 
-    <div class="reveal-stagger grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-      <!-- Step 1 -->
-      <div class="bento glass rounded-2xl p-6 relative">
-        <div class="text-[64px] font-display font-bold leading-none gradient-text opacity-30 absolute top-2 right-4">1</div>
-        <div class="relative">
-          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center mb-4">
-            <svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+      <!-- RIGHT: principles grid -->
+      <div class="lg:col-span-7 reveal-stagger grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="bento glass rounded-2xl p-6">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center mb-3">
+            <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
           </div>
-          <h3 class="font-display font-bold text-lg mb-1.5">Upload exam PDF</h3>
-          <p class="text-sm text-slate-400 leading-relaxed">Question paper or scanned answer sheets — bulk-upload in one drag.</p>
+          <h3 class="font-display font-bold text-base mb-1.5">Teacher-first, not feature-first</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">Every AI output is reviewed and approved by a teacher before a student sees it. The teacher gains hours; never gets replaced.</p>
         </div>
-      </div>
-      <div class="bento glass rounded-2xl p-6 relative">
-        <div class="text-[64px] font-display font-bold leading-none gradient-text opacity-30 absolute top-2 right-4">2</div>
-        <div class="relative">
-          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center mb-4">
-            <svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>
+        <div class="bento glass rounded-2xl p-6">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center mb-3">
+            <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
           </div>
-          <h3 class="font-display font-bold text-lg mb-1.5">Confirm answer key</h3>
-          <p class="text-sm text-slate-400 leading-relaxed">AI extracts questions + suggested rubric. Teacher reviews and edits.</p>
+          <h3 class="font-display font-bold text-base mb-1.5">AI-native from day one</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">Not a chatbot bolted on. Cortex sits in the spine — generates, grades, recommends, narrates. Every workflow assumes AI in the loop.</p>
         </div>
-      </div>
-      <div class="bento glass rounded-2xl p-6 relative">
-        <div class="text-[64px] font-display font-bold leading-none gradient-text opacity-30 absolute top-2 right-4">3</div>
-        <div class="relative">
-          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center mb-4">
-            <svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+        <div class="bento glass rounded-2xl p-6">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center mb-3">
+            <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
           </div>
-          <h3 class="font-display font-bold text-lg mb-1.5">Auto-grade with rubrics</h3>
-          <p class="text-sm text-slate-400 leading-relaxed">Step-wise marks for every paper. Partial credit. Reasoning shown to teacher.</p>
+          <h3 class="font-display font-bold text-base mb-1.5">Privacy by architecture</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">India data residency, DPDP-Act consent flows, audit-grade logging, opt-out per family. We collect only what serves the child.</p>
         </div>
-      </div>
-      <div class="bento glass rounded-2xl p-6 relative">
-        <div class="text-[64px] font-display font-bold leading-none gradient-text opacity-30 absolute top-2 right-4">4</div>
-        <div class="relative">
-          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center mb-4">
-            <svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+        <div class="bento glass rounded-2xl p-6">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center mb-3">
+            <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
           </div>
-          <h3 class="font-display font-bold text-lg mb-1.5">Recommend, per student</h3>
-          <p class="text-sm text-slate-400 leading-relaxed">Weak-spot chapters + practice + audio playlist sent to each student's app.</p>
+          <h3 class="font-display font-bold text-base mb-1.5">Built for India, not adapted</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">CBSE rubrics, vernacular roadmap, joint-family pods, UPI rails, low-bandwidth mode — every primitive shipped for Indian schools first.</p>
         </div>
       </div>
     </div>
@@ -516,7 +520,7 @@
 <section id="pain" class="relative py-28 ink-grad overflow-hidden">
   <div class="max-w-7xl mx-auto px-5">
     <div class="reveal max-w-3xl mb-16">
-      <div class="sec-num mb-3">02 · Why this. Why now.</div>
+      <div class="sec-num mb-3">02 · The issues</div>
       <!-- The trailing period used to sit OUTSIDE the underline-trace
            span. Because that span is `display: inline-block`, the orphan
            "." would wrap onto its own line on narrow viewports, leaving
@@ -579,7 +583,7 @@
 <section class="relative py-28 overflow-hidden">
   <div class="max-w-6xl mx-auto px-5">
     <div class="reveal text-center max-w-3xl mx-auto mb-16">
-      <div class="sec-num mb-3">03 · The shift</div>
+      <div class="sec-num mb-3">03 · One spine. Six vendors gone.</div>
       <h2 class="sec-h font-display">One platform. <span class="gradient-text">Six vendors gone.</span></h2>
     </div>
 
@@ -632,7 +636,7 @@
 <section id="products" class="relative py-28 ink-grad overflow-hidden">
   <div class="max-w-7xl mx-auto px-5">
     <div class="reveal max-w-3xl mb-16">
-      <div class="sec-num mb-3">04 · Products</div>
+      <div class="sec-num mb-3">04 · What we offer</div>
       <h2 class="sec-h font-display">Five surfaces.<br/><span class="gradient-text">One spine.</span></h2>
       <p class="text-slate-400 mt-6 text-lg leading-relaxed">
         Beyond the evaluator: Cortex generates the chapters, ERP runs the operations, Guardian watches the gates, Connect carries alumni forward, Mobile lives in your pocket.
@@ -775,12 +779,74 @@
 </section>
 
 <!-- ============================================================
+     2 · EVALUATOR · 4-step pipeline
+     ============================================================ -->
+<section id="evaluator" class="relative py-28 overflow-hidden">
+  <div class="max-w-7xl mx-auto px-5">
+    <div class="reveal max-w-3xl mb-14">
+      <div class="sec-num mb-3">06 · How we solve</div>
+      <h2 class="sec-h font-display">
+        Four steps.<br/>
+        <span class="gradient-text underline-trace">Zero teacher heartbreak.</span>
+      </h2>
+      <p class="text-slate-400 mt-6 text-lg leading-relaxed">
+        Cortex Evaluator is the only AI grading tool built around an Indian board's actual marking scheme. Step-wise rubrics, partial credit, manual override at every stage — and a teacher in the loop, not on the sidelines.
+      </p>
+    </div>
+
+    <div class="reveal-stagger grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+      <!-- Step 1 -->
+      <div class="bento glass rounded-2xl p-6 relative">
+        <div class="text-[64px] font-display font-bold leading-none gradient-text opacity-30 absolute top-2 right-4">1</div>
+        <div class="relative">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center mb-4">
+            <svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+          </div>
+          <h3 class="font-display font-bold text-lg mb-1.5">Upload exam PDF</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">Question paper or scanned answer sheets — bulk-upload in one drag.</p>
+        </div>
+      </div>
+      <div class="bento glass rounded-2xl p-6 relative">
+        <div class="text-[64px] font-display font-bold leading-none gradient-text opacity-30 absolute top-2 right-4">2</div>
+        <div class="relative">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center mb-4">
+            <svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>
+          </div>
+          <h3 class="font-display font-bold text-lg mb-1.5">Confirm answer key</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">AI extracts questions + suggested rubric. Teacher reviews and edits.</p>
+        </div>
+      </div>
+      <div class="bento glass rounded-2xl p-6 relative">
+        <div class="text-[64px] font-display font-bold leading-none gradient-text opacity-30 absolute top-2 right-4">3</div>
+        <div class="relative">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center mb-4">
+            <svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+          </div>
+          <h3 class="font-display font-bold text-lg mb-1.5">Auto-grade with rubrics</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">Step-wise marks for every paper. Partial credit. Reasoning shown to teacher.</p>
+        </div>
+      </div>
+      <div class="bento glass rounded-2xl p-6 relative">
+        <div class="text-[64px] font-display font-bold leading-none gradient-text opacity-30 absolute top-2 right-4">4</div>
+        <div class="relative">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center mb-4">
+            <svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+          </div>
+          <h3 class="font-display font-bold text-lg mb-1.5">Recommend, per student</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">Weak-spot chapters + practice + audio playlist sent to each student's app.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
      7 · BUILT FOR INDIA
      ============================================================ -->
 <section id="india" class="relative py-28 ink-grad overflow-hidden">
   <div class="max-w-6xl mx-auto px-5">
     <div class="reveal text-center max-w-3xl mx-auto mb-16">
-      <div class="sec-num mb-3">06 · Built for India</div>
+      <div class="sec-num mb-3">07 · Built for India</div>
       <h2 class="sec-h font-display">Not localized. <span class="gradient-text">Engineered for India.</span></h2>
       <p class="text-slate-400 mt-6 text-lg leading-relaxed">
         Designed in India, for Indian boards, fees, family structures, languages, and the legal frame.
@@ -820,7 +886,7 @@
 <section id="pricing" class="relative py-28 ink-grad overflow-hidden">
   <div class="max-w-6xl mx-auto px-5">
     <div class="reveal text-center max-w-3xl mx-auto mb-16">
-      <div class="sec-num mb-3">07 · Editions</div>
+      <div class="sec-num mb-3">08 · Editions</div>
       <h2 class="sec-h font-display">Three editions. <span class="gradient-text">Pick what fits.</span></h2>
       <p class="text-slate-400 mt-6 text-lg">No setup fee. Pilot for 1 term, then commit. Pricing on the call — we tailor by board, headcount, and modules.</p>
     </div>
@@ -888,73 +954,6 @@
           <li class="flex gap-2"><span class="text-pink-400">✓</span>Dedicated success manager</li>
         </ul>
         <a href="#demo" class="block text-center px-4 py-2.5 rounded-lg border border-white/10 text-sm font-bold hover:bg-white/5 transition-colors">Get a quote</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============================================================
-     ~ · WHO WE ARE
-     Section number intentionally not bumped — we leave the existing
-     numbering in place (07 · Pricing → 08 · FAQ → 09 · Let's talk)
-     and slot identity in between as a calmer intermission. The eye
-     reads pricing → who's behind this → frequent questions → demo,
-     which is the natural buyer-trust arc.
-     ============================================================ -->
-<section id="who" class="relative py-28 overflow-hidden">
-  <div class="max-w-6xl mx-auto px-5">
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
-      <!-- LEFT: heading + manifesto -->
-      <div class="lg:col-span-5 reveal">
-        <div class="sec-num mb-3">~ · Who we are</div>
-        <h2 class="sec-h font-display">
-          A small team<br/>
-          <span class="gradient-text">obsessed with</span><br/>
-          <span class="text-slate-400">Indian classrooms.</span>
-        </h2>
-        <p class="text-slate-300 mt-7 text-lg leading-relaxed">
-          AIvenX is built by educators, technologists, and parents who lived
-          the school-software pain firsthand. We aren't bolting AI onto a
-          legacy ERP — we're building the school operating system the way
-          we wished it existed when our own kids started Class 1.
-        </p>
-        <p class="text-slate-400 mt-5 leading-relaxed">
-          Designed in <strong class="text-white">Hyderabad</strong>, engineered for
-          every Indian board, shipped with NEP&nbsp;2020 and DPDP Act compliance
-          baked in — not retrofitted.
-        </p>
-      </div>
-
-      <!-- RIGHT: principles grid -->
-      <div class="lg:col-span-7 reveal-stagger grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div class="bento glass rounded-2xl p-6">
-          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center mb-3">
-            <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
-          </div>
-          <h3 class="font-display font-bold text-base mb-1.5">Teacher-first, not feature-first</h3>
-          <p class="text-sm text-slate-400 leading-relaxed">Every AI output is reviewed and approved by a teacher before a student sees it. The teacher gains hours; never gets replaced.</p>
-        </div>
-        <div class="bento glass rounded-2xl p-6">
-          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center mb-3">
-            <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-          </div>
-          <h3 class="font-display font-bold text-base mb-1.5">AI-native from day one</h3>
-          <p class="text-sm text-slate-400 leading-relaxed">Not a chatbot bolted on. Cortex sits in the spine — generates, grades, recommends, narrates. Every workflow assumes AI in the loop.</p>
-        </div>
-        <div class="bento glass rounded-2xl p-6">
-          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center mb-3">
-            <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-          </div>
-          <h3 class="font-display font-bold text-base mb-1.5">Privacy by architecture</h3>
-          <p class="text-sm text-slate-400 leading-relaxed">India data residency, DPDP-Act consent flows, audit-grade logging, opt-out per family. We collect only what serves the child.</p>
-        </div>
-        <div class="bento glass rounded-2xl p-6">
-          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center mb-3">
-            <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
-          </div>
-          <h3 class="font-display font-bold text-base mb-1.5">Built for India, not adapted</h3>
-          <p class="text-sm text-slate-400 leading-relaxed">CBSE rubrics, vernacular roadmap, joint-family pods, UPI rails, low-bandwidth mode — every primitive shipped for Indian schools first.</p>
-        </div>
       </div>
     </div>
   </div>
