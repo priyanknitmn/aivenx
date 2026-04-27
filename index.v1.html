@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AIvenX — The AI-native school, in one login.</title>
+<meta name="description" content="AI-native school management platform. ERP + Cortex AI Studio + face-recognition attendance + 150,000+ question bank — one login, one bill." />
+<meta name="theme-color" content="#22D3EE" />
+
+<!-- Open Graph (so links shared on WhatsApp/LinkedIn show a nice preview) -->
+<meta property="og:title" content="AIvenX — The AI-native school, in one login." />
+<meta property="og:description" content="One platform replaces 3-5 vendors. AI chapters, 150k question bank, face-AI attendance, exam evaluator." />
+<meta property="og:image" content="/assets/aivenx-logo.png" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://aivenx.co.in" />
+
+<!-- Favicon -->
+<link rel="icon" type="image/png" href="/assets/aivenx-mark.png" />
+
+<!-- Tailwind via CDN — keeps the file self-contained, zero build step. For
+     production you'd swap to a built CSS file, but for a launch-week
+     landing page CDN is the right move. -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  // Brand palette — extends Tailwind so we can use brand-cyan / brand-purple
+  // utility classes everywhere, instead of hard-coding hex values inline.
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          'brand-cyan': '#22D3EE',
+          'brand-purple': '#A855F7',
+          'brand-ink': '#0F172A',
+          'brand-cream': '#FFF1D6',
+        },
+        fontFamily: {
+          sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+        },
+      },
+    },
+  };
+</script>
+
+<!-- Inter font — pairs cleanly with the brand identity -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+<style>
+  /* ============================================================
+     BRAND PRIMITIVES
+     Defined once at the top so colour changes ripple cleanly.
+     ============================================================ */
+  .brand-gradient {
+    background: linear-gradient(135deg, #22D3EE 0%, #A855F7 100%);
+  }
+  .brand-gradient-text {
+    background: linear-gradient(135deg, #22D3EE 0%, #A855F7 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero-grid {
+    background-image:
+      linear-gradient(rgba(34, 211, 238, 0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(168, 85, 247, 0.08) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+  html { scroll-behavior: smooth; }
+
+  /* ============================================================
+     MESH BLOBS
+     Three coloured blobs drifting behind the hero. Heavy blur +
+     low opacity gives that "premium SaaS" mesh-gradient feel
+     without any image asset. Reduced motion = instant kill.
+     ============================================================ */
+  .mesh-blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(90px);
+    pointer-events: none;
+    will-change: transform;
+    animation: floatBlob 22s ease-in-out infinite;
+  }
+  .mesh-blob-1 { background: #22D3EE; opacity: 0.45; width: 520px; height: 520px; top: -120px; left: -100px; animation-delay: 0s; }
+  .mesh-blob-2 { background: #A855F7; opacity: 0.38; width: 620px; height: 620px; bottom: -180px; right: -160px; animation-delay: -8s; }
+  .mesh-blob-3 { background: #EC4899; opacity: 0.22; width: 420px; height: 420px; top: 35%; left: 45%; animation-delay: -15s; animation-duration: 28s; }
+  @keyframes floatBlob {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33%      { transform: translate(60px, 80px) scale(1.1); }
+    66%      { transform: translate(-30px, 50px) scale(0.95); }
+  }
+
+  /* ============================================================
+     CURSOR HALO
+     A soft gradient circle that follows the cursor with damping.
+     mix-blend-mode: multiply lets it tint everything beneath
+     without obscuring text. Subtle on purpose — never the focal point.
+     ============================================================ */
+  .cursor-halo {
+    position: fixed;
+    top: 0; left: 0;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(34,211,238,0.10) 0%, rgba(168,85,247,0.07) 32%, transparent 65%);
+    pointer-events: none;
+    z-index: 1;
+    transform: translate(-1000px, -1000px); /* off-screen until JS moves it */
+    mix-blend-mode: multiply;
+    transition: opacity 0.3s ease;
+  }
+
+  /* ============================================================
+     SCROLL REVEAL
+     Add `.reveal` to a block. IntersectionObserver toggles
+     `.in-view` when ~15% has scrolled into view. Single class,
+     ~16 lines of CSS — no library needed.
+     ============================================================ */
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s cubic-bezier(.2,.7,.2,1), transform 0.7s cubic-bezier(.2,.7,.2,1); }
+  .reveal.in-view { opacity: 1; transform: translateY(0); }
+  .reveal-stagger > * { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+  .reveal-stagger.in-view > *:nth-child(1) { opacity: 1; transform: none; transition-delay: 0s; }
+  .reveal-stagger.in-view > *:nth-child(2) { opacity: 1; transform: none; transition-delay: 0.08s; }
+  .reveal-stagger.in-view > *:nth-child(3) { opacity: 1; transform: none; transition-delay: 0.16s; }
+  .reveal-stagger.in-view > *:nth-child(4) { opacity: 1; transform: none; transition-delay: 0.24s; }
+  .reveal-stagger.in-view > *:nth-child(5) { opacity: 1; transform: none; transition-delay: 0.32s; }
+  .reveal-stagger.in-view > *:nth-child(6) { opacity: 1; transform: none; transition-delay: 0.40s; }
+  .reveal-stagger.in-view > *:nth-child(7) { opacity: 1; transform: none; transition-delay: 0.48s; }
+
+  /* ============================================================
+     HEADLINE STAGGER
+     The hero headline lines fade up sequentially. Pure CSS,
+     no JS — runs once on first paint.
+     ============================================================ */
+  .headline-line { display: inline-block; opacity: 0; transform: translateY(24px); animation: headlineIn 0.8s cubic-bezier(.2,.7,.2,1) forwards; }
+  .headline-line:nth-child(1) { animation-delay: 0.1s; }
+  .headline-line:nth-child(2) { animation-delay: 0.3s; }
+  .headline-line:nth-child(3) { animation-delay: 0.5s; }
+  @keyframes headlineIn { to { opacity: 1; transform: translateY(0); } }
+
+  /* ============================================================
+     MARQUEE (board chip strip)
+     Infinite horizontal scroll. JS doubles the track at runtime
+     so the loop is seamless. Mask fades the edges so the chips
+     don't snap into view. Pause on hover for accessibility.
+     ============================================================ */
+  .marquee {
+    position: relative;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+            mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+  }
+  .marquee-track { display: flex; gap: 1rem; width: max-content; animation: marqueeScroll 38s linear infinite; }
+  .marquee:hover .marquee-track { animation-play-state: paused; }
+  @keyframes marqueeScroll {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* ============================================================
+     MAGNETIC BUTTONS
+     JS reads cursor position vs. button centre and translates
+     the button (~20% of the offset) toward the cursor. CSS only
+     declares the will-change + transition — JS does the math.
+     ============================================================ */
+  .magnetic { transition: transform 0.18s cubic-bezier(.2,.7,.2,1); will-change: transform; }
+
+  /* ============================================================
+     NUMBER TICKERS
+     `.ticker` with data-target counts up to data-target on
+     scroll-into-view. Tabular nums prevent layout jitter as
+     digits change.
+     ============================================================ */
+  .ticker { font-variant-numeric: tabular-nums; }
+
+  /* ============================================================
+     FACE-DETECTION BOXES
+     Bounding boxes that "draw" onto the camera mock as you
+     scroll the Face-AI section into view. Each box has a name
+     label that animates after the box.
+     ============================================================ */
+  .face-mock { position: relative; overflow: hidden; }
+  .face-box {
+    position: absolute;
+    border: 2px solid #10B981;
+    border-radius: 4px;
+    box-shadow: 0 0 14px rgba(16,185,129,0.45), inset 0 0 0 1px rgba(255,255,255,0.1);
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  .face-box::before {
+    content: attr(data-name);
+    position: absolute;
+    bottom: -22px;
+    left: -2px;
+    background: #10B981;
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 3px;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 0.3s ease-out 0.4s;
+  }
+  .face-box.drawn { animation: drawBox 0.6s cubic-bezier(.2,.7,.2,1) forwards; }
+  .face-box.drawn::before { transform: scaleY(1); }
+  @keyframes drawBox { to { opacity: 1; transform: scale(1); } }
+
+  /* ============================================================
+     FLOATING PHONES
+     Two phone mockups rocking gently in opposing rhythms. The
+     content inside each phone is just markup — phones are CSS-
+     only frames + a screen background.
+     ============================================================ */
+  .phone-frame {
+    position: relative;
+    width: 240px;
+    aspect-ratio: 9 / 19;
+    background: #0F172A;
+    border-radius: 32px;
+    padding: 8px;
+    box-shadow:
+      0 30px 80px -20px rgba(15,23,42,0.45),
+      inset 0 0 0 1px rgba(255,255,255,0.08);
+  }
+  .phone-screen {
+    width: 100%;
+    height: 100%;
+    border-radius: 24px;
+    overflow: hidden;
+    background: #fff;
+  }
+  .phone-notch {
+    position: absolute;
+    top: 8px; left: 50%;
+    transform: translateX(-50%);
+    width: 60px; height: 18px;
+    background: #0F172A;
+    border-radius: 0 0 12px 12px;
+    z-index: 2;
+  }
+  .phone-float-left  { animation: phoneFloatA 7s ease-in-out infinite; transform-origin: center; }
+  .phone-float-right { animation: phoneFloatB 8s ease-in-out infinite; }
+  @keyframes phoneFloatA {
+    0%, 100% { transform: translateY(0)    rotate(-6deg); }
+    50%      { transform: translateY(-14px) rotate(-3deg); }
+  }
+  @keyframes phoneFloatB {
+    0%, 100% { transform: translateY(0)    rotate(6deg); }
+    50%      { transform: translateY(-14px) rotate(3deg); }
+  }
+
+  /* ============================================================
+     RESPECT REDUCED MOTION
+     Users who've requested less motion get the static layout —
+     no blobs drifting, no marquee scrolling, no auto-reveals.
+     ============================================================ */
+  @media (prefers-reduced-motion: reduce) {
+    .mesh-blob, .marquee-track, .phone-float-left, .phone-float-right { animation: none !important; }
+    .reveal, .reveal-stagger > * { opacity: 1 !important; transform: none !important; }
+    .headline-line { opacity: 1 !important; transform: none !important; animation: none !important; }
+    .cursor-halo { display: none; }
+  }
+</style>
+</head>
+<body class="font-sans text-brand-ink bg-white antialiased">
+
+<!-- ============================================================ NAV -->
+<nav class="sticky top-0 z-50 backdrop-blur bg-white/80 border-b border-slate-100">
+  <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+    <a href="#" class="flex items-center gap-2">
+      <img src="/assets/aivenx-logo.png" alt="AIvenX" class="h-8 w-auto" />
+    </a>
+    <div class="hidden md:flex items-center gap-8 text-sm font-medium">
+      <a href="#product" class="text-slate-600 hover:text-brand-ink transition">Product</a>
+      <a href="#cortex" class="text-slate-600 hover:text-brand-ink transition">Cortex AI</a>
+      <a href="#editions" class="text-slate-600 hover:text-brand-ink transition">Editions</a>
+      <a href="#faq" class="text-slate-600 hover:text-brand-ink transition">FAQ</a>
+      <a href="#contact" class="text-slate-600 hover:text-brand-ink transition">Contact</a>
+    </div>
+    <a href="mailto:hello@aivenx.co.in?subject=Demo%20request" class="magnetic brand-gradient text-white font-semibold text-sm px-4 py-2 rounded-lg shadow-md hover:shadow-lg transition-all">
+      Book a demo
+    </a>
+  </div>
+</nav>
+
+<!-- ============================================================ HERO -->
+<section class="relative overflow-hidden">
+  <!-- Mesh-gradient blobs drift behind the hero. Three blobs, different
+       sizes/colours/timings — together they create a slow, organic motion. -->
+  <div class="mesh-blob mesh-blob-1"></div>
+  <div class="mesh-blob mesh-blob-2"></div>
+  <div class="mesh-blob mesh-blob-3"></div>
+  <div class="absolute inset-0 hero-grid opacity-40"></div>
+
+  <div class="relative max-w-6xl mx-auto px-6 pt-20 pb-24 md:pt-28 md:pb-36 z-10">
+    <div class="max-w-3xl">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-50 border border-cyan-200 text-xs font-mono uppercase tracking-widest text-cyan-700 mb-6">
+        <span class="w-1.5 h-1.5 rounded-full bg-brand-cyan animate-pulse"></span>
+        Now onboarding pilot schools · Mumbai
+      </div>
+      <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight leading-[1.05] mb-6">
+        <span class="headline-line">The <span class="brand-gradient-text">AI-native school</span>,</span><br />
+        <span class="headline-line">in one login.</span>
+      </h1>
+      <p class="text-lg md:text-xl text-slate-600 leading-relaxed mb-8 max-w-2xl">
+        AIvenX is the school management platform schools have been waiting for.
+        Admissions, fees, timetables, AI-built chapters, face-recognition
+        attendance, exam grading — all in one place, with one login and one
+        invoice.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-3">
+        <a href="mailto:hello@aivenx.co.in?subject=Demo%20request%20for%20%5BSchool%20Name%5D" class="magnetic brand-gradient text-white font-semibold px-6 py-3 rounded-lg shadow-lg hover:shadow-xl transition-all inline-flex items-center gap-2">
+          Book a demo
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+        </a>
+        <a href="#product" class="magnetic bg-white border border-slate-200 text-brand-ink font-semibold px-6 py-3 rounded-lg hover:border-slate-300 transition-all inline-flex items-center justify-center">
+          See what's inside
+        </a>
+      </div>
+      <p class="text-xs text-slate-500 mt-6">
+        We'll send a tailored quote within 24 hours · Built for CBSE, ICSE & IB
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ STATS -->
+<!-- Numbers tick up from 0 the first time the section enters the viewport.
+     `data-target` is the final integer; `data-suffix` adds units after the
+     count finishes (so we can keep tabular nums during the animation). -->
+<section class="border-y border-slate-100 bg-slate-50/60">
+  <div class="max-w-6xl mx-auto px-6 py-12 grid grid-cols-2 md:grid-cols-4 gap-8 text-center reveal-stagger">
+    <div>
+      <div class="ticker text-3xl md:text-4xl font-extrabold brand-gradient-text" data-target="150000" data-suffix="+">0</div>
+      <div class="text-xs uppercase tracking-widest text-slate-500 mt-2">Pre-loaded questions</div>
+    </div>
+    <div>
+      <div class="ticker text-3xl md:text-4xl font-extrabold brand-gradient-text" data-target="20" data-suffix="+">0</div>
+      <div class="text-xs uppercase tracking-widest text-slate-500 mt-2">Features included</div>
+    </div>
+    <div>
+      <div class="ticker text-3xl md:text-4xl font-extrabold brand-gradient-text" data-target="1">0</div>
+      <div class="text-xs uppercase tracking-widest text-slate-500 mt-2">Login · replaces 3-5 separate products</div>
+    </div>
+    <div>
+      <div class="ticker text-3xl md:text-4xl font-extrabold brand-gradient-text" data-target="10" data-suffix=" hr">0</div>
+      <div class="text-xs uppercase tracking-widest text-slate-500 mt-2">Hours each teacher saves a week</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ BOARDS -->
+<section class="py-16 bg-white">
+  <div class="max-w-6xl mx-auto px-6">
+    <div class="text-center max-w-2xl mx-auto mb-10">
+      <p class="text-xs font-mono uppercase tracking-widest text-brand-purple mb-3">Built for world-class schools</p>
+      <h2 class="text-2xl md:text-4xl font-extrabold tracking-tight mb-4">
+        Curriculum-aligned out of the box.
+      </h2>
+      <p class="text-base text-slate-600">
+        Whether you run an IB World School in Mumbai or a CBSE chain across
+        five states, AIvenX understands your syllabus, grading scale, and
+        report-card format from day one.
+      </p>
+    </div>
+    <!-- Infinite horizontal scroller. JS will duplicate `.marquee-track`
+         children once at runtime so the loop is seamless without us
+         having to copy-paste the chips into the markup twice. -->
+    <div class="marquee py-2">
+      <div class="marquee-track">
+        <div class="px-5 py-3 rounded-full bg-slate-50 border border-slate-200 text-sm font-semibold text-slate-700 whitespace-nowrap">IB (PYP · MYP · DP)</div>
+        <div class="px-5 py-3 rounded-full bg-slate-50 border border-slate-200 text-sm font-semibold text-slate-700 whitespace-nowrap">CBSE</div>
+        <div class="px-5 py-3 rounded-full bg-slate-50 border border-slate-200 text-sm font-semibold text-slate-700 whitespace-nowrap">ICSE / ISC</div>
+        <div class="px-5 py-3 rounded-full bg-slate-50 border border-slate-200 text-sm font-semibold text-slate-700 whitespace-nowrap">Cambridge (CAIE)</div>
+        <div class="px-5 py-3 rounded-full bg-slate-50 border border-slate-200 text-sm font-semibold text-slate-700 whitespace-nowrap">Advanced Placement (AP)</div>
+        <div class="px-5 py-3 rounded-full bg-slate-50 border border-slate-200 text-sm font-semibold text-slate-700 whitespace-nowrap">State Boards</div>
+        <div class="px-5 py-3 rounded-full bg-slate-50 border border-slate-200 text-sm font-semibold text-slate-700 whitespace-nowrap">NIOS</div>
+      </div>
+    </div>
+    <p class="text-center text-xs text-slate-500 mt-6">
+      Don't see yours? Cortex AI adapts to any framework — talk to us.
+    </p>
+  </div>
+</section>
+
+<!-- ============================================================ PRODUCT -->
+<section id="product" class="py-24">
+  <div class="max-w-6xl mx-auto px-6">
+    <div class="text-center max-w-2xl mx-auto mb-16">
+      <p class="text-xs font-mono uppercase tracking-widest text-brand-purple mb-3">The platform</p>
+      <h2 class="reveal text-3xl md:text-5xl font-extrabold tracking-tight mb-5">
+        One platform. Twenty-plus features.<br />One login.
+      </h2>
+      <p class="text-lg text-slate-600">
+        No more juggling between three logins. Everything a modern school
+        needs — from a parent paying fees on Monday to a camera marking
+        attendance on Wednesday — runs in one calm, well-designed place.
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6">
+      <!-- School Ops -->
+      <div class="p-8 rounded-2xl bg-white border border-slate-200 hover:border-brand-cyan/50 hover:shadow-lg transition-all">
+        <div class="w-12 h-12 rounded-xl bg-cyan-50 text-brand-cyan flex items-center justify-center mb-5">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" /></svg>
+        </div>
+        <h3 class="font-bold text-lg mb-2">School Operations</h3>
+        <p class="text-sm text-slate-600 leading-relaxed">
+          Admissions · Fees & invoicing · HR & payroll · Library · Transport · Hostel · Real-time reports
+        </p>
+      </div>
+      <!-- Academics -->
+      <div class="p-8 rounded-2xl bg-white border border-slate-200 hover:border-brand-cyan/50 hover:shadow-lg transition-all">
+        <div class="w-12 h-12 rounded-xl bg-purple-50 text-brand-purple flex items-center justify-center mb-5">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" /></svg>
+        </div>
+        <h3 class="font-bold text-lg mb-2">Academics</h3>
+        <p class="text-sm text-slate-600 leading-relaxed">
+          Class sections · Timetables · Exams · Report cards · Works for CBSE / ICSE / IB
+        </p>
+      </div>
+      <!-- Cortex AI -->
+      <div class="p-8 rounded-2xl bg-gradient-to-br from-cyan-50 to-purple-50 border border-cyan-200 hover:shadow-lg transition-all">
+        <div class="w-12 h-12 rounded-xl brand-gradient text-white flex items-center justify-center mb-5">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+        </div>
+        <h3 class="font-bold text-lg mb-2">Cortex AI Studio</h3>
+        <p class="text-sm text-slate-600 leading-relaxed">
+          AI-written chapters · 150,000+ question bank · Exam paper builder · AI Evaluator (grades + diagnoses + prescribes practice) · Lesson plans
+        </p>
+      </div>
+      <!-- Safety -->
+      <div class="p-8 rounded-2xl bg-white border border-slate-200 hover:border-brand-cyan/50 hover:shadow-lg transition-all">
+        <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center mb-5">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
+        </div>
+        <h3 class="font-bold text-lg mb-2">Safety</h3>
+        <p class="text-sm text-slate-600 leading-relaxed">
+          Face-recognition attendance · Anyone not seen is marked absent · Activity history · Bus safety <em>(2026)</em>
+        </p>
+      </div>
+      <!-- Engagement -->
+      <div class="p-8 rounded-2xl bg-white border border-slate-200 hover:border-brand-cyan/50 hover:shadow-lg transition-all">
+        <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center mb-5">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" /></svg>
+        </div>
+        <h3 class="font-bold text-lg mb-2">Engagement</h3>
+        <p class="text-sm text-slate-600 leading-relaxed">
+          Announcements · Parent portal · Student learning space · Direct messaging · Phone alerts
+        </p>
+      </div>
+      <!-- Helper bot -->
+      <div class="p-8 rounded-2xl bg-white border border-slate-200 hover:border-brand-cyan/50 hover:shadow-lg transition-all">
+        <div class="w-12 h-12 rounded-xl bg-pink-50 text-pink-600 flex items-center justify-center mb-5 overflow-hidden">
+          <img src="/assets/leo.png" alt="Leo" class="w-10 h-10 object-contain" />
+        </div>
+        <h3 class="font-bold text-lg mb-2">Leo, your in-app guide</h3>
+        <p class="text-sm text-slate-600 leading-relaxed">
+          Built-in AI assistant on every page. Answers questions, explains features, navigates you to anything in seconds.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ PERSONAS -->
+<!-- Why this section is here: school-buying decisions involve 5 distinct
+     audiences (admin signs, principal champions, teachers use daily,
+     students experience, parents observe). Listing what each gets makes
+     the platform feel built for the school as a whole, not just for IT. -->
+<section class="py-24 bg-slate-50/60">
+  <div class="max-w-6xl mx-auto px-6">
+    <div class="text-center max-w-2xl mx-auto mb-14">
+      <p class="text-xs font-mono uppercase tracking-widest text-brand-purple mb-3">Built for everyone in your school</p>
+      <h2 class="reveal text-3xl md:text-5xl font-extrabold tracking-tight mb-4">
+        One platform. Five points of view.
+      </h2>
+      <p class="text-lg text-slate-600">
+        AIvenX is designed around the people who actually use it every day —
+        not just the person who buys it.
+      </p>
+    </div>
+    <div class="grid md:grid-cols-2 lg:grid-cols-5 gap-4">
+      <div class="p-6 rounded-2xl bg-white border border-slate-200 hover:border-brand-cyan/50 hover:shadow-md transition-all">
+        <div class="text-3xl mb-3">🏫</div>
+        <h3 class="font-bold text-base mb-2">Admin / Owner</h3>
+        <ul class="space-y-1.5 text-xs text-slate-600">
+          <li>• Live finance dashboard</li>
+          <li>• Combined view across all campuses</li>
+          <li>• Activity history for compliance audits</li>
+          <li>• One subscription · one invoice</li>
+        </ul>
+      </div>
+      <div class="p-6 rounded-2xl bg-white border border-slate-200 hover:border-brand-cyan/50 hover:shadow-md transition-all">
+        <div class="text-3xl mb-3">🎯</div>
+        <h3 class="font-bold text-base mb-2">Principal</h3>
+        <ul class="space-y-1.5 text-xs text-slate-600">
+          <li>• Live attendance, class by class</li>
+          <li>• Exam result patterns at a glance</li>
+          <li>• Early signs of teachers needing support</li>
+          <li>• Approve fees, leaves, marks in one tap</li>
+        </ul>
+      </div>
+      <div class="p-6 rounded-2xl bg-gradient-to-br from-cyan-50 to-purple-50 border border-cyan-200 hover:shadow-md transition-all">
+        <div class="text-3xl mb-3">👩‍🏫</div>
+        <h3 class="font-bold text-base mb-2">Teacher</h3>
+        <ul class="space-y-1.5 text-xs text-slate-700">
+          <li>• AI-written chapter drafts</li>
+          <li>• Build a paper in 30 minutes</li>
+          <li>• AI checks answer sheets</li>
+          <li>• 10 hours saved every week</li>
+        </ul>
+      </div>
+      <div class="p-6 rounded-2xl bg-white border border-slate-200 hover:border-brand-cyan/50 hover:shadow-md transition-all">
+        <div class="text-3xl mb-3">🎒</div>
+        <h3 class="font-bold text-base mb-2">Student</h3>
+        <ul class="space-y-1.5 text-xs text-slate-600">
+          <li>• Chapters in 4 modes</li>
+          <li>• Leo, the in-app tutor</li>
+          <li>• Self-paced practice</li>
+          <li>• Personal portfolio</li>
+        </ul>
+      </div>
+      <div class="p-6 rounded-2xl bg-white border border-slate-200 hover:border-brand-cyan/50 hover:shadow-md transition-all">
+        <div class="text-3xl mb-3">👨‍👩‍👧</div>
+        <h3 class="font-bold text-base mb-2">Parent</h3>
+        <ul class="space-y-1.5 text-xs text-slate-600">
+          <li>• Live "child reached school" alerts</li>
+          <li>• Fee payment in two taps via UPI</li>
+          <li>• Direct chat with each teacher</li>
+          <li>• Child's full progress at a glance</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ CORTEX -->
+<section id="cortex" class="py-24 bg-gradient-to-b from-slate-50 to-white">
+  <div class="max-w-6xl mx-auto px-6">
+    <div class="grid md:grid-cols-2 gap-16 items-center">
+      <div>
+        <p class="text-xs font-mono uppercase tracking-widest text-brand-purple mb-3">Cortex AI Studio</p>
+        <h2 class="reveal text-3xl md:text-5xl font-extrabold tracking-tight mb-5">
+          The <span class="brand-gradient-text">AI brain</span> inside AIvenX.
+        </h2>
+        <p class="text-lg text-slate-600 leading-relaxed mb-6">
+          Cortex writes board-aligned chapters, builds exam papers from a
+          150,000-question bank, checks handwritten answer sheets and prescribes the next steps for each student, and drafts
+          lesson plans — in seconds, not hours.
+        </p>
+        <p class="text-base text-slate-600 mb-6">
+          Every AI output is reviewed by a teacher before any student sees it.
+          AI assists. Teachers approve. Students learn.
+        </p>
+        <div class="flex flex-wrap gap-2">
+          <span class="px-3 py-1.5 rounded-full bg-cyan-50 border border-cyan-200 text-xs font-semibold text-cyan-700">Focus mode</span>
+          <span class="px-3 py-1.5 rounded-full bg-pink-50 border border-pink-200 text-xs font-semibold text-pink-700">Spark mode</span>
+          <span class="px-3 py-1.5 rounded-full bg-amber-50 border border-amber-200 text-xs font-semibold text-amber-700">Quest mode</span>
+          <span class="px-3 py-1.5 rounded-full bg-purple-50 border border-purple-200 text-xs font-semibold text-purple-700">Saga mode</span>
+        </div>
+      </div>
+      <!-- Stat-card order intentional: lead with the headline saving
+           (80% faster grading), then the per-paper time (5 min), then
+           the diagnosis/recommendation that turns marking into teaching,
+           and only then the question-bank scale + paper-creation speed
+           as supporting numbers. Reordered per product direction so the
+           evaluator value-prop is the first thing the eye lands on. -->
+      <div class="space-y-4">
+        <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm">
+          <div class="flex items-baseline gap-3 mb-2">
+            <span class="text-2xl font-extrabold brand-gradient-text">80%</span>
+            <span class="font-semibold">Faster evaluation</span>
+          </div>
+          <p class="text-sm text-slate-600">AI Evaluator reads handwritten answer sheets, scores against your rubric step-by-step, and shows the teacher every mark with reasoning — final approval always with the teacher.</p>
+        </div>
+        <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm">
+          <div class="flex items-baseline gap-3 mb-2">
+            <span class="text-2xl font-extrabold brand-gradient-text">5 min</span>
+            <span class="font-semibold">Per evaluation</span>
+          </div>
+          <p class="text-sm text-slate-600">From paper-upload to graded sheet — five minutes per student. A class of 40 returns marked in well under an hour, instead of an entire weekend.</p>
+        </div>
+        <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm">
+          <div class="flex items-baseline gap-3 mb-2">
+            <span class="text-2xl font-extrabold brand-gradient-text">Auto</span>
+            <span class="font-semibold">Weak-area recommendations</span>
+          </div>
+          <p class="text-sm text-slate-600">For every wrong answer, Cortex names the gap, refreshes the concept from the relevant earlier chapter, and pulls targeted practice questions from the bank — sent to the student's app the moment grading is done.</p>
+        </div>
+        <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm">
+          <div class="flex items-baseline gap-3 mb-2">
+            <span class="text-2xl font-extrabold brand-gradient-text">150k+</span>
+            <span class="font-semibold">Question bank</span>
+          </div>
+          <p class="text-sm text-slate-600">CBSE Classes 6–10, every core subject, tagged by chapter, thinking-skill level, difficulty, and past-year papers.</p>
+        </div>
+        <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm">
+          <div class="flex items-baseline gap-3 mb-2">
+            <span class="text-2xl font-extrabold brand-gradient-text">30 min</span>
+            <span class="font-semibold">Per assessment</span>
+          </div>
+          <p class="text-sm text-slate-600">Pick chapters and difficulty, follow the CBSE paper pattern, and get four shuffled sets in one click.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ FACE AI -->
+<section class="py-24">
+  <div class="max-w-6xl mx-auto px-6">
+    <div class="grid md:grid-cols-2 gap-16 items-center">
+      <div class="md:order-2">
+        <p class="text-xs font-mono uppercase tracking-widest text-emerald-600 mb-3">Face Recognition Attendance</p>
+        <h2 class="reveal text-3xl md:text-5xl font-extrabold tracking-tight mb-5">
+          Mark attendance just by walking into class.
+        </h2>
+        <p class="text-lg text-slate-600 leading-relaxed mb-6">
+          No fingerprint machine. No QR code on every desk. No teacher reading
+          roll call. Point a regular USB or laptop webcam at the class —
+          students who show up are marked present automatically, in seconds.
+        </p>
+        <ul class="space-y-3 text-slate-600">
+          <li class="flex gap-3"><span class="text-emerald-500 font-bold">✓</span><span><strong>15-second sign-up</strong> per student. Once registered, recognised every day after.</span></li>
+          <li class="flex gap-3"><span class="text-emerald-500 font-bold">✓</span><span><strong>Default-absent policy.</strong> Anyone the camera doesn't see is absent until marked present.</span></li>
+          <li class="flex gap-3"><span class="text-emerald-500 font-bold">✓</span><span><strong>Stays inside your school.</strong> Face data never leaves your school's account.</span></li>
+          <li class="flex gap-3"><span class="text-emerald-500 font-bold">✓</span><span><strong>Parents always in control.</strong> Every sign-up needs parent consent; you can remove a student's face data any time.</span></li>
+        </ul>
+      </div>
+      <div class="md:order-1">
+        <!-- Camera mock with animated bounding boxes that "draw" onto the
+             scene as the section scrolls into view. The boxes are absolutely
+             positioned within `.face-mock` so their coordinates are
+             percentages of the mock's box. JS adds `.drawn` to each box
+             with a staggered delay. Up to 6 boxes for a busy-classroom feel. -->
+        <div class="aspect-video rounded-2xl brand-gradient p-1 shadow-2xl">
+          <div class="face-mock w-full h-full rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 relative">
+            <!-- Subtle dot grid so the camera frame doesn't feel empty -->
+            <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(rgba(255,255,255,0.4) 1px, transparent 1px); background-size: 18px 18px;"></div>
+
+            <!-- LIVE badge top-left -->
+            <div class="absolute top-4 left-4 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/20 border border-red-500/40 text-xs font-mono uppercase tracking-widest text-red-300">
+              <span class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span>
+              Live · 32 faces in frame
+            </div>
+
+            <!-- Frame counter top-right -->
+            <div class="absolute top-4 right-4 text-[10px] font-mono text-emerald-400/80 tracking-widest">
+              <span class="opacity-60">FRAME</span> 47,213
+            </div>
+
+            <!-- Faces detected — each `.face-box` is a percent-positioned div.
+                 Names are encoded in data-name; CSS pseudo-element renders
+                 the label below each box once `.drawn` is applied. -->
+            <div class="face-box" data-name="AARAV S · 9A"   style="top: 28%; left: 14%; width: 12%; aspect-ratio: 1 / 1.2;"></div>
+            <div class="face-box" data-name="PRIYA I · 11C"  style="top: 22%; left: 32%; width: 11%; aspect-ratio: 1 / 1.2;"></div>
+            <div class="face-box" data-name="ROHAN D · 10B"  style="top: 38%; left: 50%; width: 13%; aspect-ratio: 1 / 1.2;"></div>
+            <div class="face-box" data-name="KAVYA N · 7A"   style="top: 26%; left: 68%; width: 11%; aspect-ratio: 1 / 1.2;"></div>
+            <div class="face-box" data-name="ARJUN R · 12D"  style="top: 56%; left: 22%; width: 12%; aspect-ratio: 1 / 1.2;"></div>
+            <div class="face-box" data-name="ANANYA B · 11A" style="top: 60%; left: 64%; width: 11%; aspect-ratio: 1 / 1.2;"></div>
+
+            <!-- "Marked present" toast bottom-centre -->
+            <div class="absolute bottom-4 left-1/2 -translate-x-1/2 inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-xs font-medium text-emerald-300">
+              <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.7 5.3a1 1 0 010 1.4l-7 7a1 1 0 01-1.4 0l-3-3a1 1 0 011.4-1.4L9 11.6l6.3-6.3a1 1 0 011.4 0z" clip-rule="evenodd"/></svg>
+              6 students just marked present
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ MID-PAGE CTA -->
+<!-- Mid-page CTA mirrors what entrar.in does well — give the prospect a
+     conversion path without making them scroll back to the hero. The
+     copy is specific (what we'll show in the demo) so it earns the click. -->
+<section class="py-12 bg-slate-900 text-white">
+  <div class="max-w-5xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
+    <div class="md:flex-1">
+      <p class="text-xs font-mono uppercase tracking-widest text-brand-cyan mb-2">See it live</p>
+      <h3 class="text-2xl md:text-3xl font-extrabold leading-tight">
+        Bring your curriculum.<br/>We'll build a chapter, paper, and attendance — in 30 minutes.
+      </h3>
+    </div>
+    <a href="mailto:hello@aivenx.co.in?subject=Demo%20request%20for%20%5BSchool%20Name%5D" class="magnetic brand-gradient text-white font-bold px-7 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all whitespace-nowrap">
+      Book a demo →
+    </a>
+  </div>
+</section>
+
+<!-- ============================================================ ROADMAP -->
+<!-- Replaces the old "Two more flagships" block. Now reflects the full
+     2026/2027 roadmap: Guardian (safety), Connect (alumni), Mobile.
+     Each area has a clear ship target so schools can plan around it. -->
+<section class="py-24 bg-slate-50/60">
+  <div class="max-w-6xl mx-auto px-6">
+    <div class="text-center max-w-2xl mx-auto mb-12">
+      <p class="text-xs font-mono uppercase tracking-widest text-brand-purple mb-3">2026 — 2027 roadmap</p>
+      <h2 class="reveal text-3xl md:text-5xl font-extrabold tracking-tight">
+        Three new areas, already on the way.
+      </h2>
+      <p class="text-base text-slate-600 mt-4">
+        Beta now. Pilot rollouts H2 2026. All included in your subscription when they ship — no upsell, no module fee.
+      </p>
+    </div>
+    <div class="grid md:grid-cols-3 gap-6">
+      <!-- Guardian -->
+      <div class="p-8 rounded-2xl bg-white border-2 border-dashed border-cyan-300">
+        <div class="text-3xl mb-3">🛡️</div>
+        <h3 class="font-bold text-xl mb-2 brand-gradient-text">AIvenX Guardian</h3>
+        <p class="text-xs uppercase tracking-widest text-slate-500 mb-3">Safety suite</p>
+        <ul class="text-sm text-slate-600 leading-relaxed space-y-1.5 mb-4">
+          <li>• <b>Live bus tracker</b> · arrival time · boarding & drop-off confirmed</li>
+          <li>• <b>Campus gate</b> · face-recognition entry / exit · live count of who's inside</li>
+          <li>• <b>In-bus safety AI</b> · spots bullying or aggressive behaviour</li>
+          <li>• Panic button alerts admin, parents, and (if needed) local authorities</li>
+        </ul>
+        <span class="inline-block text-xs font-semibold uppercase tracking-wider text-cyan-700">Early access H1 2026 · Pilot schools H2 2026</span>
+      </div>
+      <!-- Connect -->
+      <div class="p-8 rounded-2xl bg-white border-2 border-dashed border-purple-300">
+        <div class="text-3xl mb-3">🎓</div>
+        <h3 class="font-bold text-xl mb-2 brand-gradient-text">AIvenX Connect</h3>
+        <p class="text-xs uppercase tracking-widest text-slate-500 mb-3">Alumni network</p>
+        <ul class="text-sm text-slate-600 leading-relaxed space-y-1.5 mb-4">
+          <li>• Alumni directory · searchable, batch-wise</li>
+          <li>• Mentorship · matches current students with alumni who can help</li>
+          <li>• Job board · alumni post openings for the school's seniors</li>
+          <li>• Reunions & events · one-tap RSVP, attendance auto-marked at the gate</li>
+        </ul>
+        <span class="inline-block text-xs font-semibold uppercase tracking-wider text-purple-700">Live in pilot schools · Public release H2 2026</span>
+      </div>
+      <!-- Mobile -->
+      <div class="p-8 rounded-2xl bg-white border-2 border-dashed border-slate-300">
+        <div class="text-3xl mb-3">📱</div>
+        <h3 class="font-bold text-xl mb-2 brand-gradient-text">AIvenX Mobile</h3>
+        <p class="text-xs uppercase tracking-widest text-slate-500 mb-3">Two apps · one platform</p>
+        <ul class="text-sm text-slate-600 leading-relaxed space-y-1.5 mb-4">
+          <li>• <b>Student app</b> · chapters, Leo (the AI tutor), results, timetable</li>
+          <li>• <b>Parent app</b> · live attendance, fees via UPI, bus location, child's progress</li>
+          <li>• Wellbeing alerts · safety messages · gate-entry notifications</li>
+          <li>• Works on iPhone & Android · same login as the school portal</li>
+        </ul>
+        <span class="inline-block text-xs font-semibold uppercase tracking-wider text-slate-700">Shipping early 2027</span>
+      </div>
+    </div>
+    <p class="text-center text-sm text-slate-500 mt-8">
+      Plus: <b>Teacher Assist</b> (ready-made lesson slide decks for every chapter) — shipping H2 2026.
+    </p>
+  </div>
+</section>
+
+<!-- ============================================================ MOBILE PREVIEW -->
+<!-- Two phone mockups floating in opposing rhythms — student app on the
+     left (cyan), parent app on the right (purple). Pure CSS frames; the
+     content inside each phone is just markup. Sits between the roadmap
+     section and the editions so it acts as a "what your day looks like
+     in 2027" teaser. -->
+<section class="py-24 bg-gradient-to-br from-slate-900 via-slate-900 to-slate-950 text-white relative overflow-hidden">
+  <!-- Soft glow blobs in the background to lift the dark section -->
+  <div class="absolute inset-0 opacity-30">
+    <div class="absolute top-1/3 left-10 w-96 h-96 rounded-full bg-cyan-500 blur-[120px]"></div>
+    <div class="absolute bottom-1/4 right-10 w-96 h-96 rounded-full bg-purple-500 blur-[120px]"></div>
+  </div>
+
+  <div class="relative max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
+    <div class="reveal">
+      <p class="text-xs font-mono uppercase tracking-[0.3em] text-cyan-400 mb-4">Coming early 2027</p>
+      <h2 class="reveal text-3xl md:text-5xl font-extrabold tracking-tight leading-[1.1] mb-5">
+        Three apps. <span class="brand-gradient-text">One AIvenX.</span>
+      </h2>
+      <p class="text-lg text-slate-300 leading-relaxed mb-6 max-w-md">
+        Student, Parent, and Teacher apps — built from one codebase,
+        sharing one login with the school portal. iPhone & Android,
+        single sign-on, deep links into every section.
+      </p>
+      <ul class="space-y-3 text-slate-300">
+        <li class="flex gap-3"><span class="text-cyan-400 font-bold">•</span><span><strong class="text-white">Student</strong> · today's chapters, Leo the AI tutor, results, timetable</span></li>
+        <li class="flex gap-3"><span class="text-purple-400 font-bold">•</span><span><strong class="text-white">Parent</strong> · live attendance, fees by UPI, bus tracker, child's progress</span></li>
+        <li class="flex gap-3"><span class="text-amber-400 font-bold">•</span><span><strong class="text-white">Teacher</strong> · mark attendance, enter marks, post homework — all from the phone</span></li>
+      </ul>
+    </div>
+
+    <!-- Phone-pair stage. Two mockups side by side, each rocking gently in
+         opposite rhythms via the .phone-float-{left,right} animations. -->
+    <div class="relative h-[480px] flex items-center justify-center">
+      <!-- Left phone — student app -->
+      <div class="phone-float-left absolute left-2 md:left-8">
+        <div class="phone-frame">
+          <div class="phone-notch"></div>
+          <div class="phone-screen bg-gradient-to-br from-cyan-50 to-blue-50 p-4 text-slate-900">
+            <div class="text-[9px] font-mono uppercase tracking-widest text-slate-500 mt-3">TUE · 14 JAN</div>
+            <div class="text-base font-bold mt-1">Hi Aarav 👋</div>
+            <div class="mt-3 rounded-xl bg-white p-3 border border-cyan-200">
+              <div class="text-[9px] font-bold uppercase tracking-widest text-purple-600 mb-1">📘 TODAY'S CHAPTER</div>
+              <div class="text-xs font-bold">Photosynthesis</div>
+              <div class="text-[10px] text-slate-500">Spark mode · 12 min</div>
+            </div>
+            <div class="grid grid-cols-3 gap-1.5 mt-3">
+              <div class="rounded-lg bg-white border border-slate-200 p-2 text-center"><div class="text-base">🦁</div><div class="text-[7px] text-slate-500 mt-0.5">Ask Leo</div></div>
+              <div class="rounded-lg bg-white border border-slate-200 p-2 text-center"><div class="text-base">📋</div><div class="text-[7px] text-slate-500 mt-0.5">Practice</div></div>
+              <div class="rounded-lg bg-white border border-slate-200 p-2 text-center"><div class="text-base">📊</div><div class="text-[7px] text-slate-500 mt-0.5">Results</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right phone — parent app -->
+      <div class="phone-float-right absolute right-2 md:right-8">
+        <div class="phone-frame">
+          <div class="phone-notch"></div>
+          <div class="phone-screen bg-gradient-to-br from-purple-50 to-pink-50 p-4 text-slate-900">
+            <div class="text-[9px] font-mono uppercase tracking-widest text-purple-600 mt-3">PRIYA · 11C</div>
+            <div class="mt-2 rounded-xl bg-emerald-50 border border-emerald-200 p-3">
+              <div class="text-[9px] font-bold uppercase tracking-widest text-emerald-700 mb-1">✓ ON CAMPUS · 8:14 AM</div>
+              <div class="text-xs">Marked at Main Gate</div>
+            </div>
+            <div class="mt-2 rounded-xl bg-cyan-50 border border-cyan-200 p-3">
+              <div class="text-[9px] font-bold uppercase tracking-widest text-cyan-700 mb-1">🚌 ETA 12 MIN</div>
+              <div class="text-xs">Andheri Stop</div>
+            </div>
+            <div class="grid grid-cols-3 gap-1.5 mt-2">
+              <div class="rounded-lg bg-white border border-slate-200 p-2 text-center"><div class="text-base">💳</div><div class="text-[7px] text-slate-500 mt-0.5">Pay</div></div>
+              <div class="rounded-lg bg-white border border-slate-200 p-2 text-center"><div class="text-base">💬</div><div class="text-[7px] text-slate-500 mt-0.5">Chat</div></div>
+              <div class="rounded-lg bg-white border border-slate-200 p-2 text-center"><div class="text-base">📊</div><div class="text-[7px] text-slate-500 mt-0.5">Reports</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ EDITIONS -->
+<section id="editions" class="py-24">
+  <div class="max-w-6xl mx-auto px-6">
+    <div class="text-center max-w-2xl mx-auto mb-12">
+      <p class="text-xs font-mono uppercase tracking-widest text-brand-purple mb-3">Three editions</p>
+      <h2 class="reveal text-3xl md:text-5xl font-extrabold tracking-tight mb-4">
+        Pick the edition that fits.
+      </h2>
+      <p class="text-lg text-slate-600">
+        Pricing depends on your school's size, the features you need, and the
+        length of your contract. We'd rather have one honest conversation
+        than put up a number that won't fit your school.
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6">
+      <!-- Starter · Operate -->
+      <div class="p-8 rounded-2xl bg-white border border-slate-200">
+        <p class="text-xs font-bold uppercase tracking-widest text-slate-500 mb-2">Starter</p>
+        <h3 class="font-bold text-2xl mb-1">Operate</h3>
+        <p class="text-sm text-slate-500 italic mb-6">Run the school</p>
+        <ul class="space-y-3 text-sm text-slate-700 mb-8">
+          <li class="flex gap-2"><span class="text-emerald-500">✓</span> Full school management — admissions, fees, timetable, exams, library, transport, hostel</li>
+          <li class="flex gap-2"><span class="text-emerald-500">✓</span> Student & Parent portals</li>
+          <li class="flex gap-2"><span class="text-emerald-500">✓</span> Leo, the in-app AI helper</li>
+          <li class="flex gap-2"><span class="text-emerald-500">✓</span> 150,000-question bank (browse only)</li>
+          <li class="flex gap-2"><span class="text-emerald-500">✓</span> Data migration & teacher onboarding</li>
+        </ul>
+      </div>
+      <!-- Standard · Operate + Cortex -->
+      <div class="p-8 rounded-2xl bg-white border-2 border-brand-cyan shadow-lg relative">
+        <span class="absolute -top-3 left-1/2 -translate-x-1/2 brand-gradient text-white text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full">Most popular</span>
+        <p class="text-xs font-bold uppercase tracking-widest text-brand-cyan mb-2">Standard</p>
+        <h3 class="font-bold text-2xl mb-1">Operate + Cortex</h3>
+        <p class="text-sm text-slate-500 italic mb-6">Run + teach with AI</p>
+        <ul class="space-y-3 text-sm text-slate-700 mb-8">
+          <li class="flex gap-2"><span class="text-emerald-500">✓</span> Everything in Starter</li>
+          <li class="flex gap-2"><span class="text-emerald-500">✓</span> AI-written chapters in 4 learning modes</li>
+          <li class="flex gap-2"><span class="text-emerald-500">✓</span> Full question bank (use & create)</li>
+          <li class="flex gap-2"><span class="text-emerald-500">✓</span> Exam paper builder</li>
+          <li class="flex gap-2"><span class="text-emerald-500">✓</span> AI Evaluator · checks handwritten sheets, diagnoses mistakes, prescribes practice</li>
+          <li class="flex gap-2"><span class="text-emerald-500">✓</span> AI lesson planner</li>
+        </ul>
+      </div>
+      <!-- AI-Native · Everything -->
+      <div class="p-8 rounded-2xl bg-gradient-to-br from-slate-900 to-slate-800 text-white border border-slate-800">
+        <p class="text-xs font-bold uppercase tracking-widest text-brand-cyan mb-2">AI-Native</p>
+        <h3 class="font-bold text-2xl mb-1">Everything</h3>
+        <p class="text-sm text-slate-400 italic mb-6">Run, teach, and protect</p>
+        <ul class="space-y-3 text-sm text-slate-200 mb-8">
+          <li class="flex gap-2"><span class="text-brand-cyan">✓</span> Everything in Standard</li>
+          <li class="flex gap-2"><span class="text-brand-cyan">✓</span> Face-recognition attendance</li>
+          <li class="flex gap-2"><span class="text-brand-cyan">✓</span> Teacher Assist · ready-made lesson decks (2026)</li>
+          <li class="flex gap-2"><span class="text-brand-cyan">✓</span> Bus & gate safety suite (2026)</li>
+          <li class="flex gap-2"><span class="text-brand-cyan">✓</span> Priority support · dedicated success manager</li>
+        </ul>
+      </div>
+    </div>
+    <p class="text-center text-sm text-slate-500 mt-10">
+      Tell us about your school — we'll send a tailored quote within 24 hours.
+    </p>
+  </div>
+</section>
+
+<!-- ============================================================ FOUNDER'S NOTE -->
+<!-- Honest substitute for testimonials. We don't have customers yet, so
+     instead of fake quotes we tell prospects who's building this and why.
+     Pilot-school offer makes "no testimonials" a feature, not a bug. -->
+<section class="py-24 bg-white">
+  <div class="max-w-4xl mx-auto px-6">
+    <div class="text-center mb-10">
+      <p class="text-xs font-mono uppercase tracking-widest text-brand-purple mb-3">Why we're building AIvenX</p>
+      <h2 class="reveal text-3xl md:text-5xl font-extrabold tracking-tight">
+        From a founder, not a sales pitch.
+      </h2>
+    </div>
+    <div class="rounded-2xl bg-gradient-to-br from-cyan-50 to-purple-50 border border-slate-200 p-8 md:p-12">
+      <p class="text-lg md:text-xl text-slate-700 leading-relaxed mb-5">
+        Schools today run on a patchwork of five different products that barely
+        talk to each other. Teachers spend more time wrestling with spreadsheets
+        than teaching. Principals can't see what's happening in their own
+        building without calling three different support desks.
+      </p>
+      <p class="text-lg md:text-xl text-slate-700 leading-relaxed mb-5">
+        We're building AIvenX because schools deserve software as thoughtful
+        as the work they do. One platform. One bill. AI where it actually
+        helps — and a teacher's approval before any of it reaches a student.
+      </p>
+      <p class="text-lg md:text-xl text-slate-700 leading-relaxed mb-8">
+        We're new. That's why our first cohort of pilot schools gets a
+        14-day risk-free pilot, white-glove migration, and direct line to
+        the founding team. If AIvenX doesn't earn its place, you walk
+        away — no termination fee, full data export.
+      </p>
+      <div class="pt-6 border-t border-slate-200 text-sm text-slate-600">
+        — The AIvenX founding team · Mumbai
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ FAQ -->
+<!-- FAQ tackles the predictable objections schools raise on a sales call —
+     answering them on the page shortens the buying cycle and lets serious
+     buyers self-qualify. Pure HTML <details> = no JS, accessible. -->
+<section id="faq" class="py-24 bg-slate-50/60">
+  <div class="max-w-4xl mx-auto px-6">
+    <div class="text-center mb-12">
+      <p class="text-xs font-mono uppercase tracking-widest text-brand-purple mb-3">Common questions</p>
+      <h2 class="reveal text-3xl md:text-5xl font-extrabold tracking-tight">
+        Everything schools usually ask.
+      </h2>
+    </div>
+    <div class="space-y-3">
+      <details class="group bg-white rounded-xl border border-slate-200 overflow-hidden">
+        <summary class="flex justify-between items-center cursor-pointer px-6 py-5 font-semibold text-slate-800 hover:bg-slate-50">
+          How long does it take to go live?
+          <span class="text-brand-purple text-2xl group-open:rotate-45 transition-transform">+</span>
+        </summary>
+        <div class="px-6 pb-5 text-slate-600 leading-relaxed">
+          14 days from contract signing. Days 1-3 we set up your school's space and import your classes, sections, and fee structure. Days 4-7 we move your student and staff records from your existing system. Days 8-11 we train your admin, principal, teachers, and parents. Days 12-14 you go live with one class, then roll out across the school. We handle the data migration end-to-end.
+        </div>
+      </details>
+      <details class="group bg-white rounded-xl border border-slate-200 overflow-hidden">
+        <summary class="flex justify-between items-center cursor-pointer px-6 py-5 font-semibold text-slate-800 hover:bg-slate-50">
+          We already use [School ERP X]. Can you migrate our data?
+          <span class="text-brand-purple text-2xl group-open:rotate-45 transition-transform">+</span>
+        </summary>
+        <div class="px-6 pb-5 text-slate-600 leading-relaxed">
+          Yes. Our team takes data exports from common school software (Entab, Educomp, Fedena, custom systems, even Excel sheets). We match the fields to AIvenX, check for errors, and confirm everything with you before importing. You don't reformat anything — that's our job.
+        </div>
+      </details>
+      <details class="group bg-white rounded-xl border border-slate-200 overflow-hidden">
+        <summary class="flex justify-between items-center cursor-pointer px-6 py-5 font-semibold text-slate-800 hover:bg-slate-50">
+          Where is our data stored? Is it safe?
+          <span class="text-brand-purple text-2xl group-open:rotate-45 transition-transform">+</span>
+        </summary>
+        <div class="px-6 pb-5 text-slate-600 leading-relaxed">
+          All data is hosted in India and follows the country's data protection rules. Each school's data stays completely separate — no other school ever sees yours. Daily backups with the ability to restore to any point in time. You can export everything in one click, anytime. For face attendance, we store secure math signatures of faces, never the photos themselves. Your students' data is never used to train any outside AI.
+        </div>
+      </details>
+      <details class="group bg-white rounded-xl border border-slate-200 overflow-hidden">
+        <summary class="flex justify-between items-center cursor-pointer px-6 py-5 font-semibold text-slate-800 hover:bg-slate-50">
+          What happens if we don't like AIvenX after the pilot?
+          <span class="text-brand-purple text-2xl group-open:rotate-45 transition-transform">+</span>
+        </summary>
+        <div class="px-6 pb-5 text-slate-600 leading-relaxed">
+          The 14-day pilot is risk-free. If you walk away, you take a full data export with you — no termination fee, no contract trap. We'd rather you join honestly than be locked in unhappily.
+        </div>
+      </details>
+      <details class="group bg-white rounded-xl border border-slate-200 overflow-hidden">
+        <summary class="flex justify-between items-center cursor-pointer px-6 py-5 font-semibold text-slate-800 hover:bg-slate-50">
+          Does AI replace our teachers?
+          <span class="text-brand-purple text-2xl group-open:rotate-45 transition-transform">+</span>
+        </summary>
+        <div class="px-6 pb-5 text-slate-600 leading-relaxed">
+          No — and we'd refuse to build that. AI generates draft chapters, draft questions, draft grades. A teacher reviews and approves before any student sees the output. Cortex saves time on prep and grading; teaching stays human.
+        </div>
+      </details>
+      <details class="group bg-white rounded-xl border border-slate-200 overflow-hidden">
+        <summary class="flex justify-between items-center cursor-pointer px-6 py-5 font-semibold text-slate-800 hover:bg-slate-50">
+          Do I need a fingerprint scanner for face attendance?
+          <span class="text-brand-purple text-2xl group-open:rotate-45 transition-transform">+</span>
+        </summary>
+        <div class="px-6 pb-5 text-slate-600 leading-relaxed">
+          No special equipment. Any USB or laptop webcam works. A tablet at the classroom door is enough for a class of 40. If a student's face isn't recognised on a particular day (low light, sudden hairstyle change), an ID-card scan works as a fallback.
+        </div>
+      </details>
+      <details class="group bg-white rounded-xl border border-slate-200 overflow-hidden">
+        <summary class="flex justify-between items-center cursor-pointer px-6 py-5 font-semibold text-slate-800 hover:bg-slate-50">
+          What about pricing?
+          <span class="text-brand-purple text-2xl group-open:rotate-45 transition-transform">+</span>
+        </summary>
+        <div class="px-6 pb-5 text-slate-600 leading-relaxed">
+          Pricing scales with student count and edition — Starter (Operate), Standard (Operate + Cortex), or AI-Native (Everything). After a demo, we send a tailored quote within 24 hours. No public pricing sheet because no two schools have the same needs — and we'd rather have one honest conversation than print a number that doesn't fit.
+        </div>
+      </details>
+      <details class="group bg-white rounded-xl border border-slate-200 overflow-hidden">
+        <summary class="flex justify-between items-center cursor-pointer px-6 py-5 font-semibold text-slate-800 hover:bg-slate-50">
+          Which boards / curricula do you support?
+          <span class="text-brand-purple text-2xl group-open:rotate-45 transition-transform">+</span>
+        </summary>
+        <div class="px-6 pb-5 text-slate-600 leading-relaxed">
+          IB (PYP / MYP / DP), CBSE, ICSE / ISC, Cambridge (CAIE / IGCSE / A-Levels), Advanced Placement, all major State Boards, and NIOS — ready from day one, with each board's own report card format. If you follow a different curriculum, share your grading scheme and we'll set it up during onboarding.
+        </div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ CONTACT / CTA -->
+<section id="contact" class="py-24 brand-gradient text-white">
+  <div class="max-w-4xl mx-auto px-6 text-center">
+    <h2 class="text-4xl md:text-6xl font-extrabold tracking-tight mb-5 leading-[1.05]">
+      Ready to bring AIvenX<br />into your school?
+    </h2>
+    <p class="text-lg md:text-xl text-white/90 mb-10 max-w-2xl mx-auto">
+      Book a 30-minute live walkthrough. We'll generate a chapter, build an
+      exam paper, and mark attendance from a webcam — in front of you, using
+      your own curriculum.
+    </p>
+    <a href="mailto:hello@aivenx.co.in?subject=Demo%20request%20for%20%5BSchool%20Name%5D&body=Hi%20AIvenX%20team%2C%0A%0AWe%27d%20like%20to%20see%20a%20live%20demo%20for%20our%20school.%0A%0ASchool%3A%0ALocation%3A%0AStudents%3A%0APreferred%20day%2Ftime%3A%0A%0AThanks." class="magnetic inline-block bg-white text-brand-purple font-bold text-lg px-8 py-4 rounded-xl shadow-2xl hover:shadow-3xl hover:-translate-y-0.5 transition-all">
+      ✉ Email hello@aivenx.co.in
+    </a>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-12 text-sm">
+      <div class="bg-white/10 backdrop-blur rounded-xl p-4">
+        <div class="font-bold mb-1">💼 Sales</div>
+        <a href="mailto:sales@aivenx.co.in" class="text-white/90 hover:text-white">sales@aivenx.co.in</a>
+      </div>
+      <div class="bg-white/10 backdrop-blur rounded-xl p-4">
+        <div class="font-bold mb-1">🛠 Support</div>
+        <a href="mailto:support@aivenx.co.in" class="text-white/90 hover:text-white">support@aivenx.co.in</a>
+      </div>
+      <div class="bg-white/10 backdrop-blur rounded-xl p-4">
+        <div class="font-bold mb-1">💳 Billing</div>
+        <a href="mailto:billing@aivenx.co.in" class="text-white/90 hover:text-white">billing@aivenx.co.in</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ FOOTER -->
+<footer class="bg-slate-900 text-slate-400 py-12">
+  <div class="max-w-6xl mx-auto px-6">
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-8">
+      <div>
+        <img src="/assets/aivenx-logo.png" alt="AIvenX" class="h-8 w-auto mb-4 brightness-150" />
+        <p class="text-sm max-w-md">
+          The AI-native school management platform. Built in Mumbai for
+          schools worldwide.
+        </p>
+      </div>
+      <div class="text-sm">
+        <div class="font-semibold text-white mb-2">AIvenX Technologies Pvt. Ltd.</div>
+        <div>Mumbai, India</div>
+        <div class="mt-1"><a href="mailto:hello@aivenx.co.in" class="hover:text-white">hello@aivenx.co.in</a></div>
+      </div>
+    </div>
+    <div class="border-t border-slate-800 mt-10 pt-6 text-xs flex flex-col md:flex-row justify-between gap-3">
+      <div>© 2026 AIvenX Technologies Pvt. Ltd. All rights reserved.</div>
+      <div>Each school's data stays separate · Security certifications roadmap available on request.</div>
+    </div>
+  </div>
+</footer>
+
+<!-- ============================================================
+     LANDING WOW · interactive layer
+     One inline script powers all the on-page animations:
+       1. Cursor halo following the mouse with damping
+       2. IntersectionObserver-driven scroll reveals
+       3. Magnetic CTA buttons that tilt toward the cursor
+       4. Number tickers that count up on first view
+       5. Marquee duplicator (so the chip strip loops seamlessly)
+       6. Face-detection bounding boxes drawing on the camera mock
+     Everything respects prefers-reduced-motion via the CSS guard.
+     ============================================================ -->
+<script>
+(() => {
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---- 1. Cursor halo (skipped when reduced motion) ---- */
+  if (!reduced) {
+    const halo = document.createElement('div');
+    halo.className = 'cursor-halo';
+    document.body.appendChild(halo);
+    let mx = -1000, my = -1000, hx = -1000, hy = -1000;
+    addEventListener('pointermove', (e) => { mx = e.clientX; my = e.clientY; }, { passive: true });
+    (function tick() {
+      // Lerp the halo position toward the cursor — gives the smooth lag
+      // that makes the halo feel attached without sticking to the cursor.
+      hx += (mx - hx) * 0.14;
+      hy += (my - hy) * 0.14;
+      halo.style.transform = `translate(${hx - 300}px, ${hy - 300}px)`;
+      requestAnimationFrame(tick);
+    })();
+  }
+
+  /* ---- 2. Scroll reveal (.reveal + .reveal-stagger) ---- */
+  const revealIO = new IntersectionObserver((entries) => {
+    for (const e of entries) {
+      if (e.isIntersecting) {
+        e.target.classList.add('in-view');
+        revealIO.unobserve(e.target);
+      }
+    }
+  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal, .reveal-stagger').forEach((el) => revealIO.observe(el));
+
+  /* ---- 3. Magnetic CTA buttons ---- */
+  document.querySelectorAll('.magnetic').forEach((btn) => {
+    btn.addEventListener('pointermove', (e) => {
+      const rect = btn.getBoundingClientRect();
+      const dx = (e.clientX - rect.left - rect.width / 2) * 0.22;
+      const dy = (e.clientY - rect.top - rect.height / 2) * 0.22;
+      btn.style.transform = `translate(${dx}px, ${dy}px)`;
+    });
+    btn.addEventListener('pointerleave', () => { btn.style.transform = ''; });
+  });
+
+  /* ---- 4. Number tickers ---- */
+  // formatNum keeps the trailing locale separator pleasant for Indian
+  // grouping (1,50,000 instead of 150,000). data-suffix is appended only
+  // once the count finishes so the trailing characters don't appear early.
+  const formatNum = (n) => n.toLocaleString('en-IN');
+  const tickIO = new IntersectionObserver((entries) => {
+    for (const e of entries) {
+      if (!e.isIntersecting || e.target.dataset.ticked) continue;
+      e.target.dataset.ticked = '1';
+      const target = parseInt(e.target.dataset.target || '0', 10);
+      const suffix = e.target.dataset.suffix || '';
+      // Tiny targets (1) shouldn't animate — looks weird counting "1".
+      if (target <= 3) {
+        e.target.textContent = formatNum(target) + suffix;
+        continue;
+      }
+      const duration = 1400;
+      const start = performance.now();
+      (function step(t) {
+        const p = Math.min((t - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - p, 3);
+        const v = Math.floor(target * eased);
+        e.target.textContent = formatNum(v) + (p === 1 ? suffix : '');
+        if (p < 1) requestAnimationFrame(step);
+      })(start);
+      tickIO.unobserve(e.target);
+    }
+  }, { threshold: 0.4 });
+  document.querySelectorAll('.ticker').forEach((el) => tickIO.observe(el));
+
+  /* ---- 5. Marquee duplicator ---- */
+  // Doubling the track once means the CSS keyframe (translateX 0 → -50%)
+  // produces a perfectly seamless loop. Done in JS so authors don't have
+  // to copy-paste the chip list in the markup.
+  document.querySelectorAll('.marquee-track').forEach((track) => {
+    track.innerHTML = track.innerHTML + track.innerHTML;
+  });
+
+  /* ---- 6. Face-detection bounding boxes ---- */
+  // Within each .face-mock, when the section enters the viewport, animate
+  // the boxes one after another with a small stagger. Once they're all
+  // drawn we keep them on-screen — this is meant to feel like a frozen
+  // moment from a live recognition stream.
+  const faceIO = new IntersectionObserver((entries) => {
+    for (const e of entries) {
+      if (!e.isIntersecting) continue;
+      e.target.querySelectorAll('.face-box').forEach((box, i) => {
+        setTimeout(() => box.classList.add('drawn'), 250 + i * 180);
+      });
+      faceIO.unobserve(e.target);
+    }
+  }, { threshold: 0.35 });
+  document.querySelectorAll('.face-mock').forEach((el) => faceIO.observe(el));
+})();
+</script>
+
+</body>
+</html>
