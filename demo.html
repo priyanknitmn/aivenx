@@ -3,837 +3,1470 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>AIvenX — Demo Deck</title>
+<title>AIvenX — Demo Deck for Schools</title>
+<meta name="description" content="A scroll-through demo of AIvenX — what you'll see in the live 30-minute walkthrough." />
+<meta name="theme-color" content="#0B0F1F" />
 <link rel="icon" type="image/png" href="/assets/aivenx-mark.png" />
 
+<!-- Tailwind CDN — same setup as landing/brochure so the deck stays brand-coherent -->
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
   tailwind.config = {
     theme: {
       extend: {
         colors: {
-          'brand-cyan': '#22D3EE',
+          'brand-cyan':   '#22D3EE',
           'brand-purple': '#A855F7',
-          'brand-ink': '#0F172A',
+          'brand-pink':   '#EC4899',
+          'brand-amber':  '#F59E0B',
+          'brand-emerald':'#10B981',
+          'brand-ink':    '#0B0F1F',
+          'brand-mid':    '#0F172A',
         },
-        fontFamily: { sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'] },
+        fontFamily: {
+          sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+          display: ['"Space Grotesk"', 'Inter', 'system-ui', 'sans-serif'],
+          mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
+        },
+        keyframes: {
+          drift:    { '0%,100%': { transform: 'translate3d(0,0,0)' }, '50%': { transform: 'translate3d(0,-10px,0)' } },
+          pulseDot: { '0%,100%': { opacity: 1, transform: 'scale(1)' }, '50%': { opacity: 0.4, transform: 'scale(0.85)' } },
+          scanline: { '0%': { transform: 'translateY(-110%)' }, '100%': { transform: 'translateY(110%)' } },
+        },
+        animation: {
+          drift:    'drift 6s ease-in-out infinite',
+          pulseDot: 'pulseDot 1.6s ease-in-out infinite',
+          scanline: 'scanline 3.4s ease-in-out infinite',
+        },
       },
     },
   };
 </script>
-
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&family=Caveat:wght@400;600&display=swap" rel="stylesheet" />
 
 <style>
-  html, body { margin: 0; padding: 0; background: #0F172A; font-family: 'Inter', system-ui, sans-serif; color: #0F172A; overflow: hidden; }
-  .deck { position: relative; width: 100vw; height: 100vh; overflow: hidden; }
+  /* ====================================================================
+     DECK LAYOUT
+     16:9 slides stacked vertically. Scroll-snap on screen so each slide
+     "anchors" cinematically. On print each slide becomes one A4-landscape
+     page (saving as PDF preserves the deck for emailing).
+     ==================================================================== */
+  html { scroll-behavior: smooth; scroll-snap-type: y mandatory; }
+  body { background: #0B0F1F; color: #F1F5F9; font-family: 'Inter', sans-serif; overflow-x: hidden; }
+
   .slide {
-    position: absolute; inset: 0;
-    background: #ffffff;
-    padding: 44px 64px;
-    display: none; flex-direction: column;
+    min-height: 100vh;
+    width: 100%;
+    padding: 56px 72px 72px;
+    position: relative;
     overflow: hidden;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    page-break-after: always;
+    display: flex;
+    flex-direction: column;
   }
-  .slide.active { display: flex; }
-  .brand-gradient { background: linear-gradient(135deg, #22D3EE 0%, #A855F7 100%); }
-  .brand-gradient-text {
-    background: linear-gradient(135deg, #22D3EE 0%, #A855F7 100%);
-    -webkit-background-clip: text; background-clip: text;
-    -webkit-text-fill-color: transparent;
+  @media (max-width: 768px) { .slide { padding: 44px 22px 56px; } }
+
+  .ink-grad {
+    background:
+      radial-gradient(80% 60% at 70% 20%, rgba(34,211,238,0.10), transparent 60%),
+      radial-gradient(60% 50% at 20% 70%, rgba(168,85,247,0.10), transparent 55%),
+      #0B0F1F;
+  }
+  .grid-bg {
+    background-image:
+      linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+  .glass        { background: rgba(15,23,42,0.6);  backdrop-filter: blur(14px); border: 1px solid rgba(255,255,255,0.06); }
+  .glass-strong { background: rgba(11,15,31,0.75); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.08); }
+
+  .gradient-text {
+    background: linear-gradient(120deg, #22D3EE 0%, #A855F7 50%, #EC4899 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
   }
 
-  /* Section dividers — full-bleed coloured slides used to mark a new feature group */
-  .slide-cover {
-    background: linear-gradient(135deg, #22D3EE 0%, #A855F7 100%);
-    color: white; padding: 64px 80px;
+  /* === Per-slide chrome === */
+  .slide-num {
+    position: absolute; top: 20px; right: 28px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.2em;
+    color: rgba(255,255,255,0.45);
+  }
+  .slide-tag {
+    position: absolute; top: 20px; left: 28px;
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase;
+    color: #67E8F9;
+  }
+  .slide-tag .dot { width: 6px; height: 6px; border-radius: 999px; background: #22D3EE; box-shadow: 0 0 10px #22D3EE; }
+  .slide-foot {
+    position: absolute; bottom: 16px; left: 28px; right: 28px;
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 11px; color: rgba(255,255,255,0.4);
+  }
+
+  /* === Headings === */
+  .h-massive { font-family:'Space Grotesk', sans-serif; font-weight: 700; font-size: clamp(2.8rem, 6vw, 5rem); line-height: 1; letter-spacing: -0.02em; }
+  .h-big     { font-family:'Space Grotesk', sans-serif; font-weight: 700; font-size: clamp(2rem, 4.5vw, 3.5rem); line-height: 1.05; letter-spacing: -0.02em; }
+  .h-mid     { font-family:'Space Grotesk', sans-serif; font-weight: 700; font-size: clamp(1.5rem, 3vw, 2rem); line-height: 1.15; letter-spacing: -0.01em; }
+
+  /* === Brand mark in the corner === */
+  .brand-corner {
+    position: absolute; top: 18px; left: 28px;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .brand-corner img { width: 28px; height: 28px; }
+  .brand-corner span { font-family:'Space Grotesk',sans-serif; font-weight:700; font-size: 14px; letter-spacing:-0.01em; }
+
+  /* === Section divider — bigger title cards === */
+  .section-divider {
+    background: radial-gradient(80% 60% at 30% 50%, rgba(34,211,238,0.15), transparent 60%),
+                radial-gradient(60% 50% at 80% 50%, rgba(168,85,247,0.18), transparent 55%),
+                #0B0F1F;
     justify-content: center;
   }
-  .slide-dark { background: #0F172A; color: white; justify-content: center; }
-  .cover-grid {
-    background-image:
-      linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px);
-    background-size: 48px 48px;
+
+  /* === Cards === */
+  .card-glass { background: rgba(15,23,42,0.5); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; backdrop-filter: blur(8px); }
+  .card-stark { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.10); border-radius: 14px; }
+
+  .pill { display: inline-block; padding: 4px 10px; border-radius: 9999px; font-size: 11px; font-weight: 600; }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+
+  /* === Animated answer-sheet (hero evaluator slide) === */
+  .answer-sheet {
+    aspect-ratio: 3 / 4;
+    background: #FFFEF7;
+    color: #1E293B;
+    border-radius: 14px;
+    box-shadow: 0 30px 60px -12px rgba(168,85,247,0.35);
+    overflow: hidden;
+    position: relative;
+  }
+  .answer-sheet .scan {
+    position: absolute; left: 0; right: 0; height: 28px;
+    background: linear-gradient(180deg, transparent, rgba(34,211,238,0.55), transparent);
+    box-shadow: 0 0 28px rgba(34,211,238,0.45);
+    pointer-events:none;
+  }
+  .handwrite { font-family: 'Caveat', 'Comic Sans MS', cursive; font-size: 16px; letter-spacing: 0.5px; }
+
+  /* === Floating dot side-nav (screen only) === */
+  .dot-nav {
+    position: fixed; right: 18px; top: 50%;
+    transform: translateY(-50%);
+    z-index: 50;
+    display: flex; flex-direction: column; gap: 9px;
+  }
+  .dot-nav a {
+    width: 6px; height: 6px; border-radius: 999px;
+    background: rgba(255,255,255,0.18);
+    transition: background 0.2s, transform 0.2s;
+  }
+  .dot-nav a.is-active { background: linear-gradient(135deg,#22D3EE,#A855F7); transform: scale(1.7); }
+  .dot-nav a:hover { background: rgba(255,255,255,0.45); }
+  @media (max-width: 768px) { .dot-nav { display: none; } }
+
+  /* === Fixed top utility bar (screen only) === */
+  .top-bar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 60;
+    padding: 10px 18px;
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(11,15,31,0.7);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    font-size: 12px;
+  }
+  .btn-cta {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 7px 14px; border-radius: 8px;
+    background: linear-gradient(135deg, #22D3EE, #A855F7);
+    color: white; font-weight: 700; font-size: 12px;
   }
 
-  /* Feature slide template — header strip + body grid */
-  .feature-eyebrow { font-size: 11pt; font-family: ui-monospace, monospace; text-transform: uppercase; letter-spacing: 0.3em; color: #A855F7; margin-bottom: 8px; }
-  .feature-title { font-size: 44pt; font-weight: 900; letter-spacing: -0.02em; line-height: 1.05; margin-bottom: 16px; }
-  .feature-lede { font-size: 16pt; color: #475569; line-height: 1.5; max-width: 64ch; }
-
-  /* Bullet pill */
-  .pill { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 999px; background: #F1F5F9; border: 1px solid #E2E8F0; font-size: 11pt; font-weight: 600; color: #334155; }
-
-  .nav-chrome {
-    position: fixed; bottom: 16px; right: 16px; z-index: 100;
-    display: flex; align-items: center; gap: 8px;
-    background: rgba(15, 23, 42, 0.85); color: white;
-    padding: 6px 10px; border-radius: 999px;
-    font-size: 12px; backdrop-filter: blur(8px);
-  }
-  .nav-chrome button {
-    background: rgba(255,255,255,0.1); border: none; color: white;
-    width: 24px; height: 24px; border-radius: 999px;
-    cursor: pointer; font-size: 14px; line-height: 1;
-  }
-  .nav-chrome button:hover { background: rgba(255,255,255,0.2); }
-
-  .slide.active > * { animation: fade 0.4s ease-out both; }
-  @keyframes fade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-
-  @page { size: 1280px 720px; margin: 0; }
+  /* === Print: every slide = one landscape page === */
   @media print {
-    html, body { background: white; overflow: visible; }
-    .deck { width: auto; height: auto; }
-    .slide { display: flex !important; position: relative; page-break-after: always; width: 1280px; height: 720px; }
-    .nav-chrome, .help-overlay { display: none !important; }
+    @page { size: A4 landscape; margin: 0; }
+    html, body { background: #0B0F1F; scroll-snap-type: none; }
+    .slide { break-after: page; min-height: auto; height: 100vh; }
+    .top-bar, .dot-nav { display: none !important; }
+    .slide, .ink-grad, .section-divider, .grid-bg {
+      -webkit-print-color-adjust: exact; print-color-adjust: exact;
+    }
   }
 
-  .help-overlay {
-    position: fixed; inset: 0;
-    background: rgba(15,23,42,0.92); color: white; z-index: 200;
-    display: none; align-items: center; justify-content: center; font-size: 18px;
+  /* === Reduced motion === */
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .animate-drift, .animate-pulseDot, .animate-scanline { animation: none !important; }
   }
-  .help-overlay.show { display: flex; }
-  .help-overlay .panel { max-width: 480px; padding: 32px; }
-  .key { display: inline-block; min-width: 28px; padding: 2px 8px; background: rgba(255,255,255,0.15); border-radius: 4px; font-family: monospace; font-size: 14px; margin-right: 8px; }
 </style>
 </head>
-<body>
 
-<div class="deck" id="deck">
+<body class="antialiased">
 
-  <!-- ============================== 1. TITLE -->
-  <section class="slide slide-cover active">
-    <div class="cover-grid absolute inset-0"></div>
-    <div class="relative z-10 flex flex-col h-full justify-between">
-      <img src="/assets/aivenx-logo.png" alt="AIvenX" style="height: 48px; filter: brightness(0) invert(1);" />
-      <div>
-        <p class="text-sm font-mono uppercase tracking-[0.3em] text-white/80 mb-6">Live demo · 2026</p>
-        <h1 class="text-7xl font-black leading-[1.05] tracking-tight mb-8">
-          The AI-native<br/>school,<br/>in one login.
-        </h1>
-        <p class="text-2xl text-white/90 max-w-2xl leading-relaxed">
-          A walkthrough prepared for <span id="schoolName" class="font-bold">[School Name]</span>.
-        </p>
-      </div>
-      <div class="flex items-end justify-between text-sm text-white/70">
-        <div>aivenx.co.in · hello@aivenx.co.in</div>
-        <div>Mumbai, India</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================== 2. AGENDA -->
-  <section class="slide">
-    <p class="feature-eyebrow">What we'll cover</p>
-    <h2 class="feature-title mb-10">A guided tour, feature by feature.</h2>
-    <div class="grid grid-cols-2 gap-x-12 gap-y-4 text-lg max-w-6xl">
-      <div class="flex gap-4"><span class="brand-gradient-text font-black text-2xl w-10">01</span><div>The problem we solve</div></div>
-      <div class="flex gap-4"><span class="brand-gradient-text font-black text-2xl w-10">02</span><div>Admissions & enquiry</div></div>
-      <div class="flex gap-4"><span class="brand-gradient-text font-black text-2xl w-10">03</span><div>Fees & invoicing</div></div>
-      <div class="flex gap-4"><span class="brand-gradient-text font-black text-2xl w-10">04</span><div>HR & payroll</div></div>
-      <div class="flex gap-4"><span class="brand-gradient-text font-black text-2xl w-10">05</span><div>Timetable & exams</div></div>
-      <div class="flex gap-4"><span class="brand-gradient-text font-black text-2xl w-10">06</span><div>Report cards (multi-board)</div></div>
-      <div class="flex gap-4"><span class="brand-gradient-text font-black text-2xl w-10">07</span><div>Cortex — Chapter Generator</div></div>
-      <div class="flex gap-4"><span class="brand-gradient-text font-black text-2xl w-10">08</span><div>Cortex — Question Bank (150k)</div></div>
-      <div class="flex gap-4"><span class="brand-gradient-text font-black text-2xl w-10">09</span><div>Cortex — Assessment Creator</div></div>
-      <div class="flex gap-4"><span class="brand-gradient-text font-black text-2xl w-10">10</span><div>Cortex — AI Evaluator</div></div>
-      <div class="flex gap-4"><span class="brand-gradient-text font-black text-2xl w-10">11</span><div>Cortex Helper + Study mode</div></div>
-      <div class="flex gap-4"><span class="brand-gradient-text font-black text-2xl w-10">12</span><div>Face AI attendance (live)</div></div>
-      <div class="flex gap-4"><span class="brand-gradient-text font-black text-2xl w-10">13</span><div>Parent communication</div></div>
-      <div class="flex gap-4"><span class="brand-gradient-text font-black text-2xl w-10">14</span><div>Library · Transport · Hostel</div></div>
-      <div class="flex gap-4"><span class="brand-gradient-text font-black text-2xl w-10">15</span><div>Security & data</div></div>
-      <div class="flex gap-4"><span class="brand-gradient-text font-black text-2xl w-10">16</span><div>Editions, onboarding, next steps</div></div>
-    </div>
-  </section>
-
-  <!-- ============================== 3. PROBLEM -->
-  <section class="slide">
-    <p class="feature-eyebrow">The problem</p>
-    <h2 class="feature-title">Schools juggle <span class="brand-gradient-text">5 vendors.</span></h2>
-    <p class="feature-lede mb-10">Each charges per-module, has its own login, its own data silo, its own outage window. AIvenX replaces all five with one platform.</p>
-    <div class="grid grid-cols-5 gap-3 max-w-5xl">
-      <div class="rounded-xl bg-slate-50 border border-slate-200 p-5 text-center"><div class="text-xs text-slate-500 uppercase tracking-widest mb-1">Vendor 1</div><div class="font-bold">ERP</div></div>
-      <div class="rounded-xl bg-slate-50 border border-slate-200 p-5 text-center"><div class="text-xs text-slate-500 uppercase tracking-widest mb-1">Vendor 2</div><div class="font-bold">LMS</div></div>
-      <div class="rounded-xl bg-slate-50 border border-slate-200 p-5 text-center"><div class="text-xs text-slate-500 uppercase tracking-widest mb-1">Vendor 3</div><div class="font-bold">Biometric</div></div>
-      <div class="rounded-xl bg-slate-50 border border-slate-200 p-5 text-center"><div class="text-xs text-slate-500 uppercase tracking-widest mb-1">Vendor 4</div><div class="font-bold">Exams</div></div>
-      <div class="rounded-xl bg-slate-50 border border-slate-200 p-5 text-center"><div class="text-xs text-slate-500 uppercase tracking-widest mb-1">Vendor 5</div><div class="font-bold">Transport</div></div>
-    </div>
-  </section>
-
-  <!-- ============================== SECTION DIVIDER : SCHOOL OPS -->
-  <section class="slide slide-dark">
-    <p class="text-xs font-mono uppercase tracking-[0.3em] text-brand-cyan mb-4">Section 1 of 4</p>
-    <h2 class="text-7xl font-black leading-[1.05] tracking-tight">School Operations.</h2>
-    <p class="text-2xl text-white/70 mt-6 max-w-3xl">Admissions · Fees · HR · Library · Transport · Hostel.</p>
-  </section>
-
-  <!-- ============================== 4. ADMISSIONS -->
-  <section class="slide">
-    <p class="feature-eyebrow">Feature 01 · Admissions</p>
-    <h2 class="feature-title">Capture every enquiry. Convert more of them.</h2>
-    <p class="feature-lede mb-8">A full enquiry-to-enrolment funnel. Every walk-in, web form, and phone call lands in one queue with follow-up reminders.</p>
-    <div class="grid grid-cols-2 gap-6 max-w-6xl">
-      <div>
-        <h3 class="text-xl font-bold mb-3">What it does</h3>
-        <ul class="space-y-2 text-base text-slate-700">
-          <li>• Online enquiry form embedded on your school website</li>
-          <li>• Walk-in capture by the front desk in 30 seconds</li>
-          <li>• Stage-tracked pipeline: Enquired → Visited → Tested → Offered → Enrolled</li>
-          <li>• Auto-reminders for follow-up calls, missed steps</li>
-          <li>• Document uploads (birth cert, previous report card, photo) — all in one record</li>
-          <li>• Direct conversion to a student record on enrolment — no re-typing</li>
-        </ul>
-      </div>
-      <div class="bg-slate-50 rounded-2xl p-6 border border-slate-200">
-        <p class="text-xs uppercase tracking-widest text-slate-500 mb-3">Why it matters</p>
-        <p class="text-base text-slate-700 leading-relaxed mb-4">
-          Most schools lose 30% of enquiries between the form and the
-          first follow-up call. AIvenX prevents that by making every
-          enquiry visible to admin, principal, and the front desk on day one.
-        </p>
-        <div class="flex gap-2 flex-wrap">
-          <span class="pill">Drag-drop pipeline</span>
-          <span class="pill">SMS / email templates</span>
-          <span class="pill">Conversion analytics</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================== 5. FEES & INVOICING -->
-  <section class="slide">
-    <p class="feature-eyebrow">Feature 02 · Fees & Invoicing</p>
-    <h2 class="feature-title">Every rupee, accounted.</h2>
-    <p class="feature-lede mb-8">Term-based fee structures, online payments, automated dues reminders, and a finance dashboard the principal can read in 10 seconds.</p>
-    <div class="grid grid-cols-3 gap-4">
-      <div class="rounded-xl border border-slate-200 p-5"><h4 class="font-bold mb-2">Flexible structures</h4><p class="text-sm text-slate-600">Term · Monthly · Annual. Sibling discounts, scholarship rules, late-payment penalties — all configurable.</p></div>
-      <div class="rounded-xl border border-slate-200 p-5"><h4 class="font-bold mb-2">Online payments</h4><p class="text-sm text-slate-600">UPI, cards, netbanking. Payment links over WhatsApp. Auto-reconciled — no manual tallying.</p></div>
-      <div class="rounded-xl border border-slate-200 p-5"><h4 class="font-bold mb-2">Auto reminders</h4><p class="text-sm text-slate-600">Dues SMS / email at T-7, T-3, T-0 days. Custom templates. Principal can pause for individual cases.</p></div>
-      <div class="rounded-xl border border-slate-200 p-5"><h4 class="font-bold mb-2">Receipts & invoices</h4><p class="text-sm text-slate-600">GST-compliant. Branded with your school's logo and signature. Bulk-export for the auditor.</p></div>
-      <div class="rounded-xl border border-slate-200 p-5"><h4 class="font-bold mb-2">Finance dashboard</h4><p class="text-sm text-slate-600">Collected vs. outstanding by class, term, fee head. Drill-down to the student in two clicks.</p></div>
-      <div class="rounded-xl border border-slate-200 p-5"><h4 class="font-bold mb-2">Refunds & adjustments</h4><p class="text-sm text-slate-600">Audit-logged. Approval workflow keeps the principal in the loop on every reversal.</p></div>
-    </div>
-  </section>
-
-  <!-- ============================== 6. HR & PAYROLL -->
-  <section class="slide">
-    <p class="feature-eyebrow">Feature 03 · HR & Payroll</p>
-    <h2 class="feature-title">Staff records, salaries, and statutory — in one tab.</h2>
-    <p class="feature-lede mb-8">From the day a teacher joins to the day they retire — appointment letters, leave, payroll, PF, ESI, TDS.</p>
-    <div class="grid grid-cols-2 gap-6 max-w-6xl">
-      <div class="rounded-xl border border-slate-200 p-6">
-        <h4 class="font-bold text-lg mb-3">Staff lifecycle</h4>
-        <ul class="space-y-1.5 text-sm text-slate-700">
-          <li>• Onboarding: appointment letter, ID card, document checklist</li>
-          <li>• Attendance: face-AI for staff too</li>
-          <li>• Leave types: CL · SL · PL · maternity · LOP — with workflow approvals</li>
-          <li>• Performance reviews: end-of-term, principal-driven</li>
-          <li>• Exit: relieving letter, full-and-final settlement, archive</li>
-        </ul>
-      </div>
-      <div class="rounded-xl border border-slate-200 p-6">
-        <h4 class="font-bold text-lg mb-3">Payroll & statutory</h4>
-        <ul class="space-y-1.5 text-sm text-slate-700">
-          <li>• Salary structures: basic, HRA, allowances, deductions</li>
-          <li>• PF + ESI auto-calculated; challans generated</li>
-          <li>• TDS: monthly deduction, Form 16 at year-end</li>
-          <li>• Bank-ready salary file in one click</li>
-          <li>• Payslips emailed; staff can download anytime from their portal</li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================== 7. TIMETABLE & EXAMS -->
-  <section class="slide">
-    <p class="feature-eyebrow">Feature 04 · Timetable & Exams</p>
-    <h2 class="feature-title">Build a clash-free timetable in 20 minutes.</h2>
-    <p class="feature-lede mb-8">Auto-generation respects teacher availability, lab capacity, and subject hours. Exam scheduling and seating plans included.</p>
-    <div class="grid grid-cols-3 gap-4">
-      <div class="rounded-xl border border-slate-200 p-5"><h4 class="font-bold mb-2">Auto-generation</h4><p class="text-sm text-slate-600">Set constraints once: teacher loads, room types, free-period rules. AIvenX builds the grid — no clashes.</p></div>
-      <div class="rounded-xl border border-slate-200 p-5"><h4 class="font-bold mb-2">Substitutions</h4><p class="text-sm text-slate-600">Mark a teacher absent → system suggests a substitute from free periods → SMS to substitute & class.</p></div>
-      <div class="rounded-xl border border-slate-200 p-5"><h4 class="font-bold mb-2">Exam schedules</h4><p class="text-sm text-slate-600">Term + final + unit tests. Auto-checks against syllabus completion. Hall-ticket generation.</p></div>
-      <div class="rounded-xl border border-slate-200 p-5"><h4 class="font-bold mb-2">Seating plans</h4><p class="text-sm text-slate-600">Mixed-class seating with one click. Roll-number rules, distance constraints, supervisor assignments.</p></div>
-      <div class="rounded-xl border border-slate-200 p-5"><h4 class="font-bold mb-2">Marks entry</h4><p class="text-sm text-slate-600">Teacher portal with bulk-paste from spreadsheets, validation, and lock-after-submission.</p></div>
-      <div class="rounded-xl border border-slate-200 p-5"><h4 class="font-bold mb-2">Result analytics</h4><p class="text-sm text-slate-600">Class average, pass %, top scorers, weak areas — per subject, per chapter.</p></div>
-    </div>
-  </section>
-
-  <!-- ============================== 8. REPORT CARDS / MULTI-BOARD -->
-  <section class="slide">
-    <p class="feature-eyebrow">Feature 05 · Report Cards (multi-board)</p>
-    <h2 class="feature-title">Native formats for every board.</h2>
-    <p class="feature-lede mb-8">Not a one-size-fits-all template. Each board's official structure, grading scale, and skill rubric — out of the box.</p>
-    <div class="grid grid-cols-2 gap-6 max-w-6xl mb-6">
-      <div class="rounded-xl border border-slate-200 p-6">
-        <h4 class="font-bold text-lg mb-3">International</h4>
-        <ul class="space-y-1.5 text-sm text-slate-700">
-          <li>• <b>IB PYP</b> — inquiry-based learning rubric</li>
-          <li>• <b>IB MYP</b> — criterion grades A–E across 4 strands</li>
-          <li>• <b>IB DP</b> — 1–7 + TOK / EE / CAS</li>
-          <li>• <b>Cambridge IGCSE / A-Levels</b> — A* to G</li>
-          <li>• <b>Advanced Placement</b> — AP score, course grade</li>
-        </ul>
-      </div>
-      <div class="rounded-xl border border-slate-200 p-6">
-        <h4 class="font-bold text-lg mb-3">Indian</h4>
-        <ul class="space-y-1.5 text-sm text-slate-700">
-          <li>• <b>CBSE</b> — Term + final, scholastic + co-scholastic, CCE</li>
-          <li>• <b>ICSE / ISC</b> — Marks-based, ICSE skill grading</li>
-          <li>• <b>State Boards</b> — Maharashtra, Karnataka, TN, UP, etc.</li>
-          <li>• <b>NIOS</b> — Distance / open schooling</li>
-        </ul>
-      </div>
-    </div>
-    <div class="bg-slate-50 rounded-xl p-5 border border-slate-200">
-      <p class="text-base text-slate-700"><b>Don't see yours?</b> Cortex AI is built to adapt to any framework — share your school's rubric and we'll configure it during onboarding.</p>
-    </div>
-  </section>
-
-  <!-- ============================== SECTION DIVIDER : CORTEX -->
-  <section class="slide slide-cover">
-    <div class="cover-grid absolute inset-0"></div>
-    <div class="relative z-10">
-      <p class="text-sm font-mono uppercase tracking-[0.3em] text-white/80 mb-4">Section 2 of 4</p>
-      <h2 class="text-7xl font-black leading-[1.05] tracking-tight">Cortex AI Studio.</h2>
-      <p class="text-2xl text-white/90 mt-6 max-w-3xl">The flagship. Five tools that save every teacher 10 hours a week.</p>
-    </div>
-  </section>
-
-  <!-- ============================== 9. CHAPTER GENERATOR -->
-  <section class="slide">
-    <p class="feature-eyebrow">Feature 06 · Chapter Generator</p>
-    <h2 class="feature-title">A board-aligned chapter, in 30 seconds.</h2>
-    <p class="feature-lede mb-8">Pick subject, grade, topic. Cortex produces a full chapter — text, diagrams, exercises, answer keys — written in one of four learning modes.</p>
-    <div class="grid grid-cols-4 gap-4 mb-6">
-      <div class="rounded-xl border-2 border-brand-cyan/30 p-5">
-        <div class="text-2xl mb-2">🎯</div>
-        <h4 class="font-bold text-lg mb-1 brand-gradient-text">Focus</h4>
-        <p class="text-sm text-slate-600">Clear, structured, exam-ready. Definitions → examples → practice.</p>
-      </div>
-      <div class="rounded-xl border-2 border-brand-cyan/30 p-5">
-        <div class="text-2xl mb-2">⚡</div>
-        <h4 class="font-bold text-lg mb-1 brand-gradient-text">Spark</h4>
-        <p class="text-sm text-slate-600">Engaging analogies, real-world hooks, "why does this matter" framing.</p>
-      </div>
-      <div class="rounded-xl border-2 border-brand-purple/30 p-5">
-        <div class="text-2xl mb-2">🎮</div>
-        <h4 class="font-bold text-lg mb-1 brand-gradient-text">Quest</h4>
-        <p class="text-sm text-slate-600">Gamified — challenges, streaks, levels. Best for grades 4-8.</p>
-      </div>
-      <div class="rounded-xl border-2 border-brand-purple/30 p-5">
-        <div class="text-2xl mb-2">📖</div>
-        <h4 class="font-bold text-lg mb-1 brand-gradient-text">Saga</h4>
-        <p class="text-sm text-slate-600">Narrative-driven. Concepts taught through story arcs and characters.</p>
-      </div>
-    </div>
-    <div class="grid grid-cols-2 gap-6">
-      <div class="bg-slate-50 rounded-xl p-5 border border-slate-200">
-        <p class="text-xs uppercase tracking-widest text-slate-500 mb-2">What's included in every chapter</p>
-        <p class="text-sm text-slate-700">Body text · Embedded diagrams · Worked examples · End-of-chapter exercises · Answer keys · Glossary · Cross-links to prior chapters.</p>
-      </div>
-      <div class="bg-slate-50 rounded-xl p-5 border border-slate-200">
-        <p class="text-xs uppercase tracking-widest text-slate-500 mb-2">Teacher review workflow</p>
-        <p class="text-sm text-slate-700">Generate → review → edit any line → publish to class. Versioned. Re-generation preserves your edits.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================== 10. QUESTION BANK -->
-  <section class="slide">
-    <p class="feature-eyebrow">Feature 07 · Question Bank</p>
-    <h2 class="feature-title">150,000<span class="brand-gradient-text">+</span> pre-loaded questions.</h2>
-    <p class="feature-lede mb-8">Curated, tagged, and board-mapped. The library that took us 18 months to build is yours from day one.</p>
-    <div class="grid grid-cols-3 gap-4">
-      <div class="rounded-xl border border-slate-200 p-5"><h4 class="font-bold mb-2">Every type</h4><p class="text-sm text-slate-600">MCQ · Fill-in-the-blank · Short answer · Long answer · Match · True/False · Diagram-based · Numerical.</p></div>
-      <div class="rounded-xl border border-slate-200 p-5"><h4 class="font-bold mb-2">Tagged deeply</h4><p class="text-sm text-slate-600">Subject · Grade · Chapter · Difficulty (1-5) · Bloom's level · Marks · Time estimate.</p></div>
-      <div class="rounded-xl border border-slate-200 p-5"><h4 class="font-bold mb-2">Board-mapped</h4><p class="text-sm text-slate-600">Each question linked to CBSE / ICSE / IB / CAIE / State Board syllabus codes for guaranteed alignment.</p></div>
-      <div class="rounded-xl border border-slate-200 p-5"><h4 class="font-bold mb-2">Past-paper rooted</h4><p class="text-sm text-slate-600">Includes 10 years of board exam questions, marked, with model answers.</p></div>
-      <div class="rounded-xl border border-slate-200 p-5"><h4 class="font-bold mb-2">Add your own</h4><p class="text-sm text-slate-600">Teachers contribute private questions to a school-only pool. Stays inside your tenant.</p></div>
-      <div class="rounded-xl border border-slate-200 p-5"><h4 class="font-bold mb-2">Continuously updated</h4><p class="text-sm text-slate-600">New questions every month. Existing ones re-rated when student data shows mis-calibration.</p></div>
-    </div>
-  </section>
-
-  <!-- ============================== 11. ASSESSMENT CREATOR -->
-  <section class="slide">
-    <p class="feature-eyebrow">Feature 08 · Assessment Creator</p>
-    <h2 class="feature-title">Build a 3-hour board-style paper in 4 minutes.</h2>
-    <p class="feature-lede mb-8">Pick filters → preview coverage → publish. CBSE-standard section presets included. Live distribution chart shows you exactly what students will face.</p>
-    <div class="grid grid-cols-2 gap-6 max-w-6xl">
-      <div>
-        <h3 class="text-xl font-bold mb-3">How it works</h3>
-        <ol class="space-y-2 text-base text-slate-700">
-          <li><b>1.</b> Pick subject, grade, total marks, duration.</li>
-          <li><b>2.</b> Choose section structure — or load a preset (CBSE Sec A/B/C/D/E).</li>
-          <li><b>3.</b> Per section, set: question type, count, marks each, chapter & difficulty filters.</li>
-          <li><b>4.</b> Live preview shows: chapter coverage %, Bloom distribution, expected difficulty curve.</li>
-          <li><b>5.</b> Auto-fill from question bank, or hand-pick. Mix freely.</li>
-          <li><b>6.</b> Publish → printable PDF + answer key + student-portal link.</li>
-        </ol>
-      </div>
-      <div class="bg-slate-50 rounded-xl p-6 border border-slate-200">
-        <p class="text-xs uppercase tracking-widest text-slate-500 mb-3">Why teachers love it</p>
-        <p class="text-base text-slate-700 leading-relaxed mb-4">
-          Paper-setting used to take 4-6 hours. With Cortex it's under 10 minutes —
-          and the coverage preview catches mistakes before they reach students.
-          Two teachers can collaborate live on the same paper.
-        </p>
-        <div class="flex gap-2 flex-wrap">
-          <span class="pill">CBSE preset built-in</span>
-          <span class="pill">Live coverage chart</span>
-          <span class="pill">Two-click duplicate</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================== 12. AI EVALUATOR -->
-  <section class="slide">
-    <p class="feature-eyebrow">Feature 09 · AI Evaluator</p>
-    <h2 class="feature-title">Grade 200 answer sheets in an hour, not a weekend.</h2>
-    <p class="feature-lede mb-8">Upload scanned sheets — Cortex grades MCQs in seconds and short / long answers using rubric-aware AI. Borderline cases route to the teacher for review.</p>
-    <div class="grid grid-cols-3 gap-4 mb-6">
-      <div class="rounded-xl border border-slate-200 p-5"><h4 class="font-bold mb-2">OCR for handwriting</h4><p class="text-sm text-slate-600">Trained on Indian student handwriting. Works on regular A4 scans — no special paper.</p></div>
-      <div class="rounded-xl border border-slate-200 p-5"><h4 class="font-bold mb-2">Rubric-aware grading</h4><p class="text-sm text-slate-600">Compares to model answer + rubric. Awards partial marks; explains every deduction.</p></div>
-      <div class="rounded-xl border border-slate-200 p-5"><h4 class="font-bold mb-2">Teacher-in-the-loop</h4><p class="text-sm text-slate-600">Confidence-scored. Borderline answers (~10%) are routed to the teacher; rest are auto-finalised.</p></div>
-      <div class="rounded-xl border border-slate-200 p-5"><h4 class="font-bold mb-2">Plagiarism check</h4><p class="text-sm text-slate-600">Flags suspiciously similar answers across the same class — catches copying.</p></div>
-      <div class="rounded-xl border border-slate-200 p-5"><h4 class="font-bold mb-2">Auto-write to gradebook</h4><p class="text-sm text-slate-600">Marks land in the exam record. Report cards generate themselves.</p></div>
-      <div class="rounded-xl border border-slate-200 p-5"><h4 class="font-bold mb-2">Insights for teachers</h4><p class="text-sm text-slate-600">Per-question analytics: which concept needs re-teaching, which student needs help.</p></div>
-    </div>
-  </section>
-
-  <!-- ============================== 13. CORTEX HELPER + STUDY -->
-  <section class="slide">
-    <p class="feature-eyebrow">Feature 10 · Cortex Helper + Study Mode</p>
-    <h2 class="feature-title">An AI guide on every page. <span class="brand-gradient-text">Meet Leo.</span></h2>
-    <p class="feature-lede mb-8">A floating chat button that knows what page you're on. For staff, it's product help. For students, it's a chapter tutor.</p>
-    <div class="grid grid-cols-2 gap-6">
-      <div class="rounded-xl border-2 border-brand-cyan/30 p-6">
-        <h4 class="font-bold text-xl mb-2">Helper mode (staff)</h4>
-        <ul class="space-y-1.5 text-sm text-slate-700">
-          <li>• "How do I generate a fee invoice?"</li>
-          <li>• "Why is this student showing absent?"</li>
-          <li>• "Take me to the timetable for Class 7B"</li>
-          <li>• Streams answers live · cites the right module</li>
-          <li>• Persists across pages — context carries</li>
-        </ul>
-      </div>
-      <div class="rounded-xl border-2 border-brand-purple/30 p-6">
-        <h4 class="font-bold text-xl mb-2">Study mode (students)</h4>
-        <ul class="space-y-1.5 text-sm text-slate-700">
-          <li>• Auto-activates on chapter pages</li>
-          <li>• "Explain photosynthesis like I'm in grade 7"</li>
-          <li>• "Quiz me on this chapter"</li>
-          <li>• "What did this paragraph mean?"</li>
-          <li>• Stays on-syllabus — never goes off-topic</li>
-        </ul>
-      </div>
-    </div>
-    <div class="mt-6 bg-slate-50 rounded-xl p-4 border border-slate-200 max-w-4xl">
-      <p class="text-sm text-slate-700"><b>Privacy:</b> Student conversations never train external models. School data stays inside your tenant.</p>
-    </div>
-  </section>
-
-  <!-- ============================== SECTION DIVIDER : ATTENDANCE -->
-  <section class="slide slide-dark">
-    <p class="text-xs font-mono uppercase tracking-[0.3em] text-brand-cyan mb-4">Section 3 of 4</p>
-    <h2 class="text-7xl font-black leading-[1.05] tracking-tight">Face AI Attendance.</h2>
-    <p class="text-2xl text-white/70 mt-6 max-w-3xl">The biometric machine, replaced by a webcam.</p>
-  </section>
-
-  <!-- ============================== 14. FACE AI -->
-  <section class="slide">
-    <p class="feature-eyebrow">Feature 11 · Face AI Attendance</p>
-    <h2 class="feature-title">Under a second per student. No queue.</h2>
-    <p class="feature-lede mb-8">Live demo follows. A single webcam at the door marks every student present in real time, while teachers walk in and start teaching.</p>
-    <div class="grid grid-cols-4 gap-4 mb-6">
-      <div class="rounded-xl border border-slate-200 p-5">
-        <div class="text-2xl font-black brand-gradient-text mb-2">1</div>
-        <h4 class="font-bold mb-1">Enrol once</h4>
-        <p class="text-sm text-slate-600">3-5 photos at admission. Embeddings stored, photos discarded.</p>
-      </div>
-      <div class="rounded-xl border border-slate-200 p-5">
-        <div class="text-2xl font-black brand-gradient-text mb-2">2</div>
-        <h4 class="font-bold mb-1">Recognise live</h4>
-        <p class="text-sm text-slate-600">Camera streams to the AIvenX recognizer. Faces matched in &lt;1 sec.</p>
-      </div>
-      <div class="rounded-xl border border-slate-200 p-5">
-        <div class="text-2xl font-black brand-gradient-text mb-2">3</div>
-        <h4 class="font-bold mb-1">Default-absent</h4>
-        <p class="text-sm text-slate-600">Anyone not seen by cut-off → marked absent → SMS to parent.</p>
-      </div>
-      <div class="rounded-xl border border-slate-200 p-5">
-        <div class="text-2xl font-black brand-gradient-text mb-2">4</div>
-        <h4 class="font-bold mb-1">Period-wise</h4>
-        <p class="text-sm text-slate-600">Re-runs every period. Catches mid-day absconding too.</p>
-      </div>
-    </div>
-    <div class="bg-slate-50 rounded-xl p-5 border border-slate-200">
-      <p class="text-base text-slate-700">
-        <b>Privacy by design:</b> only mathematical embeddings are stored — never raw photos.
-        Local ID-card scanning continues to work as a backup. Camera frames are processed and discarded.
-      </p>
-    </div>
-  </section>
-
-  <!-- ============================== SECTION DIVIDER : ENGAGEMENT -->
-  <section class="slide slide-dark">
-    <p class="text-xs font-mono uppercase tracking-[0.3em] text-brand-cyan mb-4">Section 4 of 4</p>
-    <h2 class="text-7xl font-black leading-[1.05] tracking-tight">Engagement & Operations.</h2>
-    <p class="text-2xl text-white/70 mt-6 max-w-3xl">Communication · Library · Transport · Hostel · Foundations.</p>
-  </section>
-
-  <!-- ============================== 15. COMMUNICATION -->
-  <section class="slide">
-    <p class="feature-eyebrow">Feature 12 · Parent Communication</p>
-    <h2 class="feature-title">One channel for every parent message.</h2>
-    <p class="feature-lede mb-8">Notice board, SMS, email, in-app, and (optionally) WhatsApp Business. Every message logged, every delivery tracked.</p>
-    <div class="grid grid-cols-3 gap-4">
-      <div class="rounded-xl border border-slate-200 p-5"><h4 class="font-bold mb-2">Notice board</h4><p class="text-sm text-slate-600">School-wide, class-wise, or individual. Pin-to-top, expiry dates, attachments supported.</p></div>
-      <div class="rounded-xl border border-slate-200 p-5"><h4 class="font-bold mb-2">Templates</h4><p class="text-sm text-slate-600">Pre-built for: absent SMS, fee dues, exam reminders, parent-teacher meetings, holidays.</p></div>
-      <div class="rounded-xl border border-slate-200 p-5"><h4 class="font-bold mb-2">Multi-language</h4><p class="text-sm text-slate-600">English, Hindi, Marathi, Tamil, Bengali — one message, auto-translated per parent's preference.</p></div>
-      <div class="rounded-xl border border-slate-200 p-5"><h4 class="font-bold mb-2">Two-way</h4><p class="text-sm text-slate-600">Parents reply from their portal. Teacher sees a threaded conversation, never lost in WhatsApp.</p></div>
-      <div class="rounded-xl border border-slate-200 p-5"><h4 class="font-bold mb-2">Event calendar</h4><p class="text-sm text-slate-600">Sync to Google Calendar / Apple Calendar. PTM bookings handled in-portal.</p></div>
-      <div class="rounded-xl border border-slate-200 p-5"><h4 class="font-bold mb-2">Delivery tracking</h4><p class="text-sm text-slate-600">Sent · Delivered · Read · Replied. Auditable, exportable.</p></div>
-    </div>
-  </section>
-
-  <!-- ============================== 16. LIBRARY / TRANSPORT / HOSTEL -->
-  <section class="slide">
-    <p class="feature-eyebrow">Feature 13 · Library · Transport · Hostel</p>
-    <h2 class="feature-title">The operational long tail, handled.</h2>
-    <p class="feature-lede mb-8">Three modules that other ERPs charge extra for — included in AIvenX from the Operate edition onwards.</p>
-    <div class="grid grid-cols-3 gap-5">
-      <div class="rounded-xl border border-slate-200 p-6">
-        <div class="text-3xl mb-3">📚</div>
-        <h4 class="font-bold text-xl mb-2">Library</h4>
-        <ul class="space-y-1 text-sm text-slate-700">
-          <li>• Catalogue with ISBN auto-fetch</li>
-          <li>• Issue / return via barcode or QR</li>
-          <li>• Fines auto-calculated, charged to fees</li>
-          <li>• Reading lists per class</li>
-          <li>• Inventory audits, reservations</li>
-        </ul>
-      </div>
-      <div class="rounded-xl border border-slate-200 p-6">
-        <div class="text-3xl mb-3">🚌</div>
-        <h4 class="font-bold text-xl mb-2">Transport</h4>
-        <ul class="space-y-1 text-sm text-slate-700">
-          <li>• Routes & stops with student assignment</li>
-          <li>• Driver app for pickup confirmation</li>
-          <li>• Live GPS (with hardware partner)</li>
-          <li>• Parent ETA + boarding/alighting alerts</li>
-          <li>• Bus fees integrated with fee module</li>
-        </ul>
-      </div>
-      <div class="rounded-xl border border-slate-200 p-6">
-        <div class="text-3xl mb-3">🛏️</div>
-        <h4 class="font-bold text-xl mb-2">Hostel</h4>
-        <ul class="space-y-1 text-sm text-slate-700">
-          <li>• Room allocation, roommate matching</li>
-          <li>• In/out register with face check-in</li>
-          <li>• Mess attendance & menu</li>
-          <li>• Visitor log, leave applications</li>
-          <li>• Hostel fees + mess charges integrated</li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================== SECTION DIVIDER : 2026 ROADMAP -->
-  <section class="slide slide-cover">
-    <div class="cover-grid absolute inset-0"></div>
-    <div class="relative z-10">
-      <p class="text-sm font-mono uppercase tracking-[0.3em] text-white/80 mb-4">2026 — 2027 roadmap</p>
-      <h2 class="text-7xl font-black leading-[1.05] tracking-tight">Three new pillars,<br/>already on the way.</h2>
-      <p class="text-2xl text-white/90 mt-6 max-w-3xl">All included in your subscription when they ship — no upsell, no module fee.</p>
-    </div>
-  </section>
-
-  <!-- ============================== Roadmap A · GUARDIAN -->
-  <section class="slide">
-    <p class="feature-eyebrow">Roadmap · AIvenX Guardian</p>
-    <h2 class="feature-title">A safety net <span class="brand-gradient-text">around every student.</span></h2>
-    <p class="feature-lede mb-8">A single suite covering the bus, the gate, and the moments in between. Beta now in two pilot schools; pilot rollout H2 2026.</p>
-    <div class="grid grid-cols-3 gap-4">
-      <div class="rounded-xl border-2 border-cyan-300 p-5">
-        <div class="text-3xl mb-2">🚌</div>
-        <h4 class="font-bold text-lg mb-2">Live bus tracking</h4>
-        <ul class="space-y-1 text-sm text-slate-700">
-          <li>• GPS pings every 10 sec</li>
-          <li>• Boarding / alighting verification</li>
-          <li>• Parent ETA on the home screen</li>
-          <li>• Route deviation alerts</li>
-          <li>• Driver app for pickup confirmation</li>
-        </ul>
-      </div>
-      <div class="rounded-xl border-2 border-cyan-300 p-5">
-        <div class="text-3xl mb-2">🚪</div>
-        <h4 class="font-bold text-lg mb-2">Campus gate access</h4>
-        <ul class="space-y-1 text-sm text-slate-700">
-          <li>• Face-AI in/out at every gate</li>
-          <li>• Live "who's on campus" headcount</li>
-          <li>• Visitor sign-in with audit trail</li>
-          <li>• Unknown-face flagging</li>
-          <li>• Per-period attendance reconciliation</li>
-        </ul>
-      </div>
-      <div class="rounded-xl border-2 border-cyan-300 p-5">
-        <div class="text-3xl mb-2">🛡️</div>
-        <h4 class="font-bold text-lg mb-2">In-bus safety AI</h4>
-        <ul class="space-y-1 text-sm text-slate-700">
-          <li>• Bullying / harassment detection</li>
-          <li>• Audio + video classifier</li>
-          <li>• Real-time alert to admin + driver</li>
-          <li>• Panic button on the parent app</li>
-          <li>• Encrypted footage retained 30 days</li>
-        </ul>
-      </div>
-    </div>
-    <div class="mt-6 brand-gradient text-white rounded-2xl p-5 max-w-5xl">
-      <p class="text-lg font-bold leading-tight">
-        Why parents care: by the time the school is on AIvenX Guardian, a parent's phone tells them where their child is — before anyone has to ask.
-      </p>
-    </div>
-  </section>
-
-  <!-- ============================== Roadmap B · CONNECT -->
-  <section class="slide">
-    <p class="feature-eyebrow">Roadmap · AIvenX Connect</p>
-    <h2 class="feature-title">Every batch. <span class="brand-gradient-text">Still in touch.</span></h2>
-    <p class="feature-lede mb-8">An alumni network built into the school's own platform — not a Facebook group, not a forgotten directory. Live in pilot now; GA H2 2026.</p>
-    <div class="grid grid-cols-2 gap-6 max-w-6xl">
-      <div>
-        <h3 class="text-xl font-bold mb-3">What alumni get</h3>
-        <ul class="space-y-2 text-base text-slate-700">
-          <li>• A polished profile that travels — even after they leave the school's email</li>
-          <li>• Mentorship requests from current students they actually want to help</li>
-          <li>• A job board they post to (and that current students actually read)</li>
-          <li>• Reunions, fundraisers, and events with one-tap RSVP</li>
-        </ul>
-      </div>
-      <div class="rounded-xl border-2 border-purple-300 p-6">
-        <h3 class="text-xl font-bold mb-3">What the school gets</h3>
-        <ul class="space-y-2 text-sm text-slate-700">
-          <li>• <b>Searchable directory</b> — by batch, industry, location, role</li>
-          <li>• <b>Mentor matching engine</b> — students filter by area; alumni opt in</li>
-          <li>• <b>Verified profiles</b> — admin-stamped to prevent impersonation</li>
-          <li>• <b>Engagement analytics</b> — which batches are active, which need outreach</li>
-          <li>• <b>Privacy controls</b> — alumni choose between school-only and public visibility</li>
-        </ul>
-      </div>
-    </div>
-    <div class="mt-6 bg-slate-50 rounded-xl p-5 border border-slate-200 max-w-5xl">
-      <p class="text-sm text-slate-700">
-        <b>Demo data shown today is real:</b> 12 sample alumni from batches 2008–2021, half of them open to mentor — across tech, finance, medicine, design, public service, and more.
-      </p>
-    </div>
-  </section>
-
-  <!-- ============================== Roadmap C · MOBILE -->
-  <section class="slide">
-    <p class="feature-eyebrow">Roadmap · AIvenX Mobile</p>
-    <h2 class="feature-title">Two apps. <span class="brand-gradient-text">One platform.</span></h2>
-    <p class="feature-lede mb-8">Native iOS + Android apps for students and parents. Single sign-on with the school portal. Shipping early 2027.</p>
-    <div class="grid grid-cols-2 gap-6 max-w-6xl">
-      <div class="rounded-2xl border-2 border-cyan-300 p-6">
-        <div class="text-4xl mb-3">📚</div>
-        <h3 class="text-2xl font-bold mb-2">Student app</h3>
-        <p class="text-sm text-slate-600 mb-4">For grades 4 and up. Designed to feel like a learning companion, not a school portal.</p>
-        <ul class="space-y-1.5 text-sm text-slate-700">
-          <li>✓ Today's chapters in their preferred mode (Focus / Spark / Quest / Saga)</li>
-          <li>✓ Leo, the AI tutor, on every page</li>
-          <li>✓ Self-paced practice with the question bank</li>
-          <li>✓ Timetable, results, exam schedules at a tap</li>
-          <li>✓ Personal portfolio — projects, achievements, badges</li>
-        </ul>
-      </div>
-      <div class="rounded-2xl border-2 border-purple-300 p-6">
-        <div class="text-4xl mb-3">👨‍👩‍👧</div>
-        <h3 class="text-2xl font-bold mb-2">Parent app</h3>
-        <p class="text-sm text-slate-600 mb-4">Calm, confident updates — no more guessing what's happening at school.</p>
-        <ul class="space-y-1.5 text-sm text-slate-700">
-          <li>✓ Live attendance — gate-confirmed, not teacher-typed</li>
-          <li>✓ Fee invoices + UPI payment in two taps</li>
-          <li>✓ Bus tracker — live ETA + boarding alerts</li>
-          <li>✓ Threaded teacher chat</li>
-          <li>✓ Wellbeing & safety alerts (Guardian-powered)</li>
-          <li>✓ Term-end performance summary, no PDFs</li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================== 17. SECURITY & DATA -->
-  <section class="slide">
-    <p class="feature-eyebrow">Feature 14 · Security & Data</p>
-    <h2 class="feature-title">Built for the data you can't lose.</h2>
-    <p class="feature-lede mb-8">Schools handle some of the most sensitive personal data anywhere — minors' photos, medical records, fee histories. AIvenX is engineered around that responsibility.</p>
-    <div class="grid grid-cols-3 gap-4">
-      <div class="rounded-xl border border-slate-200 p-5"><div class="text-2xl mb-2">🔒</div><h4 class="font-bold mb-1">Multi-tenant secure</h4><p class="text-sm text-slate-600">Each school is fully isolated at the database level. No cross-tenant leakage, ever.</p></div>
-      <div class="rounded-xl border border-slate-200 p-5"><div class="text-2xl mb-2">👥</div><h4 class="font-bold mb-1">Role-based access</h4><p class="text-sm text-slate-600">Admin · Principal · Teacher · Student · Parent — every action audited.</p></div>
-      <div class="rounded-xl border border-slate-200 p-5"><div class="text-2xl mb-2">💾</div><h4 class="font-bold mb-1">Daily backups</h4><p class="text-sm text-slate-600">Encrypted, point-in-time recovery. One-click data export — no lock-in.</p></div>
-      <div class="rounded-xl border border-slate-200 p-5"><div class="text-2xl mb-2">🇮🇳</div><h4 class="font-bold mb-1">Hosted in India</h4><p class="text-sm text-slate-600">Data residency, low latency, DPDP-aligned for Indian schools.</p></div>
-      <div class="rounded-xl border border-slate-200 p-5"><div class="text-2xl mb-2">🛡️</div><h4 class="font-bold mb-1">Privacy-first AI</h4><p class="text-sm text-slate-600">Face embeddings only. Student data never trains third-party models.</p></div>
-      <div class="rounded-xl border border-slate-200 p-5"><div class="text-2xl mb-2">📋</div><h4 class="font-bold mb-1">Audit logs</h4><p class="text-sm text-slate-600">Every login, edit, and export logged for compliance and forensics.</p></div>
-    </div>
-  </section>
-
-  <!-- ============================== 18. EDITIONS -->
-  <section class="slide">
-    <p class="feature-eyebrow">Editions</p>
-    <h2 class="feature-title mb-8">Pick the edition that fits your school.</h2>
-    <div class="grid grid-cols-3 gap-5 max-w-6xl">
-      <div class="rounded-2xl border border-slate-200 p-6">
-        <p class="text-xs uppercase tracking-widest text-slate-500 mb-1">Starter</p>
-        <h3 class="font-bold text-2xl mb-3">Operate</h3>
-        <ul class="space-y-1 text-sm text-slate-700">
-          <li>✓ Admissions & fees</li>
-          <li>✓ HR & payroll</li>
-          <li>✓ Timetable & exams</li>
-          <li>✓ Report cards</li>
-          <li>✓ Library · Transport · Hostel</li>
-          <li>✓ Parent portal</li>
-        </ul>
-      </div>
-      <div class="rounded-2xl border-2 border-brand-purple p-6 relative">
-        <span class="absolute -top-3 left-5 brand-gradient text-white text-[10pt] font-bold uppercase tracking-widest px-3 py-1 rounded-full">Most popular</span>
-        <p class="text-xs uppercase tracking-widest text-brand-purple mb-1">Pro</p>
-        <h3 class="font-bold text-2xl mb-3">Operate + Cortex</h3>
-        <ul class="space-y-1 text-sm text-slate-700">
-          <li>✓ Everything in Operate</li>
-          <li>✓ Chapter Generator</li>
-          <li>✓ 150k Question Bank</li>
-          <li>✓ Assessment Creator</li>
-          <li>✓ Lesson plans</li>
-          <li>✓ Cortex Helper bot</li>
-        </ul>
-      </div>
-      <div class="rounded-2xl border border-slate-200 p-6">
-        <p class="text-xs uppercase tracking-widest text-slate-500 mb-1">Enterprise</p>
-        <h3 class="font-bold text-2xl mb-3">Everything</h3>
-        <ul class="space-y-1 text-sm text-slate-700">
-          <li>✓ Everything in Pro</li>
-          <li>✓ AI Evaluator</li>
-          <li>✓ Face AI Attendance</li>
-          <li>✓ Teacher Assist (2026)</li>
-          <li>✓ Student Surveillance (2026)</li>
-          <li>✓ Dedicated CSM</li>
-        </ul>
-      </div>
-    </div>
-    <p class="text-base text-slate-600 mt-8">Pricing scales with student count. We'll send a tailored quote within 48 hours of this demo.</p>
-  </section>
-
-  <!-- ============================== 19. ONBOARDING -->
-  <section class="slide">
-    <p class="feature-eyebrow">Onboarding</p>
-    <h2 class="feature-title mb-8">From contract to live in 14 days.</h2>
-    <div class="grid grid-cols-4 gap-4 max-w-6xl">
-      <div class="rounded-xl border border-slate-200 p-6"><p class="text-xs uppercase tracking-widest text-slate-500 mb-2">Day 1-3</p><h3 class="font-bold text-lg mb-2">Setup</h3><p class="text-sm text-slate-600 leading-relaxed">Tenant provisioned. Branding, classes, sections, fee structure imported.</p></div>
-      <div class="rounded-xl border border-slate-200 p-6"><p class="text-xs uppercase tracking-widest text-slate-500 mb-2">Day 4-7</p><h3 class="font-bold text-lg mb-2">Data migration</h3><p class="text-sm text-slate-600 leading-relaxed">Student & staff records imported from your existing system. Validated by AIvenX team.</p></div>
-      <div class="rounded-xl border border-slate-200 p-6"><p class="text-xs uppercase tracking-widest text-slate-500 mb-2">Day 8-11</p><h3 class="font-bold text-lg mb-2">Training</h3><p class="text-sm text-slate-600 leading-relaxed">Admin · Principal · Teacher · Parent walkthroughs. Recorded, role-specific.</p></div>
-      <div class="rounded-xl border border-slate-200 p-6"><p class="text-xs uppercase tracking-widest text-slate-500 mb-2">Day 12-14</p><h3 class="font-bold text-lg mb-2">Go-live</h3><p class="text-sm text-slate-600 leading-relaxed">Soft launch with one class → full rollout. Dedicated CSM on call.</p></div>
-    </div>
-    <div class="mt-10 bg-slate-50 rounded-2xl p-5 border border-slate-200 max-w-5xl">
-      <p class="text-base text-slate-700"><b>White-glove migration is included.</b> We handle CSV imports from your current ERP / LMS — your team isn't stuck reformatting spreadsheets.</p>
-    </div>
-  </section>
-
-  <!-- ============================== 20. NEXT STEPS -->
-  <section class="slide slide-cover">
-    <div class="cover-grid absolute inset-0"></div>
-    <div class="relative z-10">
-      <p class="text-sm font-mono uppercase tracking-[0.3em] text-white/80 mb-6">Next steps</p>
-      <h2 class="text-6xl font-black leading-[1.05] tracking-tight mb-10">Three things, this week.</h2>
-      <div class="space-y-6 text-2xl">
-        <div class="flex gap-6"><span class="font-black text-4xl text-white/60">01</span><div><div class="font-bold">Tailored quote</div><div class="text-lg text-white/80">Pricing for your edition + student count within 48 hours.</div></div></div>
-        <div class="flex gap-6"><span class="font-black text-4xl text-white/60">02</span><div><div class="font-bold">Pilot setup</div><div class="text-lg text-white/80">Free 14-day pilot tenant with one class — your data, your branding.</div></div></div>
-        <div class="flex gap-6"><span class="font-black text-4xl text-white/60">03</span><div><div class="font-bold">Decision call</div><div class="text-lg text-white/80">Reconvene at the end of the pilot to plan rollout or close out.</div></div></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================== 21. THANK YOU -->
-  <section class="slide slide-cover">
-    <div class="cover-grid absolute inset-0"></div>
-    <div class="relative z-10 flex flex-col h-full justify-between">
-      <img src="/assets/aivenx-logo.png" alt="AIvenX" style="height: 48px; filter: brightness(0) invert(1);" />
-      <div>
-        <h2 class="text-8xl font-black leading-[1.05] tracking-tight mb-8">Thank you.</h2>
-        <p class="text-3xl text-white/90">Questions?</p>
-      </div>
-      <div class="grid grid-cols-3 gap-8 text-base">
-        <div><p class="text-xs uppercase tracking-widest text-white/70 mb-1">Sales</p><p class="font-bold text-lg">sales@aivenx.co.in</p></div>
-        <div><p class="text-xs uppercase tracking-widest text-white/70 mb-1">General</p><p class="font-bold text-lg">hello@aivenx.co.in</p></div>
-        <div><p class="text-xs uppercase tracking-widest text-white/70 mb-1">Web</p><p class="font-bold text-lg">aivenx.co.in</p></div>
-      </div>
-    </div>
-  </section>
-
-</div>
-
-<div class="nav-chrome">
-  <button onclick="prev()" title="Previous (←)">‹</button>
-  <span><span id="curIdx">1</span> / <span id="totalIdx">24</span></span>
-  <button onclick="next()" title="Next (→ / Space)">›</button>
-  <button onclick="toggleHelp()" title="Help (?)">?</button>
-</div>
-
-<div class="help-overlay" id="helpOverlay" onclick="toggleHelp()">
-  <div class="panel">
-    <h3 style="font-size: 28px; font-weight: 800; margin-bottom: 24px;">Keyboard shortcuts</h3>
-    <div style="line-height: 2;">
-      <div><span class="key">→</span> <span class="key">Space</span> Next slide</div>
-      <div><span class="key">←</span> Previous slide</div>
-      <div><span class="key">Home</span> First · <span class="key">End</span> Last</div>
-      <div><span class="key">F</span> Fullscreen</div>
-      <div><span class="key">P</span> Print / Save PDF</div>
-      <div><span class="key">?</span> This help</div>
-    </div>
-    <p style="margin-top: 28px; font-size: 14px; opacity: 0.7;">
-      Tip: append <code>?school=Springdale</code> to the URL to personalise the cover slide.
-    </p>
+<!-- ============================================================
+     TOP BAR (screen only) — slide counter + save-as-PDF
+     ============================================================ -->
+<div class="top-bar no-print">
+  <div class="flex items-center gap-2.5">
+    <img src="/assets/aivenx-mark.png" class="w-7 h-7" alt="AIvenX"/>
+    <span class="font-display font-bold text-sm">AIvenX</span>
+    <span class="text-slate-400">· Demo deck for school leadership</span>
+  </div>
+  <div class="flex items-center gap-3">
+    <span id="slide-counter" class="mono text-slate-400">01 / 30</span>
+    <a href="/" class="text-slate-400 hover:text-white">← Home</a>
+    <button onclick="window.print()" class="btn-cta">Save as PDF</button>
   </div>
 </div>
 
+<!-- ============================================================
+     DOT NAV (screen only)
+     ============================================================ -->
+<nav class="dot-nav no-print" id="dot-nav"></nav>
+
+
+<!-- ============================================================
+     SLIDE 01 · COVER
+     ============================================================ -->
+<section class="slide section-divider grid-bg justify-center" id="s1">
+  <div class="brand-corner"><img src="/assets/aivenx-mark.png" alt=""/><span>AIvenX</span></div>
+  <span class="slide-num">01 / 30</span>
+
+  <div class="text-center max-w-5xl mx-auto">
+    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-strong text-xs mb-9">
+      <span class="w-2 h-2 rounded-full bg-brand-emerald animate-pulseDot"></span>
+      <span class="text-slate-200">Prepared for the leadership team of</span>
+      <span class="gradient-text font-bold">[Your school's name]</span>
+    </div>
+    <h1 class="h-massive font-display">
+      The AI-native<br/>
+      <span class="gradient-text">school OS</span>.
+    </h1>
+    <p class="mt-7 text-xl text-slate-300 max-w-3xl mx-auto leading-relaxed">
+      A walkthrough of what we'll show you in the live 30-minute demo.<br/>
+      Read it whenever you have 8 minutes. Then book the call.
+    </p>
+    <div class="mt-10 inline-flex items-center gap-3 text-xs text-slate-400">
+      <span>Demo deck v2 · April 2026</span>
+      <span>·</span>
+      <span>Hyderabad · India</span>
+      <span>·</span>
+      <span>Confidential — for review by your leadership team</span>
+    </div>
+  </div>
+
+  <div class="slide-foot">
+    <span>aivenx.co.in</span>
+    <span>Scroll ↓ or arrow keys to navigate</span>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 02 · THE PROMISE
+     ============================================================ -->
+<section class="slide ink-grad" id="s2">
+  <div class="brand-corner"><img src="/assets/aivenx-mark.png" alt=""/><span>AIvenX</span></div>
+  <span class="slide-tag"><span class="dot"></span> Why we sent this</span>
+  <span class="slide-num">02 / 30</span>
+
+  <div class="m-auto max-w-5xl">
+    <h2 class="h-big font-display">
+      In 30 minutes we'll show you how AIvenX <span class="gradient-text">grades a real exam paper</span>, <span class="gradient-text">tells each student what to revisit</span>, and <span class="gradient-text">runs the whole school</span> from one login.
+    </h2>
+    <p class="mt-8 text-lg text-slate-300 leading-relaxed max-w-4xl">
+      This deck is the long version. Everything in the live demo is shown here in still frames. If our story sounds aligned with where your school is heading, the live walkthrough will make it concrete on your data.
+    </p>
+
+    <div class="mt-12 grid grid-cols-3 gap-4 max-w-4xl">
+      <div class="card-glass p-5">
+        <div class="text-3xl font-bold gradient-text">8 min</div>
+        <div class="text-xs text-slate-400 mt-1.5 uppercase tracking-wider">to read this deck</div>
+      </div>
+      <div class="card-glass p-5">
+        <div class="text-3xl font-bold gradient-text">30 min</div>
+        <div class="text-xs text-slate-400 mt-1.5 uppercase tracking-wider">live walkthrough on your data</div>
+      </div>
+      <div class="card-glass p-5">
+        <div class="text-3xl font-bold gradient-text">1 term</div>
+        <div class="text-xs text-slate-400 mt-1.5 uppercase tracking-wider">pilot · no setup fee · NDA-friendly</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-foot"><span>AIvenX · Demo deck</span><span>02</span></div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 03 · INDEX
+     ============================================================ -->
+<section class="slide ink-grad" id="s3">
+  <div class="brand-corner"><img src="/assets/aivenx-mark.png" alt=""/><span>AIvenX</span></div>
+  <span class="slide-tag"><span class="dot"></span> What's inside</span>
+  <span class="slide-num">03 / 30</span>
+
+  <div class="m-auto max-w-6xl w-full">
+    <h2 class="h-big font-display mb-10">Five chapters. <span class="gradient-text">Thirty pages.</span></h2>
+
+    <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+      <div class="card-stark p-5">
+        <div class="mono text-xs text-cyan-300 mb-2">CHAPTER 01</div>
+        <h3 class="h-mid mb-2">Who we are</h3>
+        <div class="text-xs text-slate-400">Pages 04–06</div>
+      </div>
+      <div class="card-stark p-5">
+        <div class="mono text-xs text-purple-300 mb-2">CHAPTER 02</div>
+        <h3 class="h-mid mb-2">The issues</h3>
+        <div class="text-xs text-slate-400">Pages 07–12</div>
+      </div>
+      <div class="card-stark p-5">
+        <div class="mono text-xs text-pink-300 mb-2">CHAPTER 03</div>
+        <h3 class="h-mid mb-2">What we offer</h3>
+        <div class="text-xs text-slate-400">Pages 13–22</div>
+      </div>
+      <div class="card-stark p-5">
+        <div class="mono text-xs text-emerald-300 mb-2">CHAPTER 04</div>
+        <h3 class="h-mid mb-2">How we solve</h3>
+        <div class="text-xs text-slate-400">Pages 23–27</div>
+      </div>
+      <div class="card-stark p-5">
+        <div class="mono text-xs text-amber-300 mb-2">CHAPTER 05</div>
+        <h3 class="h-mid mb-2">Logistics + next steps</h3>
+        <div class="text-xs text-slate-400">Pages 28–30</div>
+      </div>
+    </div>
+
+    <p class="mt-12 text-base text-slate-400 max-w-3xl">
+      You can scroll linearly, or use the dots on the right to jump between sections. Print or save-as-PDF anytime from the top-right.
+    </p>
+  </div>
+
+  <div class="slide-foot"><span>AIvenX · Demo deck</span><span>03</span></div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 04 · CHAPTER 01 · WHO WE ARE
+     ============================================================ -->
+<section class="slide section-divider" id="s4">
+  <span class="slide-num">04 / 30</span>
+  <div class="m-auto text-center">
+    <div class="mono text-sm text-cyan-300 uppercase tracking-[0.3em] mb-4">Chapter 01</div>
+    <h2 class="h-massive font-display"><span class="gradient-text">Who</span> we are.</h2>
+    <p class="mt-6 text-lg text-slate-400 max-w-2xl mx-auto">A company obsessed with Indian classrooms — and what they deserve from software.</p>
+  </div>
+  <div class="slide-foot"><span>AIvenX · Demo deck</span><span>04</span></div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 05 · IDENTITY
+     ============================================================ -->
+<section class="slide ink-grad" id="s5">
+  <div class="brand-corner"><img src="/assets/aivenx-mark.png" alt=""/><span>AIvenX</span></div>
+  <span class="slide-tag"><span class="dot"></span> 01 · Who we are</span>
+  <span class="slide-num">05 / 30</span>
+
+  <div class="m-auto grid grid-cols-1 lg:grid-cols-12 gap-10 items-center max-w-7xl">
+    <div class="lg:col-span-7">
+      <h2 class="h-big font-display">A company<br/><span class="gradient-text">obsessed with</span><br/><span class="text-slate-400">Indian classrooms.</span></h2>
+      <p class="mt-7 text-lg text-slate-300 leading-relaxed">
+        AIvenX is built by educators, technologists, and parents who lived the school-software pain firsthand. We aren't bolting AI onto a legacy ERP — we're building the school operating system the way we wished it existed when our own kids started Class 1.
+      </p>
+      <p class="mt-5 text-base text-slate-400 leading-relaxed">
+        Designed in <strong class="text-white">Hyderabad, Telangana</strong>, engineered for every Indian board, shipped with NEP&nbsp;2020 and DPDP Act compliance baked in — not retrofitted.
+      </p>
+    </div>
+
+    <div class="lg:col-span-5">
+      <div class="card-glass p-6">
+        <div class="mono text-xs text-cyan-300 uppercase tracking-widest mb-4">Identity at a glance</div>
+        <dl class="space-y-3 text-sm">
+          <div class="flex justify-between border-b border-white/5 pb-2"><dt class="text-slate-400">Founded</dt><dd>2025</dd></div>
+          <div class="flex justify-between border-b border-white/5 pb-2"><dt class="text-slate-400">Headquarters</dt><dd>Hyderabad, Telangana</dd></div>
+          <div class="flex justify-between border-b border-white/5 pb-2"><dt class="text-slate-400">Built for</dt><dd>CBSE · ICSE · IB · State boards</dd></div>
+          <div class="flex justify-between border-b border-white/5 pb-2"><dt class="text-slate-400">Compliance</dt><dd>NEP 2020 · DPDP Act 2023</dd></div>
+          <div class="flex justify-between border-b border-white/5 pb-2"><dt class="text-slate-400">Data residency</dt><dd>India only</dd></div>
+          <div class="flex justify-between"><dt class="text-slate-400">Stack</dt><dd>Cloud-native · Indian DCs</dd></div>
+        </dl>
+      </div>
+    </div>
+  </div>
+  <div class="slide-foot"><span>AIvenX · Demo deck</span><span>05</span></div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 06 · OUR PRINCIPLES
+     ============================================================ -->
+<section class="slide" id="s6">
+  <div class="brand-corner"><img src="/assets/aivenx-mark.png" alt=""/><span>AIvenX</span></div>
+  <span class="slide-tag"><span class="dot"></span> 01 · Who we are</span>
+  <span class="slide-num">06 / 30</span>
+
+  <div class="m-auto max-w-7xl w-full">
+    <h2 class="h-big font-display mb-3">Four principles. <span class="gradient-text">Every decision rolls up to one of these.</span></h2>
+    <p class="text-slate-400 max-w-3xl">When we have to choose between two paths, these are the tie-breakers.</p>
+
+    <div class="mt-10 grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="card-glass p-6">
+        <div class="mono text-[10px] uppercase tracking-widest text-cyan-300 mb-2">Principle 01</div>
+        <h3 class="h-mid mb-2">Teacher-first, not feature-first</h3>
+        <p class="text-sm text-slate-400 leading-relaxed">Every AI output is reviewed and approved by a teacher before a student sees it. The teacher gains hours; never gets replaced.</p>
+      </div>
+      <div class="card-glass p-6">
+        <div class="mono text-[10px] uppercase tracking-widest text-purple-300 mb-2">Principle 02</div>
+        <h3 class="h-mid mb-2">AI-native from day one</h3>
+        <p class="text-sm text-slate-400 leading-relaxed">Not a chatbot bolted on. Cortex sits in the spine — generates, grades, recommends, narrates. Every workflow assumes AI in the loop.</p>
+      </div>
+      <div class="card-glass p-6">
+        <div class="mono text-[10px] uppercase tracking-widest text-emerald-300 mb-2">Principle 03</div>
+        <h3 class="h-mid mb-2">Privacy by architecture</h3>
+        <p class="text-sm text-slate-400 leading-relaxed">India data residency, DPDP-Act consent flows, audit-grade logging, opt-out per family. We collect only what serves the child.</p>
+      </div>
+      <div class="card-glass p-6">
+        <div class="mono text-[10px] uppercase tracking-widest text-amber-300 mb-2">Principle 04</div>
+        <h3 class="h-mid mb-2">Built for India, not adapted</h3>
+        <p class="text-sm text-slate-400 leading-relaxed">CBSE rubrics, vernacular roadmap, joint-family pods, UPI rails, low-bandwidth mode — every primitive shipped for Indian schools first.</p>
+      </div>
+    </div>
+  </div>
+  <div class="slide-foot"><span>AIvenX · Demo deck</span><span>06</span></div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 07 · CHAPTER 02 · THE ISSUES
+     ============================================================ -->
+<section class="slide section-divider" id="s7">
+  <span class="slide-num">07 / 30</span>
+  <div class="m-auto text-center">
+    <div class="mono text-sm text-purple-300 uppercase tracking-[0.3em] mb-4">Chapter 02</div>
+    <h2 class="h-massive font-display"><span class="gradient-text">The issues</span> Indian schools face today.</h2>
+    <p class="mt-6 text-lg text-slate-400 max-w-2xl mx-auto">Six pains we see in every school we visit. You probably feel at least four of them.</p>
+  </div>
+  <div class="slide-foot"><span>AIvenX · Demo deck</span><span>07</span></div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 08 · DROWNING IN TOOLS
+     ============================================================ -->
+<section class="slide" id="s8">
+  <div class="brand-corner"><img src="/assets/aivenx-mark.png" alt=""/><span>AIvenX</span></div>
+  <span class="slide-tag"><span class="dot"></span> 02 · The issues</span>
+  <span class="slide-num">08 / 30</span>
+
+  <div class="m-auto max-w-6xl">
+    <h2 class="h-big font-display">Schools today are <span class="gradient-text">drowning in tools</span>.<br/><span class="text-slate-400">Teachers, in tabs.</span></h2>
+
+    <div class="mt-10 grid grid-cols-2 gap-6 items-start">
+      <div>
+        <div class="mono text-[11px] uppercase tracking-widest text-rose-300 mb-3">Today's reality</div>
+        <ul class="space-y-2.5 text-base text-slate-200">
+          <li class="flex gap-3"><span class="text-rose-400">×</span><span>One ERP for fees</span></li>
+          <li class="flex gap-3"><span class="text-rose-400">×</span><span>Another for content / LMS</span></li>
+          <li class="flex gap-3"><span class="text-rose-400">×</span><span>Separate CCTV + bus tracker</span></li>
+          <li class="flex gap-3"><span class="text-rose-400">×</span><span>WhatsApp groups for parent comm</span></li>
+          <li class="flex gap-3"><span class="text-rose-400">×</span><span>Three Excel sheets for HR + payroll</span></li>
+          <li class="flex gap-3"><span class="text-rose-400">×</span><span>One more for biometric attendance</span></li>
+        </ul>
+        <div class="mt-6 mono text-sm text-slate-400">= <span class="text-white font-bold">5–7 logins.</span> Renewals every quarter.</div>
+      </div>
+
+      <div class="card-glass p-7">
+        <div class="text-7xl font-bold gradient-text">5–7</div>
+        <div class="text-base text-slate-300 mt-2">platforms a school logs into <span class="text-white font-semibold">every day</span></div>
+        <div class="mt-7 grid grid-cols-2 gap-3 text-xs">
+          <div class="card-stark p-3"><div class="text-2xl font-bold gradient-text">4 hr</div><div class="text-slate-400 mt-1">teacher paperwork / day</div></div>
+          <div class="card-stark p-3"><div class="text-2xl font-bold gradient-text">37</div><div class="text-slate-400 mt-1">avg. WhatsApp messages / day</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-foot"><span>AIvenX · Demo deck</span><span>08</span></div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 09 · TEACHER BURNOUT + PARENT FATIGUE
+     ============================================================ -->
+<section class="slide" id="s9">
+  <div class="brand-corner"><img src="/assets/aivenx-mark.png" alt=""/><span>AIvenX</span></div>
+  <span class="slide-tag"><span class="dot"></span> 02 · The issues</span>
+  <span class="slide-num">09 / 30</span>
+
+  <div class="m-auto max-w-6xl w-full">
+    <h2 class="h-big font-display">Teachers <span class="gradient-text">burning out</span>. Parents <span class="gradient-text">tuning out</span>.</h2>
+
+    <div class="mt-10 grid grid-cols-2 gap-5">
+      <div class="card-glass p-7">
+        <div class="text-4xl mb-3">📑</div>
+        <div class="mono text-[11px] uppercase tracking-widest text-amber-300 mb-1">Teacher burnout</div>
+        <h3 class="h-mid mb-3">4 hours of paperwork. 2 hours of teaching.</h3>
+        <ul class="space-y-2 text-sm text-slate-300">
+          <li>· Lesson plans typed by hand every Sunday</li>
+          <li>· Worksheets scrambled the morning of</li>
+          <li>· 40 answer scripts graded after school every week</li>
+          <li>· Manual marks-entry into the ERP</li>
+        </ul>
+      </div>
+      <div class="card-glass p-7">
+        <div class="text-4xl mb-3">📵</div>
+        <div class="mono text-[11px] uppercase tracking-widest text-purple-300 mb-1">Parent fatigue</div>
+        <h3 class="h-mid mb-3">37 messages in the WhatsApp group.</h3>
+        <ul class="space-y-2 text-sm text-slate-300">
+          <li>· Fee reminder · picnic permission · sports kit</li>
+          <li>· Buried under "Good morning ji" forwards</li>
+          <li>· No threading per child, no read-receipt</li>
+          <li>· The one that mattered? Missed.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="slide-foot"><span>AIvenX · Demo deck</span><span>09</span></div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 10 · SAFETY BLIND SPOTS + MARKS AREN'T INSIGHT
+     ============================================================ -->
+<section class="slide" id="s10">
+  <div class="brand-corner"><img src="/assets/aivenx-mark.png" alt=""/><span>AIvenX</span></div>
+  <span class="slide-tag"><span class="dot"></span> 02 · The issues</span>
+  <span class="slide-num">10 / 30</span>
+
+  <div class="m-auto max-w-6xl w-full">
+    <h2 class="h-big font-display">Safety, <span class="gradient-text">unseen</span>. Performance, <span class="gradient-text">unread</span>.</h2>
+
+    <div class="mt-10 grid grid-cols-2 gap-5">
+      <div class="card-glass p-7">
+        <div class="text-4xl mb-3">🚸</div>
+        <div class="mono text-[11px] uppercase tracking-widest text-cyan-300 mb-1">Safety blind spots</div>
+        <h3 class="h-mid mb-3">Did my child reach school?</h3>
+        <ul class="space-y-2 text-sm text-slate-300">
+          <li>· Bus tracker on a separate vendor app</li>
+          <li>· Gate logbook in a Reception register</li>
+          <li>· Bullying never escalates beyond the class teacher's diary</li>
+          <li>· Visitor history? A handwritten ledger.</li>
+        </ul>
+      </div>
+      <div class="card-glass p-7">
+        <div class="text-4xl mb-3">📊</div>
+        <div class="mono text-[11px] uppercase tracking-widest text-emerald-300 mb-1">Marks aren't insight</div>
+        <h3 class="h-mid mb-3">"He scored 72%." Now what?</h3>
+        <ul class="space-y-2 text-sm text-slate-300">
+          <li>· No view of where he's stuck</li>
+          <li>· No comparison to class median</li>
+          <li>· No prescribed practice</li>
+          <li>· Next term starts the same way</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="slide-foot"><span>AIvenX · Demo deck</span><span>10</span></div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 11 · AI AS A STICKER
+     ============================================================ -->
+<section class="slide" id="s11">
+  <div class="brand-corner"><img src="/assets/aivenx-mark.png" alt=""/><span>AIvenX</span></div>
+  <span class="slide-tag"><span class="dot"></span> 02 · The issues</span>
+  <span class="slide-num">11 / 30</span>
+
+  <div class="m-auto max-w-5xl text-center">
+    <div class="text-7xl mb-6">🤖</div>
+    <h2 class="h-big font-display">"AI-powered" everything. <br/><span class="gradient-text">AI-native nothing.</span></h2>
+    <p class="mt-7 text-lg text-slate-300 leading-relaxed max-w-3xl mx-auto">
+      A chatbot bolted on a sidebar. A "summarize" button in the settings menu. The actual product still does what it did in 2018 — only the marketing changed.
+    </p>
+    <p class="mt-5 text-base text-slate-400">
+      Indian schools deserve software that <span class="text-white">starts</span> from AI, not retrofits it.
+    </p>
+  </div>
+  <div class="slide-foot"><span>AIvenX · Demo deck</span><span>11</span></div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 12 · SUMMARY OF ISSUES
+     ============================================================ -->
+<section class="slide ink-grad" id="s12">
+  <div class="brand-corner"><img src="/assets/aivenx-mark.png" alt=""/><span>AIvenX</span></div>
+  <span class="slide-tag"><span class="dot"></span> 02 · The issues</span>
+  <span class="slide-num">12 / 30</span>
+
+  <div class="m-auto max-w-7xl w-full">
+    <h2 class="h-big font-display mb-3">Six pains. <span class="gradient-text">All under one roof.</span></h2>
+    <p class="text-slate-400 mb-9 max-w-2xl">Take a screenshot — you'll point at this slide six months from now.</p>
+
+    <div class="grid grid-cols-3 gap-3">
+      <div class="card-glass p-4"><div class="text-xs text-rose-300 mono uppercase tracking-wider">Vendor sprawl</div><div class="text-sm text-slate-200 mt-1">Six vendors. One school.</div></div>
+      <div class="card-glass p-4"><div class="text-xs text-amber-300 mono uppercase tracking-wider">Teacher burnout</div><div class="text-sm text-slate-200 mt-1">4 hr paperwork · 2 hr teaching.</div></div>
+      <div class="card-glass p-4"><div class="text-xs text-purple-300 mono uppercase tracking-wider">Parent fatigue</div><div class="text-sm text-slate-200 mt-1">37 messages — only 1 mattered.</div></div>
+      <div class="card-glass p-4"><div class="text-xs text-cyan-300 mono uppercase tracking-wider">Safety blind spots</div><div class="text-sm text-slate-200 mt-1">Did the child reach school?</div></div>
+      <div class="card-glass p-4"><div class="text-xs text-emerald-300 mono uppercase tracking-wider">Marks aren't insight</div><div class="text-sm text-slate-200 mt-1">"He scored 72%." Now what?</div></div>
+      <div class="card-glass p-4"><div class="text-xs text-pink-300 mono uppercase tracking-wider">AI as a sticker</div><div class="text-sm text-slate-200 mt-1">Marketing changed. Product didn't.</div></div>
+    </div>
+
+    <p class="mt-12 text-base text-slate-300 max-w-4xl">
+      One platform — designed from scratch, AI-native, India-first — solves all six. We turn the page.
+    </p>
+  </div>
+  <div class="slide-foot"><span>AIvenX · Demo deck</span><span>12</span></div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 13 · CHAPTER 03 · WHAT WE OFFER
+     ============================================================ -->
+<section class="slide section-divider" id="s13">
+  <span class="slide-num">13 / 30</span>
+  <div class="m-auto text-center">
+    <div class="mono text-sm text-pink-300 uppercase tracking-[0.3em] mb-4">Chapter 03</div>
+    <h2 class="h-massive font-display">What we <span class="gradient-text">offer</span>.</h2>
+    <p class="mt-6 text-lg text-slate-400 max-w-2xl mx-auto">Five product surfaces. One spine. The right surface for every role in your school.</p>
+  </div>
+  <div class="slide-foot"><span>AIvenX · Demo deck</span><span>13</span></div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 14 · ONE SPINE — VENDOR COLLAPSE
+     ============================================================ -->
+<section class="slide" id="s14">
+  <div class="brand-corner"><img src="/assets/aivenx-mark.png" alt=""/><span>AIvenX</span></div>
+  <span class="slide-tag"><span class="dot"></span> 03 · What we offer</span>
+  <span class="slide-num">14 / 30</span>
+
+  <div class="m-auto max-w-6xl w-full">
+    <h2 class="h-big font-display mb-8 text-center">One platform. <span class="gradient-text">Six vendors gone.</span></h2>
+
+    <div class="grid grid-cols-6 gap-3 mb-8">
+      <div class="card-stark p-3 text-center opacity-50"><div class="text-2xl">🏛️</div><div class="text-[10px] mt-1 text-slate-400">School ERP</div><div class="text-[9px] line-through text-rose-300">Vendor A</div></div>
+      <div class="card-stark p-3 text-center opacity-50"><div class="text-2xl">📚</div><div class="text-[10px] mt-1 text-slate-400">LMS</div><div class="text-[9px] line-through text-rose-300">Vendor B</div></div>
+      <div class="card-stark p-3 text-center opacity-50"><div class="text-2xl">🎯</div><div class="text-[10px] mt-1 text-slate-400">Q-bank</div><div class="text-[9px] line-through text-rose-300">Vendor C</div></div>
+      <div class="card-stark p-3 text-center opacity-50"><div class="text-2xl">🎥</div><div class="text-[10px] mt-1 text-slate-400">CCTV</div><div class="text-[9px] line-through text-rose-300">Vendor D</div></div>
+      <div class="card-stark p-3 text-center opacity-50"><div class="text-2xl">💬</div><div class="text-[10px] mt-1 text-slate-400">Parent app</div><div class="text-[9px] line-through text-rose-300">Vendor E</div></div>
+      <div class="card-stark p-3 text-center opacity-50"><div class="text-2xl">🚌</div><div class="text-[10px] mt-1 text-slate-400">Bus track</div><div class="text-[9px] line-through text-rose-300">Vendor F</div></div>
+    </div>
+
+    <div class="flex justify-center my-4"><svg class="w-10 h-10 text-cyan-400 animate-drift" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg></div>
+
+    <div class="relative max-w-3xl mx-auto">
+      <div class="absolute -inset-4 bg-gradient-to-r from-brand-cyan via-brand-purple to-brand-pink blur-2xl opacity-30"></div>
+      <div class="relative card-glass rounded-3xl p-7">
+        <div class="flex items-center gap-4 mb-5">
+          <img src="/assets/aivenx-mark.png" class="w-12 h-12" alt=""/>
+          <div>
+            <div class="mono text-xs uppercase tracking-widest text-cyan-300">AIvenX · all-in-one</div>
+            <div class="font-display font-bold text-xl">The AI-native school OS</div>
+          </div>
+        </div>
+        <div class="grid grid-cols-3 gap-2 text-sm">
+          <div class="px-3 py-2 rounded-lg bg-white/5">📊 ERP</div>
+          <div class="px-3 py-2 rounded-lg bg-white/5">🧠 Cortex AI Studio</div>
+          <div class="px-3 py-2 rounded-lg bg-white/5">🛡️ Guardian Safety</div>
+          <div class="px-3 py-2 rounded-lg bg-white/5">🤝 Connect Alumni</div>
+          <div class="px-3 py-2 rounded-lg bg-white/5">📱 Mobile apps</div>
+          <div class="px-3 py-2 rounded-lg bg-white/5">📷 Gallery</div>
+        </div>
+        <div class="mt-5 pt-4 border-t border-white/10 grid grid-cols-3 text-center text-xs">
+          <div><div class="text-2xl font-bold text-brand-cyan">1</div><div class="text-slate-500">login</div></div>
+          <div><div class="text-2xl font-bold text-brand-purple">1</div><div class="text-slate-500">bill</div></div>
+          <div><div class="text-2xl font-bold text-brand-pink">0</div><div class="text-slate-500">tab-juggling</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-foot"><span>AIvenX · Demo deck</span><span>14</span></div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 15 · CORTEX AI STUDIO — overview
+     ============================================================ -->
+<section class="slide" id="s15">
+  <div class="brand-corner"><img src="/assets/aivenx-mark.png" alt=""/><span>AIvenX</span></div>
+  <span class="slide-tag"><span class="dot"></span> 03 · What we offer · Cortex</span>
+  <span class="slide-num">15 / 30</span>
+
+  <div class="m-auto max-w-6xl w-full">
+    <div class="flex items-center gap-3 mb-3">
+      <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center">
+        <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+      </div>
+      <div class="mono text-xs text-cyan-300 uppercase tracking-widest">Cortex · AI Studio</div>
+    </div>
+    <h2 class="h-big font-display">Chapter to grade<br/><span class="gradient-text">in 30 seconds.</span></h2>
+
+    <p class="mt-7 text-lg text-slate-300 leading-relaxed max-w-4xl">
+      The teacher's AI workspace. Generate CBSE/ICSE chapters in four persona modes. Assemble exams from a 150,000-question bank. Grade handwritten papers with rubric-aware AI. Plan period-wise lessons. Narrate chapters as audio playlists.
+    </p>
+
+    <div class="mt-9 grid grid-cols-5 gap-3">
+      <div class="card-glass p-4"><div class="text-3xl">📖</div><div class="text-sm font-bold mt-2">Generate</div><div class="text-xs text-slate-400 mt-1">Chapters · 4 modes</div></div>
+      <div class="card-glass p-4"><div class="text-3xl">🎯</div><div class="text-sm font-bold mt-2">Assemble</div><div class="text-xs text-slate-400 mt-1">Question papers</div></div>
+      <div class="card-glass p-4"><div class="text-3xl">🧠</div><div class="text-sm font-bold mt-2">Grade</div><div class="text-xs text-slate-400 mt-1">Handwritten papers</div></div>
+      <div class="card-glass p-4"><div class="text-3xl">📋</div><div class="text-sm font-bold mt-2">Plan</div><div class="text-xs text-slate-400 mt-1">Period-wise</div></div>
+      <div class="card-glass p-4"><div class="text-3xl">🎧</div><div class="text-sm font-bold mt-2">Narrate</div><div class="text-xs text-slate-400 mt-1">Audio playlists</div></div>
+    </div>
+  </div>
+  <div class="slide-foot"><span>AIvenX · Demo deck</span><span>15</span></div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 16 · 4 PERSONA MODES
+     ============================================================ -->
+<section class="slide" id="s16">
+  <div class="brand-corner"><img src="/assets/aivenx-mark.png" alt=""/><span>AIvenX</span></div>
+  <span class="slide-tag"><span class="dot"></span> 03 · Cortex · Personas</span>
+  <span class="slide-num">16 / 30</span>
+
+  <div class="m-auto max-w-6xl w-full">
+    <h2 class="h-big font-display">Same chapter. <span class="gradient-text">Four ways to learn it.</span></h2>
+    <p class="mt-4 text-slate-400 max-w-3xl">Cortex generates the same syllabus in four persona-shaped modes. Students take a quick psychometric quiz; we recommend the right mode for them — and they can switch any time.</p>
+
+    <div class="mt-10 grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="card-glass p-5 border-cyan-500/30">
+        <span class="pill bg-cyan-500/15 text-cyan-300 mb-3">FOCUS</span>
+        <h3 class="h-mid">Smart</h3>
+        <p class="text-sm text-slate-400 mt-2 leading-relaxed">Clean, exam-aligned, structured. For students who want the syllabus distilled to its essentials.</p>
+      </div>
+      <div class="card-glass p-5 border-pink-500/30">
+        <span class="pill bg-pink-500/15 text-pink-300 mb-3">SPARK</span>
+        <h3 class="h-mid">Fun</h3>
+        <p class="text-sm text-slate-400 mt-2 leading-relaxed">Playful, real-world, why-it-matters. Great for visual learners and curious minds.</p>
+      </div>
+      <div class="card-glass p-5 border-emerald-500/30">
+        <span class="pill bg-emerald-500/15 text-emerald-300 mb-3">QUEST</span>
+        <h3 class="h-mid">Game</h3>
+        <p class="text-sm text-slate-400 mt-2 leading-relaxed">Goal-driven, gamified, level-up. XP, streaks, quick-checks per topic.</p>
+      </div>
+      <div class="card-glass p-5 border-purple-500/30">
+        <span class="pill bg-purple-500/15 text-purple-300 mb-3">SAGA</span>
+        <h3 class="h-mid">Story</h3>
+        <p class="text-sm text-slate-400 mt-2 leading-relaxed">Narrative, character-led. Concepts taught through story arcs.</p>
+      </div>
+    </div>
+
+    <p class="mt-10 text-sm text-slate-500 max-w-3xl">
+      Generation time: <span class="text-cyan-300 mono">~30 seconds</span> per chapter. Teacher reviews, edits, and approves before students see it. Boards covered: CBSE · ICSE · IB · State boards · Grades 1–12.
+    </p>
+  </div>
+  <div class="slide-foot"><span>AIvenX · Demo deck</span><span>16</span></div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 17 · AI EVALUATOR — the hero feature
+     ============================================================ -->
+<section class="slide ink-grad" id="s17">
+  <div class="brand-corner"><img src="/assets/aivenx-mark.png" alt=""/><span>AIvenX</span></div>
+  <span class="slide-tag"><span class="dot"></span> 03 · Cortex · AI Evaluator</span>
+  <span class="slide-num">17 / 30</span>
+
+  <div class="m-auto max-w-7xl w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+    <div class="lg:col-span-5">
+      <h2 class="h-big font-display">Upload the answer sheet.<br/><span class="gradient-text">Get the grade.</span><br/><span class="text-slate-400">Get the next steps.</span></h2>
+      <p class="mt-7 text-base text-slate-300 leading-relaxed">
+        Cortex reads handwritten papers, scores against a CBSE-grade rubric step-by-step, and tells you the exact topic each student needs to revisit.
+      </p>
+      <div class="mt-7 grid grid-cols-3 gap-3">
+        <div class="card-stark p-3"><div class="text-2xl font-bold gradient-text">80%</div><div class="text-[10px] text-slate-400 mt-1 uppercase">faster eval</div></div>
+        <div class="card-stark p-3"><div class="text-2xl font-bold gradient-text">5 min</div><div class="text-[10px] text-slate-400 mt-1 uppercase">per paper</div></div>
+        <div class="card-stark p-3"><div class="text-2xl font-bold gradient-text">Auto</div><div class="text-[10px] text-slate-400 mt-1 uppercase">recos / student</div></div>
+      </div>
+    </div>
+
+    <div class="lg:col-span-7 grid grid-cols-12 gap-3">
+      <div class="col-span-7">
+        <div class="answer-sheet relative">
+          <div class="px-4 pt-4 pb-3 border-b border-slate-300/60 text-slate-600 text-[10px] uppercase tracking-widest font-semibold flex justify-between">
+            <span>CBSE · Class X · Maths</span>
+            <span>Roll · 24-A-17</span>
+          </div>
+          <div class="p-4 pt-3 text-slate-700 space-y-3">
+            <div>
+              <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Q3 · Areas Related to Circles</div>
+              <div class="handwrite text-slate-800 leading-snug">
+                Given r = 21 cm, θ = 120°<br/>
+                Area of sector = (θ/360) × π r²<br/>
+                = (120/360) × (22/7) × 21 × 21<br/>
+                = (1/3) × (22/7) × 441<br/>
+                = 462 cm² ✓
+              </div>
+            </div>
+            <div>
+              <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Q4</div>
+              <div class="handwrite text-slate-800 leading-snug">
+                Area of segment = sector − triangle<br/>
+                Triangle = ½ × AB × OM<br/>
+                <span class="text-rose-600">≈ 190 cm²</span> (skipped derivation)
+              </div>
+            </div>
+          </div>
+          <div class="scan animate-scanline" style="top:0;"></div>
+        </div>
+      </div>
+      <div class="col-span-5 space-y-3">
+        <div class="card-glass p-3">
+          <div class="mono text-[10px] uppercase tracking-widest text-cyan-300 mb-2">Rubric · live</div>
+          <ul class="space-y-1 text-[11px]">
+            <li class="flex justify-between text-emerald-300"><span>Formula recall</span><span class="mono">+1 ✓</span></li>
+            <li class="flex justify-between text-emerald-300"><span>Substitution</span><span class="mono">+1 ✓</span></li>
+            <li class="flex justify-between text-emerald-300"><span>Arithmetic</span><span class="mono">+1 ✓</span></li>
+            <li class="flex justify-between text-emerald-300"><span>Final + units</span><span class="mono">+1 ✓</span></li>
+            <li class="flex justify-between text-amber-300"><span>Q4 derivation</span><span class="mono">½</span></li>
+          </ul>
+          <div class="mt-2 pt-2 border-t border-white/10 flex justify-between items-end">
+            <div class="text-2xl font-bold gradient-text">5 / 6</div>
+            <div class="text-[9px] text-slate-400 text-right">83% · vs class median 71%</div>
+          </div>
+        </div>
+        <div class="card-glass p-3">
+          <div class="mono text-[10px] uppercase tracking-widest text-emerald-300 mb-2">Recommended next</div>
+          <ol class="space-y-1 text-[11px]">
+            <li class="flex gap-1.5"><span class="w-1 h-1 rounded-full bg-amber-400 mt-1.5"></span><span>Areas of segment · derivation steps</span></li>
+            <li class="flex gap-1.5"><span class="w-1 h-1 rounded-full bg-amber-400 mt-1.5"></span><span>3 worked examples · Saga mode</span></li>
+            <li class="flex gap-1.5"><span class="w-1 h-1 rounded-full bg-cyan-400 mt-1.5"></span><span>5 PYQ practice · 2024 boards</span></li>
+            <li class="flex gap-1.5"><span class="w-1 h-1 rounded-full bg-purple-400 mt-1.5"></span><span>Audio playlist · 7 min commute</span></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-foot"><span>AIvenX · Demo deck</span><span>17</span></div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 18 · 4-step evaluator pipeline
+     ============================================================ -->
+<section class="slide" id="s18">
+  <div class="brand-corner"><img src="/assets/aivenx-mark.png" alt=""/><span>AIvenX</span></div>
+  <span class="slide-tag"><span class="dot"></span> 03 · Cortex · Evaluator pipeline</span>
+  <span class="slide-num">18 / 30</span>
+
+  <div class="m-auto max-w-7xl w-full">
+    <h2 class="h-big font-display mb-3">Four steps. <span class="gradient-text">Zero teacher heartbreak.</span></h2>
+    <p class="text-slate-400 max-w-3xl">Built around an Indian board's actual marking scheme. Step-wise rubrics, partial credit, manual override at every stage — teacher in the loop, not on the sidelines.</p>
+
+    <div class="mt-10 grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="card-glass p-6 relative">
+        <div class="absolute top-3 right-4 text-6xl font-display font-bold gradient-text opacity-30 leading-none">1</div>
+        <div class="mono text-xs uppercase tracking-wider text-cyan-300 mb-2">Upload</div>
+        <h3 class="h-mid mb-2">Drop the exam PDF</h3>
+        <p class="text-sm text-slate-400 leading-relaxed">Question paper or scanned answer sheets. Bulk-upload in one drag.</p>
+      </div>
+      <div class="card-glass p-6 relative">
+        <div class="absolute top-3 right-4 text-6xl font-display font-bold gradient-text opacity-30 leading-none">2</div>
+        <div class="mono text-xs uppercase tracking-wider text-purple-300 mb-2">Confirm</div>
+        <h3 class="h-mid mb-2">Confirm the answer key</h3>
+        <p class="text-sm text-slate-400 leading-relaxed">AI extracts questions + suggested rubric. Teacher reviews and edits.</p>
+      </div>
+      <div class="card-glass p-6 relative">
+        <div class="absolute top-3 right-4 text-6xl font-display font-bold gradient-text opacity-30 leading-none">3</div>
+        <div class="mono text-xs uppercase tracking-wider text-emerald-300 mb-2">Grade</div>
+        <h3 class="h-mid mb-2">Auto-grade with rubrics</h3>
+        <p class="text-sm text-slate-400 leading-relaxed">Step-wise marks for every paper. Partial credit. Reasoning shown to teacher.</p>
+      </div>
+      <div class="card-glass p-6 relative">
+        <div class="absolute top-3 right-4 text-6xl font-display font-bold gradient-text opacity-30 leading-none">4</div>
+        <div class="mono text-xs uppercase tracking-wider text-amber-300 mb-2">Recommend</div>
+        <h3 class="h-mid mb-2">Recommend, per student</h3>
+        <p class="text-sm text-slate-400 leading-relaxed">Weak-spot chapters + practice + audio playlist sent to each student's app.</p>
+      </div>
+    </div>
+  </div>
+  <div class="slide-foot"><span>AIvenX · Demo deck</span><span>18</span></div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 19 · QUESTION BANK + PAPER CREATOR
+     ============================================================ -->
+<section class="slide" id="s19">
+  <div class="brand-corner"><img src="/assets/aivenx-mark.png" alt=""/><span>AIvenX</span></div>
+  <span class="slide-tag"><span class="dot"></span> 03 · Cortex · Q-Bank & Papers</span>
+  <span class="slide-num">19 / 30</span>
+
+  <div class="m-auto max-w-6xl w-full">
+    <h2 class="h-big font-display">From <span class="gradient-text">150k questions</span> to a printable paper — in five minutes.</h2>
+
+    <div class="mt-9 grid grid-cols-2 gap-5">
+      <div class="card-glass p-7">
+        <div class="mono text-xs uppercase tracking-widest text-cyan-300 mb-3">Question bank</div>
+        <h3 class="h-mid mb-3">Tagged. Searchable. Curriculum-aware.</h3>
+        <ul class="space-y-2 text-sm text-slate-300">
+          <li class="flex gap-2"><span class="text-cyan-400">·</span>150,000+ questions across CBSE Classes 6–10 (every core subject)</li>
+          <li class="flex gap-2"><span class="text-cyan-400">·</span>Tagged by chapter · Bloom level · difficulty band · PYQ year</li>
+          <li class="flex gap-2"><span class="text-cyan-400">·</span>Diagrams + alt-text where applicable</li>
+          <li class="flex gap-2"><span class="text-cyan-400">·</span>Teachers can add their own and mix with AIvenX bank</li>
+        </ul>
+      </div>
+      <div class="card-glass p-7">
+        <div class="mono text-xs uppercase tracking-widest text-purple-300 mb-3">Paper creator</div>
+        <h3 class="h-mid mb-3">Filter-driven. CBSE-blueprint aligned.</h3>
+        <ul class="space-y-2 text-sm text-slate-300">
+          <li class="flex gap-2"><span class="text-purple-400">·</span>Build by section: 5 MCQs · Chapter 5 · Advanced level</li>
+          <li class="flex gap-2"><span class="text-purple-400">·</span>Auto-fill from CBSE blueprint templates</li>
+          <li class="flex gap-2"><span class="text-purple-400">·</span>Generate four shuffled variants — one click</li>
+          <li class="flex gap-2"><span class="text-purple-400">·</span>Printable CBSE-format PDF (two-column, seat #)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="slide-foot"><span>AIvenX · Demo deck</span><span>19</span></div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 20 · LESSON PLANNER + AUDIO PLAYLISTS
+     ============================================================ -->
+<section class="slide" id="s20">
+  <div class="brand-corner"><img src="/assets/aivenx-mark.png" alt=""/><span>AIvenX</span></div>
+  <span class="slide-tag"><span class="dot"></span> 03 · Cortex · Plan & Listen</span>
+  <span class="slide-num">20 / 30</span>
+
+  <div class="m-auto max-w-6xl w-full">
+    <h2 class="h-big font-display"><span class="gradient-text">Lesson plans</span> in 5 min. <span class="gradient-text">Audiobooks</span> in zero.</h2>
+
+    <div class="mt-9 grid grid-cols-2 gap-5">
+      <div class="card-glass p-7">
+        <div class="text-3xl mb-3">📋</div>
+        <div class="mono text-xs uppercase tracking-widest text-amber-300 mb-1">Lesson planner</div>
+        <h3 class="h-mid mb-3">Period-wise. Activity-aware. Differentiated.</h3>
+        <p class="text-sm text-slate-400 leading-relaxed">
+          Upload textbook PDF + chapter → Cortex generates a 7-period plan: learning objectives, activities, assessments, differentiation, cross-curricular links, and real-life application.
+        </p>
+      </div>
+      <div class="card-glass p-7">
+        <div class="text-3xl mb-3">🎧</div>
+        <div class="mono text-xs uppercase tracking-widest text-pink-300 mb-1">Audio narration playlists</div>
+        <h3 class="h-mid mb-3">Spotify-style chapter listening.</h3>
+        <p class="text-sm text-slate-400 leading-relaxed">
+          Every chapter gets a narration script + auto-generated audio. Students listen on their commute, while exercising, or to revise. Subject-wise shelves, autoplay queue, voice + speed picker — feels like Spotify, but for Class 9 Science.
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="slide-foot"><span>AIvenX · Demo deck</span><span>20</span></div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 21 · ERP — Run the school
+     ============================================================ -->
+<section class="slide" id="s21">
+  <div class="brand-corner"><img src="/assets/aivenx-mark.png" alt=""/><span>AIvenX</span></div>
+  <span class="slide-tag"><span class="dot"></span> 03 · ERP</span>
+  <span class="slide-num">21 / 30</span>
+
+  <div class="m-auto max-w-6xl w-full">
+    <div class="flex items-center gap-3 mb-3">
+      <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center"><svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg></div>
+      <div class="mono text-xs text-purple-300 uppercase tracking-widest">AIvenX · ERP</div>
+    </div>
+    <h2 class="h-big font-display">Run the school. <span class="gradient-text">Not a spreadsheet army.</span></h2>
+
+    <div class="mt-8 grid grid-cols-3 gap-4">
+      <div class="card-glass p-5">
+        <h3 class="h-mid text-base mb-2">Student & Academics</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">Master directory · enrollment · admissions · CSV bulk import · grade-promotion engine · class section + timetable builder · multi-board curriculum</p>
+      </div>
+      <div class="card-glass p-5">
+        <h3 class="h-mid text-base mb-2">Attendance</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">Manual + bulk + Face-AI live attendance (&lt;100ms / frame, 0.65 confidence). Consent audit per student. Daily roll dashboard.</p>
+      </div>
+      <div class="card-glass p-5">
+        <h3 class="h-mid text-base mb-2">Fees & Payments</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">School + transport + hostel fees. Razorpay / UPI / cheque / cash. Multi-child invoices. Sibling discounts. GST-compliant receipts. EMI option.</p>
+      </div>
+      <div class="card-glass p-5">
+        <h3 class="h-mid text-base mb-2">Exams & Grading</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">Exam schedule builder · marks entry (single + bulk) · grading systems · result cards · PDF report cards · CBSE Holistic Progress Card.</p>
+      </div>
+      <div class="card-glass p-5">
+        <h3 class="h-mid text-base mb-2">HR & Payroll</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">Staff roster · contracts · leave workflow · monthly payroll run · payslip PDFs · qualifications + bank details.</p>
+      </div>
+      <div class="card-glass p-5">
+        <h3 class="h-mid text-base mb-2">Parent home</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">Today's safety strip (gate + bus) · attendance grid · homework · upcoming exams · performance vs class · UPI fees · teacher chat.</p>
+      </div>
+    </div>
+
+    <div class="mt-7 flex flex-wrap gap-2 text-xs">
+      <span class="pill bg-white/5 border border-white/10 text-slate-300">+ Library</span>
+      <span class="pill bg-white/5 border border-white/10 text-slate-300">+ Transport</span>
+      <span class="pill bg-white/5 border border-white/10 text-slate-300">+ Hostel</span>
+      <span class="pill bg-white/5 border border-white/10 text-slate-300">+ Custom report builder</span>
+      <span class="pill bg-white/5 border border-white/10 text-slate-300">+ Inspection bundle (one-click)</span>
+      <span class="pill bg-white/5 border border-white/10 text-slate-300">+ Audit log</span>
+      <span class="pill bg-white/5 border border-white/10 text-slate-300">+ Multi-tenant Super Admin</span>
+    </div>
+  </div>
+  <div class="slide-foot"><span>AIvenX · Demo deck</span><span>21</span></div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 22 · GUARDIAN — Safety
+     ============================================================ -->
+<section class="slide" id="s22">
+  <div class="brand-corner"><img src="/assets/aivenx-mark.png" alt=""/><span>AIvenX</span></div>
+  <span class="slide-tag"><span class="dot"></span> 03 · Guardian</span>
+  <span class="slide-num">22 / 30</span>
+
+  <div class="m-auto max-w-6xl w-full">
+    <div class="flex items-center gap-3 mb-3">
+      <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center"><svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg></div>
+      <div class="mono text-xs text-emerald-300 uppercase tracking-widest">Guardian</div>
+    </div>
+    <h2 class="h-big font-display">Eyes on every <span class="gradient-text">gate</span>, every <span class="gradient-text">bus</span>, every <span class="gradient-text">child</span>.</h2>
+
+    <div class="mt-9 grid grid-cols-2 gap-5">
+      <div class="card-glass p-6">
+        <div class="text-3xl mb-3">📷</div>
+        <h3 class="h-mid mb-2">Face-AI campus gate</h3>
+        <p class="text-sm text-slate-400 leading-relaxed">Real-time recognition at school entry. &lt;100ms / frame. Auto IN/OUT events. Visitor sign-in flow. Parent gets a notification when their child enters or leaves campus.</p>
+      </div>
+      <div class="card-glass p-6">
+        <div class="text-3xl mb-3">🚌</div>
+        <h3 class="h-mid mb-2">Live bus tracking</h3>
+        <p class="text-sm text-slate-400 leading-relaxed">GPS-fed map. ETA, route status, current stop, driver name, occupancy. "Bus arriving in 12 min" pings to the parent's phone before pickup time.</p>
+      </div>
+      <div class="card-glass p-6">
+        <div class="text-3xl mb-3">🔊</div>
+        <h3 class="h-mid mb-2">In-bus aggression detection <span class="pill bg-amber-500/15 text-amber-300 ml-1 text-[9px]">BETA</span></h3>
+        <p class="text-sm text-slate-400 leading-relaxed">Audio + vision AI on monitored routes. Detects raised voices, isolation, exclusion. Alerts the bus monitor + school admin when threshold crossed.</p>
+      </div>
+      <div class="card-glass p-6">
+        <div class="text-3xl mb-3">📋</div>
+        <h3 class="h-mid mb-2">Visitor audit log</h3>
+        <p class="text-sm text-slate-400 leading-relaxed">Sign-in form: name · ID · purpose · host. 30-day retention. CSV/PDF export for compliance audits. Auto-flag on unknown faces or repeat visits.</p>
+      </div>
+    </div>
+
+    <p class="mt-7 text-xs text-slate-500 max-w-3xl">
+      Every Guardian feature is independently toggleable per tenant. DPDP-Act consent flows for face-AI; schools that prefer can use RFID-card attendance instead.
+    </p>
+  </div>
+  <div class="slide-foot"><span>AIvenX · Demo deck</span><span>22</span></div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 23 · CONNECT + MOBILE + GALLERY
+     ============================================================ -->
+<section class="slide" id="s23">
+  <div class="brand-corner"><img src="/assets/aivenx-mark.png" alt=""/><span>AIvenX</span></div>
+  <span class="slide-tag"><span class="dot"></span> 03 · Connect · Mobile · Gallery</span>
+  <span class="slide-num">23 / 30</span>
+
+  <div class="m-auto max-w-6xl w-full">
+    <h2 class="h-big font-display">Beyond the schoolyard.</h2>
+    <p class="mt-4 text-slate-400 max-w-3xl">Three more surfaces that complete the AIvenX picture.</p>
+
+    <div class="mt-9 grid grid-cols-3 gap-5">
+      <div class="card-glass p-6">
+        <div class="text-3xl mb-3">🤝</div>
+        <div class="mono text-xs uppercase tracking-widest text-pink-300 mb-1">Connect</div>
+        <h3 class="h-mid mb-2">From graduation to first job.</h3>
+        <p class="text-sm text-slate-400 leading-relaxed">Searchable alumni directory by batch + company. Mentorship matching. Reunion + job board (rolling out).</p>
+      </div>
+      <div class="card-glass p-6">
+        <div class="text-3xl mb-3">📱</div>
+        <div class="mono text-xs uppercase tracking-widest text-amber-300 mb-1">Mobile · Q4 2026</div>
+        <h3 class="h-mid mb-2">Native apps. Three audiences.</h3>
+        <p class="text-sm text-slate-400 leading-relaxed">Student, parent, teacher apps from one Expo codebase. India-data-residency push notifications. SSO with the web portal.</p>
+      </div>
+      <div class="card-glass p-6">
+        <div class="text-3xl mb-3">📷</div>
+        <div class="mono text-xs uppercase tracking-widest text-rose-300 mb-1">Gallery</div>
+        <h3 class="h-mid mb-2">School life, curated.</h3>
+        <p class="text-sm text-slate-400 leading-relaxed">Sports day, annual day, trips. Audience-scoped publishing — only Super Admin / School Admin / Principal can publish.</p>
+      </div>
+    </div>
+  </div>
+  <div class="slide-foot"><span>AIvenX · Demo deck</span><span>23</span></div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 24 · CHAPTER 04 · HOW WE SOLVE
+     ============================================================ -->
+<section class="slide section-divider" id="s24">
+  <span class="slide-num">24 / 30</span>
+  <div class="m-auto text-center">
+    <div class="mono text-sm text-emerald-300 uppercase tracking-[0.3em] mb-4">Chapter 04</div>
+    <h2 class="h-massive font-display">How we <span class="gradient-text">solve</span> it.</h2>
+    <p class="mt-6 text-lg text-slate-400 max-w-2xl mx-auto">The full AI capabilities map. Built for India. Numbers that justify the bill.</p>
+  </div>
+  <div class="slide-foot"><span>AIvenX · Demo deck</span><span>24</span></div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 25 · AI CAPABILITIES MATRIX
+     ============================================================ -->
+<section class="slide" id="s25">
+  <div class="brand-corner"><img src="/assets/aivenx-mark.png" alt=""/><span>AIvenX</span></div>
+  <span class="slide-tag"><span class="dot"></span> 04 · AI capabilities</span>
+  <span class="slide-num">25 / 30</span>
+
+  <div class="m-auto max-w-7xl w-full">
+    <h2 class="h-big font-display mb-2">Real AI. <span class="gradient-text">Not a sticker.</span></h2>
+    <p class="text-slate-400 mb-8 max-w-3xl">Eleven shipped capabilities, two in beta, four on the roadmap. Each removes a specific hour of work.</p>
+
+    <div class="grid grid-cols-3 lg:grid-cols-4 gap-3">
+      <div class="card-glass p-4"><div class="text-xl">📖</div><div class="text-[12px] font-bold mt-1.5">Chapter generation</div><div class="text-[10px] text-emerald-300 font-bold uppercase tracking-widest mt-1">Shipped</div></div>
+      <div class="card-glass p-4"><div class="text-xl">🧠</div><div class="text-[12px] font-bold mt-1.5">AI exam evaluator</div><div class="text-[10px] text-emerald-300 font-bold uppercase tracking-widest mt-1">Shipped</div></div>
+      <div class="card-glass p-4"><div class="text-xl">📋</div><div class="text-[12px] font-bold mt-1.5">AI lesson planner</div><div class="text-[10px] text-emerald-300 font-bold uppercase tracking-widest mt-1">Shipped</div></div>
+      <div class="card-glass p-4"><div class="text-xl">📷</div><div class="text-[12px] font-bold mt-1.5">Face-AI gate / attendance</div><div class="text-[10px] text-emerald-300 font-bold uppercase tracking-widest mt-1">Shipped</div></div>
+      <div class="card-glass p-4"><div class="text-xl">🎯</div><div class="text-[12px] font-bold mt-1.5">Persona quiz</div><div class="text-[10px] text-emerald-300 font-bold uppercase tracking-widest mt-1">Shipped</div></div>
+      <div class="card-glass p-4"><div class="text-xl">🎧</div><div class="text-[12px] font-bold mt-1.5">Audio narration</div><div class="text-[10px] text-emerald-300 font-bold uppercase tracking-widest mt-1">Shipped</div></div>
+      <div class="card-glass p-4"><div class="text-xl">📊</div><div class="text-[12px] font-bold mt-1.5">Class engagement heatmap</div><div class="text-[10px] text-emerald-300 font-bold uppercase tracking-widest mt-1">Shipped</div></div>
+      <div class="card-glass p-4"><div class="text-xl">📝</div><div class="text-[12px] font-bold mt-1.5">AI question paper builder</div><div class="text-[10px] text-emerald-300 font-bold uppercase tracking-widest mt-1">Shipped</div></div>
+      <div class="card-glass p-4"><div class="text-xl">🦁</div><div class="text-[12px] font-bold mt-1.5">Leo · chapter tutor</div><div class="text-[10px] text-emerald-300 font-bold uppercase tracking-widest mt-1">Shipped</div></div>
+      <div class="card-glass p-4"><div class="text-xl">💯</div><div class="text-[12px] font-bold mt-1.5">Auto-grade homework</div><div class="text-[10px] text-emerald-300 font-bold uppercase tracking-widest mt-1">Shipped</div></div>
+      <div class="card-glass p-4"><div class="text-xl">🔍</div><div class="text-[12px] font-bold mt-1.5">Per-student weak-spot</div><div class="text-[10px] text-emerald-300 font-bold uppercase tracking-widest mt-1">Shipped</div></div>
+      <div class="card-glass p-4"><div class="text-xl">🚌</div><div class="text-[12px] font-bold mt-1.5">In-bus aggression AI</div><div class="text-[10px] text-amber-300 font-bold uppercase tracking-widest mt-1">Beta</div></div>
+      <div class="card-glass p-4"><div class="text-xl">💬</div><div class="text-[12px] font-bold mt-1.5">Multi-language translation</div><div class="text-[10px] text-cyan-300 font-bold uppercase tracking-widest mt-1">Roadmap</div></div>
+      <div class="card-glass p-4"><div class="text-xl">🛟</div><div class="text-[12px] font-bold mt-1.5">Wellbeing beacon</div><div class="text-[10px] text-cyan-300 font-bold uppercase tracking-widest mt-1">Roadmap</div></div>
+      <div class="card-glass p-4"><div class="text-xl">✍️</div><div class="text-[12px] font-bold mt-1.5">Class-writing feedback</div><div class="text-[10px] text-cyan-300 font-bold uppercase tracking-widest mt-1">Roadmap</div></div>
+      <div class="card-glass p-4"><div class="text-xl">🏆</div><div class="text-[12px] font-bold mt-1.5">Living HPC dashboard</div><div class="text-[10px] text-cyan-300 font-bold uppercase tracking-widest mt-1">Roadmap</div></div>
+    </div>
+  </div>
+  <div class="slide-foot"><span>AIvenX · Demo deck</span><span>25</span></div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 26 · BUILT FOR INDIA
+     ============================================================ -->
+<section class="slide ink-grad" id="s26">
+  <div class="brand-corner"><img src="/assets/aivenx-mark.png" alt=""/><span>AIvenX</span></div>
+  <span class="slide-tag"><span class="dot"></span> 04 · Built for India</span>
+  <span class="slide-num">26 / 30</span>
+
+  <div class="m-auto max-w-6xl w-full">
+    <h2 class="h-big font-display mb-2">Not localized. <span class="gradient-text">Engineered for India.</span></h2>
+    <p class="text-slate-400 max-w-3xl mb-9">Designed in India, for Indian boards, fees, family structures, languages, and the legal frame.</p>
+
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="card-glass p-5"><div class="text-2xl mb-2">⚖️</div><h3 class="text-base font-bold mb-1">DPDP Act 2023</h3><p class="text-xs text-slate-400 leading-relaxed">Minor consent · India data residency · right-to-erasure · audit-grade logging.</p></div>
+      <div class="card-glass p-5"><div class="text-2xl mb-2">📚</div><h3 class="text-base font-bold mb-1">NEP 2020 · HPC</h3><p class="text-xs text-slate-400 leading-relaxed">360° Holistic Progress Card · academic + co-curricular + life skills.</p></div>
+      <div class="card-glass p-5"><div class="text-2xl mb-2">🏫</div><h3 class="text-base font-bold mb-1">RTE · RPwD</h3><p class="text-xs text-slate-400 leading-relaxed">Section 12 quotas · inclusive-education plans · attendance compliance.</p></div>
+      <div class="card-glass p-5"><div class="text-2xl mb-2">📊</div><h3 class="text-base font-bold mb-1">CBSE · ICSE · IB · State</h3><p class="text-xs text-slate-400 leading-relaxed">Multi-board curriculum scaffold · 10-yr PYQ archive · sample-paper aligned.</p></div>
+      <div class="card-glass p-5"><div class="text-2xl mb-2">🇮🇳</div><h3 class="text-base font-bold mb-1">22 official languages</h3><p class="text-xs text-slate-400 leading-relaxed">Hindi · Tamil · Telugu · Bengali · Marathi · Gujarati · Kannada (rolling out).</p></div>
+      <div class="card-glass p-5"><div class="text-2xl mb-2">💸</div><h3 class="text-base font-bold mb-1">UPI-first fees</h3><p class="text-xs text-slate-400 leading-relaxed">Multi-child invoices · sibling discounts · EMI · GST receipts.</p></div>
+      <div class="card-glass p-5"><div class="text-2xl mb-2">🌐</div><h3 class="text-base font-bold mb-1">Tier-2 / Tier-3 ready</h3><p class="text-xs text-slate-400 leading-relaxed">Works on 3G · low-bandwidth modes · text fallback for poor connectivity.</p></div>
+      <div class="card-glass p-5"><div class="text-2xl mb-2">👨‍👩‍👦‍👦</div><h3 class="text-base font-bold mb-1">Joint-family pods</h3><p class="text-xs text-slate-400 leading-relaxed">Mother · father · grandparent · driver — role-scoped permissions per parent.</p></div>
+    </div>
+  </div>
+  <div class="slide-foot"><span>AIvenX · Demo deck</span><span>26</span></div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 27 · ROI / NUMBERS
+     ============================================================ -->
+<section class="slide" id="s27">
+  <div class="brand-corner"><img src="/assets/aivenx-mark.png" alt=""/><span>AIvenX</span></div>
+  <span class="slide-tag"><span class="dot"></span> 04 · Numbers</span>
+  <span class="slide-num">27 / 30</span>
+
+  <div class="m-auto max-w-6xl w-full">
+    <h2 class="h-big font-display mb-3">The numbers your bursar will ask for.</h2>
+    <p class="text-slate-400 max-w-3xl mb-9">Conservative estimates from our pilot schools. Independent of size.</p>
+
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+      <div class="card-glass p-5">
+        <div class="mono text-[10px] uppercase tracking-widest text-cyan-300">Faster evaluation</div>
+        <div class="text-5xl font-bold gradient-text mt-2">80%</div>
+        <div class="text-xs text-slate-400 mt-2">vs. hand-grading</div>
+      </div>
+      <div class="card-glass p-5">
+        <div class="mono text-[10px] uppercase tracking-widest text-cyan-300">Per paper</div>
+        <div class="text-5xl font-bold gradient-text mt-2">5 min</div>
+        <div class="text-xs text-slate-400 mt-2">40 papers in &lt; 1 hr</div>
+      </div>
+      <div class="card-glass p-5">
+        <div class="mono text-[10px] uppercase tracking-widest text-cyan-300">Hours back to teachers</div>
+        <div class="text-5xl font-bold gradient-text mt-2">6–8</div>
+        <div class="text-xs text-slate-400 mt-2">per teacher / week</div>
+      </div>
+      <div class="card-glass p-5">
+        <div class="mono text-[10px] uppercase tracking-widest text-cyan-300">Vendors collapsed</div>
+        <div class="text-5xl font-bold gradient-text mt-2">6 → 1</div>
+        <div class="text-xs text-slate-400 mt-2">one login · one bill</div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-3 gap-4">
+      <div class="card-stark p-5">
+        <div class="mono text-[10px] uppercase tracking-widest text-purple-300">Question bank</div>
+        <div class="text-3xl font-bold gradient-text mt-1.5">150k+</div>
+        <div class="text-xs text-slate-400 mt-1">tagged · searchable</div>
+      </div>
+      <div class="card-stark p-5">
+        <div class="mono text-[10px] uppercase tracking-widest text-purple-300">Chapter generation</div>
+        <div class="text-3xl font-bold gradient-text mt-1.5">~30 sec</div>
+        <div class="text-xs text-slate-400 mt-1">per chapter, 4 modes</div>
+      </div>
+      <div class="card-stark p-5">
+        <div class="mono text-[10px] uppercase tracking-widest text-purple-300">Face-AI latency</div>
+        <div class="text-3xl font-bold gradient-text mt-1.5">&lt;100ms</div>
+        <div class="text-xs text-slate-400 mt-1">per recognition frame</div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-foot"><span>AIvenX · Demo deck</span><span>27</span></div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 28 · EDITIONS
+     ============================================================ -->
+<section class="slide ink-grad" id="s28">
+  <div class="brand-corner"><img src="/assets/aivenx-mark.png" alt=""/><span>AIvenX</span></div>
+  <span class="slide-tag"><span class="dot"></span> 05 · Editions</span>
+  <span class="slide-num">28 / 30</span>
+
+  <div class="m-auto max-w-7xl w-full">
+    <h2 class="h-big font-display mb-2">Three editions. <span class="gradient-text">Pick what fits.</span></h2>
+    <p class="text-slate-400 mb-9 max-w-3xl">No setup fee. Pilot for one term, then commit. Pricing tailored on the call by board, headcount, and modules.</p>
+
+    <div class="grid grid-cols-3 gap-4">
+      <div class="card-glass p-6">
+        <div class="mono text-[10px] uppercase tracking-widest text-slate-400 font-bold mb-1">Edition</div>
+        <div class="font-display font-bold text-2xl mb-1">Starter</div>
+        <p class="text-xs text-slate-500 mb-5">Schools running ERP for the first time</p>
+        <ul class="space-y-1.5 text-xs text-slate-300">
+          <li class="flex gap-1.5"><span class="text-cyan-400">✓</span>Students · academics · attendance</li>
+          <li class="flex gap-1.5"><span class="text-cyan-400">✓</span>Fees · HR · communication</li>
+          <li class="flex gap-1.5"><span class="text-cyan-400">✓</span>Exams · report cards</li>
+          <li class="flex gap-1.5"><span class="text-cyan-400">✓</span>Parent home + child detail</li>
+          <li class="flex gap-1.5"><span class="text-cyan-400">✓</span>Gallery · announcements</li>
+        </ul>
+      </div>
+
+      <div class="relative">
+        <div class="absolute -inset-1 rounded-2xl bg-gradient-to-br from-brand-cyan via-brand-purple to-brand-pink blur opacity-50"></div>
+        <div class="relative card-glass p-6">
+          <div class="flex items-center justify-between mb-1">
+            <div class="mono text-[10px] uppercase tracking-widest text-cyan-300 font-bold">Edition</div>
+            <span class="pill bg-gradient-to-r from-brand-cyan to-brand-purple text-white text-[9px]">Most schools</span>
+          </div>
+          <div class="font-display font-bold text-2xl mb-1">Standard</div>
+          <p class="text-xs text-slate-500 mb-5">Content + AI evaluator. Curriculum done for you.</p>
+          <ul class="space-y-1.5 text-xs text-slate-300">
+            <li class="flex gap-1.5"><span class="text-cyan-400">✓</span>Everything in Starter</li>
+            <li class="flex gap-1.5"><span class="text-cyan-400">✓</span><b>Pre-built chapter library</b> · 4 personas</li>
+            <li class="flex gap-1.5"><span class="text-cyan-400">✓</span>Audio narration playlists</li>
+            <li class="flex gap-1.5"><span class="text-cyan-400">✓</span>150k question bank + paper creator</li>
+            <li class="flex gap-1.5"><span class="text-cyan-400">✓</span><b>AI evaluator</b> · handwriting → grade</li>
+            <li class="flex gap-1.5"><span class="text-cyan-400">✓</span>Library · Transport · Hostel</li>
+            <li class="flex gap-1.5 opacity-50"><span class="text-slate-500">×</span><span class="text-slate-500">Cortex Studio chapter generator</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card-glass p-6">
+        <div class="mono text-[10px] uppercase tracking-widest text-slate-400 font-bold mb-1">Edition</div>
+        <div class="font-display font-bold text-2xl mb-1">Enterprise</div>
+        <p class="text-xs text-slate-500 mb-5">Generate your own content. Run safety-critical ops.</p>
+        <ul class="space-y-1.5 text-xs text-slate-300">
+          <li class="flex gap-1.5"><span class="text-pink-400">✓</span>Everything in Standard</li>
+          <li class="flex gap-1.5"><span class="text-pink-400">✓</span><b>Cortex Studio</b> chapter generator</li>
+          <li class="flex gap-1.5"><span class="text-pink-400">✓</span>AI lesson planner</li>
+          <li class="flex gap-1.5"><span class="text-pink-400">✓</span>Guardian · Face-AI gate · Bus AI</li>
+          <li class="flex gap-1.5"><span class="text-pink-400">✓</span>In-bus aggression detection</li>
+          <li class="flex gap-1.5"><span class="text-pink-400">✓</span>Connect alumni network</li>
+          <li class="flex gap-1.5"><span class="text-pink-400">✓</span>Mobile apps (Q4 2026 pilot)</li>
+          <li class="flex gap-1.5"><span class="text-pink-400">✓</span>Dedicated success manager</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="slide-foot"><span>AIvenX · Demo deck</span><span>28</span></div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 29 · LIVE-DEMO AGENDA
+     ============================================================ -->
+<section class="slide" id="s29">
+  <div class="brand-corner"><img src="/assets/aivenx-mark.png" alt=""/><span>AIvenX</span></div>
+  <span class="slide-tag"><span class="dot"></span> 05 · The live demo</span>
+  <span class="slide-num">29 / 30</span>
+
+  <div class="m-auto max-w-6xl w-full">
+    <h2 class="h-big font-display mb-2">What you'll see in the live <span class="gradient-text">30-minute walkthrough</span>.</h2>
+    <p class="text-slate-400 max-w-3xl mb-9">Send us a recent answer sheet (anonymized). We'll grade it live, generate the recommendations, and walk your principal through the parent home — on your data.</p>
+
+    <ol class="space-y-3">
+      <li class="card-glass p-4 flex items-start gap-4">
+        <div class="text-3xl font-display font-bold gradient-text w-12 shrink-0 leading-none">01</div>
+        <div>
+          <div class="font-bold text-base">Cortex generates a chapter for your grade-10 maths class</div>
+          <div class="text-xs text-slate-400 mt-1">~30 sec · 4 personas side-by-side · diagrams + audio narration auto-attached.</div>
+        </div>
+        <div class="ml-auto text-xs text-cyan-300 mono">5 min</div>
+      </li>
+      <li class="card-glass p-4 flex items-start gap-4">
+        <div class="text-3xl font-display font-bold gradient-text w-12 shrink-0 leading-none">02</div>
+        <div>
+          <div class="font-bold text-base">We assemble a 30-mark practice paper from the question bank</div>
+          <div class="text-xs text-slate-400 mt-1">CBSE blueprint · filter-driven · printable PDF · four shuffled variants.</div>
+        </div>
+        <div class="ml-auto text-xs text-cyan-300 mono">3 min</div>
+      </li>
+      <li class="card-glass p-4 flex items-start gap-4">
+        <div class="text-3xl font-display font-bold gradient-text w-12 shrink-0 leading-none">03</div>
+        <div>
+          <div class="font-bold text-base"><span class="gradient-text">Hero moment:</span> AI Evaluator grades a real handwritten paper</div>
+          <div class="text-xs text-slate-400 mt-1">You drop the PDF · we extract questions + rubric · auto-grade · per-student weak-spot recommendations.</div>
+        </div>
+        <div class="ml-auto text-xs text-cyan-300 mono">8 min</div>
+      </li>
+      <li class="card-glass p-4 flex items-start gap-4">
+        <div class="text-3xl font-display font-bold gradient-text w-12 shrink-0 leading-none">04</div>
+        <div>
+          <div class="font-bold text-base">Parent home walk-through</div>
+          <div class="text-xs text-slate-400 mt-1">Today's safety strip · bus tracker · attendance grid · weak-spots vs class · UPI fee payment.</div>
+        </div>
+        <div class="ml-auto text-xs text-cyan-300 mono">5 min</div>
+      </li>
+      <li class="card-glass p-4 flex items-start gap-4">
+        <div class="text-3xl font-display font-bold gradient-text w-12 shrink-0 leading-none">05</div>
+        <div>
+          <div class="font-bold text-base">Guardian gate + bus tour</div>
+          <div class="text-xs text-slate-400 mt-1">Live Face-AI scan · GPS map · in-bus AI alert demo · visitor audit log export.</div>
+        </div>
+        <div class="ml-auto text-xs text-cyan-300 mono">5 min</div>
+      </li>
+      <li class="card-glass p-4 flex items-start gap-4">
+        <div class="text-3xl font-display font-bold gradient-text w-12 shrink-0 leading-none">06</div>
+        <div>
+          <div class="font-bold text-base">Q&amp;A + onboarding plan for your school</div>
+          <div class="text-xs text-slate-400 mt-1">Edition fit · pricing on the call · 1-term pilot terms · migration plan from your current ERP.</div>
+        </div>
+        <div class="ml-auto text-xs text-cyan-300 mono">4 min</div>
+      </li>
+    </ol>
+  </div>
+  <div class="slide-foot"><span>AIvenX · Demo deck</span><span>29</span></div>
+</section>
+
+
+<!-- ============================================================
+     SLIDE 30 · CONTACT — final
+     ============================================================ -->
+<section class="slide section-divider grid-bg" id="s30">
+  <div class="brand-corner"><img src="/assets/aivenx-mark.png" alt=""/><span>AIvenX</span></div>
+  <span class="slide-tag"><span class="dot"></span> 05 · Contact us</span>
+  <span class="slide-num">30 / 30</span>
+
+  <div class="m-auto max-w-5xl text-center">
+    <h2 class="h-massive font-display">See it grade<br/><span class="gradient-text">your school's last paper</span>.</h2>
+    <p class="mt-7 text-lg text-slate-300 max-w-2xl mx-auto leading-relaxed">
+      Reply to our email, or reach us directly. We block 30 minutes for your principal + leadership team and walk through everything in this deck — live, on your data.
+    </p>
+
+    <div class="mt-10 grid grid-cols-2 max-w-3xl mx-auto gap-4">
+      <a href="mailto:hello@aivenx.co.in" class="card-glass p-6 hover:border-cyan-500/40 transition-colors">
+        <div class="mono text-xs uppercase tracking-widest text-cyan-300 mb-2">Email</div>
+        <div class="font-display font-bold text-2xl">hello@aivenx.co.in</div>
+      </a>
+      <div class="card-glass p-6">
+        <div class="mono text-xs uppercase tracking-widest text-cyan-300 mb-2">Headquarters</div>
+        <div class="font-display font-bold text-2xl">Hyderabad, Telangana</div>
+        <div class="text-xs text-slate-400 mt-1">India</div>
+      </div>
+      <div class="card-glass p-6">
+        <div class="mono text-xs uppercase tracking-widest text-cyan-300 mb-2">Web</div>
+        <div class="font-display font-bold text-xl">aivenx.co.in</div>
+      </div>
+      <div class="card-glass p-6">
+        <div class="mono text-xs uppercase tracking-widest text-cyan-300 mb-2">Demo terms</div>
+        <div class="text-sm text-slate-200">30-min walkthrough · NDA-friendly · Pilot for 1 term · No setup fees</div>
+      </div>
+    </div>
+
+    <p class="mt-12 text-xs text-slate-500">© 2026 AIvenX Technologies Pvt. Ltd. · Made in India · Demo deck v2 · April 2026</p>
+  </div>
+  <div class="slide-foot"><span>AIvenX · Demo deck</span><span>30</span></div>
+</section>
+
+
+<!-- ============================================================
+     DECK SCRIPTS
+     ============================================================ -->
 <script>
-  const slides = document.querySelectorAll('.slide');
-  const total = slides.length;
-  document.getElementById('totalIdx').textContent = total;
-  let cur = 0;
-
-  function show(i) {
-    cur = Math.max(0, Math.min(total - 1, i));
-    slides.forEach((s, idx) => s.classList.toggle('active', idx === cur));
-    document.getElementById('curIdx').textContent = cur + 1;
-    location.hash = '#' + (cur + 1);
-  }
-  function next() { show(cur + 1); }
-  function prev() { show(cur - 1); }
-  function toggleHelp() { document.getElementById('helpOverlay').classList.toggle('show'); }
-
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { next(); e.preventDefault(); }
-    else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { prev(); e.preventDefault(); }
-    else if (e.key === 'Home') { show(0); }
-    else if (e.key === 'End') { show(total - 1); }
-    else if (e.key === 'f' || e.key === 'F') { document.documentElement.requestFullscreen?.(); }
-    else if (e.key === 'p' || e.key === 'P') { window.print(); }
-    else if (e.key === '?' || e.key === '/') { toggleHelp(); }
-    else if (e.key === 'Escape') { document.getElementById('helpOverlay').classList.remove('show'); }
+  // === Build dot navigation ===
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const nav = document.getElementById('dot-nav');
+  const counter = document.getElementById('slide-counter');
+  slides.forEach((s, i) => {
+    const a = document.createElement('a');
+    a.href = '#' + s.id;
+    a.title = `Slide ${i + 1}`;
+    nav.appendChild(a);
   });
+  const dots = Array.from(nav.querySelectorAll('a'));
 
-  const params = new URLSearchParams(location.search);
-  const school = params.get('school');
-  if (school) document.getElementById('schoolName').textContent = school;
+  // === Active dot + slide counter, via IO ===
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      if (!e.isIntersecting) return;
+      const idx = slides.indexOf(e.target);
+      dots.forEach((d, i) => d.classList.toggle('is-active', i === idx));
+      counter.textContent = String(idx + 1).padStart(2, '0') + ' / ' + String(slides.length).padStart(2, '0');
+    });
+  }, { threshold: 0.55 });
+  slides.forEach((s) => io.observe(s));
 
-  const hashN = parseInt(location.hash.slice(1));
-  if (hashN >= 1 && hashN <= total) show(hashN - 1);
+  // === Keyboard navigation: ↑/↓, PgUp/PgDn ===
+  let cur = 0;
+  document.addEventListener('keydown', (e) => {
+    const tag = (e.target && e.target.tagName) || '';
+    if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+    let target = null;
+    if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') target = Math.min(slides.length - 1, cur + 1);
+    if (e.key === 'ArrowUp'   || e.key === 'PageUp')   target = Math.max(0, cur - 1);
+    if (e.key === 'Home')                                target = 0;
+    if (e.key === 'End')                                 target = slides.length - 1;
+    if (target == null) return;
+    e.preventDefault();
+    cur = target;
+    slides[cur].scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+  // Track which slide is current for keyboard math
+  io.disconnect && io.disconnect();
+  const io2 = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      if (!e.isIntersecting) return;
+      cur = slides.indexOf(e.target);
+      dots.forEach((d, i) => d.classList.toggle('is-active', i === cur));
+      counter.textContent = String(cur + 1).padStart(2, '0') + ' / ' + String(slides.length).padStart(2, '0');
+    });
+  }, { threshold: 0.55 });
+  slides.forEach((s) => io2.observe(s));
 </script>
 
 </body>
