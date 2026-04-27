@@ -73,7 +73,7 @@ function brandCorner(s, dark = false) {
   }
   s.addText("AIvenX", {
     x: 1.0, y: 0.32, w: 2, h: 0.45,
-    fontFace: "Inter", fontSize: 16, bold: true, color: dark ? WHITE : INK,
+    fontFace: "Calibri", fontSize: 16, bold: true, color: dark ? WHITE : INK,
   });
 }
 
@@ -81,7 +81,7 @@ function tag(s, label, dark = false) {
   // Section + slide indicator tag in top-left
   s.addText(`●  ${label}`, {
     x: 0.45, y: 0.85, w: 6, h: 0.32,
-    fontFace: "Inter", fontSize: 10, bold: true,
+    fontFace: "Calibri", fontSize: 10, bold: true,
     color: dark ? CYAN : PURPLE, charSpacing: 6,
   });
 }
@@ -89,7 +89,7 @@ function tag(s, label, dark = false) {
 function slideNum(s, n, total = 30, dark = false) {
   s.addText(`${String(n).padStart(2, "0")} / ${String(total).padStart(2, "0")}`, {
     x: 11.6, y: 0.32, w: 1.5, h: 0.32,
-    fontFace: "Inter", fontSize: 10,
+    fontFace: "Calibri", fontSize: 10,
     color: dark ? SLATE400 : SLATE500, align: "right", charSpacing: 4,
   });
 }
@@ -97,12 +97,12 @@ function slideNum(s, n, total = 30, dark = false) {
 function pageFoot(s, n, dark = false) {
   s.addText("AIvenX · Demo deck", {
     x: 0.45, y: 7.05, w: 6, h: 0.3,
-    fontFace: "Inter", fontSize: 9,
+    fontFace: "Calibri", fontSize: 9,
     color: dark ? SLATE400 : SLATE500,
   });
   s.addText(String(n).padStart(2, "0"), {
     x: 11.6, y: 7.05, w: 1.5, h: 0.3,
-    fontFace: "Inter", fontSize: 9,
+    fontFace: "Calibri", fontSize: 9,
     color: dark ? SLATE400 : SLATE500, align: "right",
   });
 }
@@ -124,7 +124,7 @@ function bigTitle(s, lines, opts = {}) {
       options: {
         color: line.color || (opts.dark ? WHITE : INK),
         bold: true,
-        fontFace: "Inter",
+        fontFace: "Calibri",
         fontSize: opts.size || 40,
       },
     });
@@ -139,7 +139,7 @@ function bigTitle(s, lines, opts = {}) {
 function eyebrowSmall(s, text, color, x = 0.5, y = 1.4) {
   s.addText(text, {
     x, y, w: 6, h: 0.3,
-    fontFace: "Inter", fontSize: 10, bold: true,
+    fontFace: "Calibri", fontSize: 10, bold: true,
     color, charSpacing: 6,
   });
 }
@@ -147,7 +147,7 @@ function eyebrowSmall(s, text, color, x = 0.5, y = 1.4) {
 function lede(s, text, opts = {}) {
   s.addText(text, {
     x: opts.x || 0.5, y: opts.y || 4.7, w: opts.w || 11.5, h: opts.h || 1.2,
-    fontFace: "Inter", fontSize: opts.size || 16,
+    fontFace: "Calibri", fontSize: opts.size || 16,
     color: opts.dark ? SLATE300 : SLATE600,
     lineSpacingMultiple: 1.35,
   });
@@ -180,7 +180,7 @@ function pill(s, x, y, w, text, opts = {}) {
   });
   s.addText(text, {
     x, y, w, h: 0.32,
-    fontFace: "Inter", fontSize: 9, bold: true,
+    fontFace: "Calibri", fontSize: 9, bold: true,
     color: opts.color || SLATE600, align: "center", valign: "middle",
     charSpacing: 4,
   });
@@ -191,18 +191,18 @@ function sectionDivider({ chapter, title, gradient, sub, slideNo }) {
   darkBg(s);
   s.addText(`CHAPTER ${chapter}`, {
     x: 0.5, y: 2.3, w: 12.3, h: 0.4,
-    fontFace: "Inter", fontSize: 14, bold: true,
+    fontFace: "Calibri", fontSize: 14, bold: true,
     color: gradient || CYAN, align: "center", charSpacing: 8,
   });
   s.addText(title, {
     x: 0.5, y: 2.85, w: 12.3, h: 2.3,
-    fontFace: "Inter", fontSize: 72, bold: true,
+    fontFace: "Calibri", fontSize: 72, bold: true,
     color: WHITE, align: "center",
   });
   if (sub) {
     s.addText(sub, {
       x: 1.5, y: 5.5, w: 10.3, h: 1.0,
-      fontFace: "Inter", fontSize: 18,
+      fontFace: "Calibri", fontSize: 18,
       color: SLATE300, align: "center",
     });
   }
@@ -220,28 +220,28 @@ function sectionDivider({ chapter, title, gradient, sub, slideNo }) {
   if (MARK_OK) s.addImage({ path: MARK, x: 0.5, y: 0.4, w: 0.6, h: 0.6 });
   s.addText("AIvenX", {
     x: 1.2, y: 0.4, w: 4, h: 0.6,
-    fontFace: "Inter", fontSize: 22, bold: true, color: WHITE,
+    fontFace: "Calibri", fontSize: 22, bold: true, color: WHITE,
   });
   s.addText("DEMO DECK FOR SCHOOL LEADERSHIP", {
     x: 1.2, y: 0.95, w: 8, h: 0.3,
-    fontFace: "Inter", fontSize: 10, color: SLATE400, charSpacing: 8,
+    fontFace: "Calibri", fontSize: 10, color: SLATE400, charSpacing: 8,
   });
 
   // Hero
   s.addText("Prepared for the leadership team of [Your school's name]", {
     x: 0.5, y: 2.2, w: 12.3, h: 0.4,
-    fontFace: "Inter", fontSize: 12, bold: true, color: CYAN, align: "center",
+    fontFace: "Calibri", fontSize: 12, bold: true, color: CYAN, align: "center",
   });
   s.addText("The AI-native\nschool OS.", {
     x: 0.5, y: 2.7, w: 12.3, h: 3.0,
-    fontFace: "Inter", fontSize: 80, bold: true, color: WHITE,
+    fontFace: "Calibri", fontSize: 80, bold: true, color: WHITE,
     align: "center", lineSpacingMultiple: 0.95,
   });
   s.addText(
     "A walkthrough of what we'll show you in the live 30-minute demo.\nRead it whenever you have 8 minutes. Then book the call.",
     {
       x: 0.5, y: 5.4, w: 12.3, h: 1.0,
-      fontFace: "Inter", fontSize: 18, color: SLATE300, align: "center",
+      fontFace: "Calibri", fontSize: 18, color: SLATE300, align: "center",
       lineSpacingMultiple: 1.4,
     }
   );
@@ -249,7 +249,7 @@ function sectionDivider({ chapter, title, gradient, sub, slideNo }) {
   // Footer line
   s.addText("Demo deck v2  ·  April 2026  ·  Hyderabad, India  ·  aivenx.co.in", {
     x: 0.5, y: 7.0, w: 12.3, h: 0.3,
-    fontFace: "Inter", fontSize: 10, color: SLATE400, align: "center",
+    fontFace: "Calibri", fontSize: 10, color: SLATE400, align: "center",
   });
   slideNum(s, 1, 30, true);
 }
@@ -272,7 +272,7 @@ function sectionDivider({ chapter, title, gradient, sub, slideNo }) {
     { text: " from one login.", options: { color: WHITE } },
   ], {
     x: 0.5, y: 1.6, w: 12.3, h: 2.6,
-    fontFace: "Inter", fontSize: 36, bold: true,
+    fontFace: "Calibri", fontSize: 36, bold: true,
     lineSpacingMultiple: 1.15,
   });
 
@@ -280,7 +280,7 @@ function sectionDivider({ chapter, title, gradient, sub, slideNo }) {
     "This deck is the long version. Everything in the live demo is shown here in still frames. If our story sounds aligned with where your school is heading, the live walkthrough will make it concrete on your data.",
     {
       x: 0.5, y: 4.4, w: 11.5, h: 1.5,
-      fontFace: "Inter", fontSize: 14, color: SLATE300, lineSpacingMultiple: 1.4,
+      fontFace: "Calibri", fontSize: 14, color: SLATE300, lineSpacingMultiple: 1.4,
     }
   );
 
@@ -295,11 +295,11 @@ function sectionDivider({ chapter, title, gradient, sub, slideNo }) {
     darkCard(s, x, 5.95, 4, 1.0);
     s.addText(n, {
       x: x + 0.3, y: 6.0, w: 3.4, h: 0.55,
-      fontFace: "Inter", fontSize: 28, bold: true, color: CYAN,
+      fontFace: "Calibri", fontSize: 28, bold: true, color: CYAN,
     });
     s.addText(label, {
       x: x + 0.3, y: 6.55, w: 3.4, h: 0.4,
-      fontFace: "Inter", fontSize: 11, color: SLATE300, charSpacing: 4,
+      fontFace: "Calibri", fontSize: 11, color: SLATE300, charSpacing: 4,
     });
   });
 }
@@ -329,15 +329,15 @@ function sectionDivider({ chapter, title, gradient, sub, slideNo }) {
     darkCard(s, x, 4.0, 2.45, 2.3);
     s.addText(`CHAPTER ${n}`, {
       x: x + 0.2, y: 4.2, w: 2.1, h: 0.3,
-      fontFace: "Inter", fontSize: 9, bold: true, color, charSpacing: 6,
+      fontFace: "Calibri", fontSize: 9, bold: true, color, charSpacing: 6,
     });
     s.addText(title, {
       x: x + 0.2, y: 4.55, w: 2.1, h: 1.0,
-      fontFace: "Inter", fontSize: 18, bold: true, color: WHITE,
+      fontFace: "Calibri", fontSize: 18, bold: true, color: WHITE,
     });
     s.addText(range, {
       x: x + 0.2, y: 5.85, w: 2.1, h: 0.3,
-      fontFace: "Inter", fontSize: 10, color: SLATE400,
+      fontFace: "Calibri", fontSize: 10, color: SLATE400,
     });
   });
 }
@@ -367,14 +367,14 @@ sectionDivider({ chapter: "01", title: "Who we are.", gradient: CYAN,
     "AIvenX is built by educators, technologists, and parents who lived the school-software pain firsthand. We aren't bolting AI onto a legacy ERP — we're building the school operating system the way we wished it existed when our own kids started Class 1.",
     {
       x: 0.5, y: 4.2, w: 7.3, h: 1.6,
-      fontFace: "Inter", fontSize: 14, color: SLATE700, lineSpacingMultiple: 1.4,
+      fontFace: "Calibri", fontSize: 14, color: SLATE700, lineSpacingMultiple: 1.4,
     }
   );
   s.addText(
     "Designed in Hyderabad, Telangana — engineered for every Indian board, shipped with NEP 2020 and DPDP Act compliance baked in.",
     {
       x: 0.5, y: 5.85, w: 7.3, h: 1.0,
-      fontFace: "Inter", fontSize: 12, color: SLATE600, lineSpacingMultiple: 1.4,
+      fontFace: "Calibri", fontSize: 12, color: SLATE600, lineSpacingMultiple: 1.4,
     }
   );
 
@@ -382,7 +382,7 @@ sectionDivider({ chapter: "01", title: "Who we are.", gradient: CYAN,
   rectCard(s, 8.2, 1.5, 4.6, 5.3, { fill: SLATE50 });
   s.addText("IDENTITY AT A GLANCE", {
     x: 8.4, y: 1.7, w: 4.2, h: 0.3,
-    fontFace: "Inter", fontSize: 9, bold: true, color: CYAN, charSpacing: 6,
+    fontFace: "Calibri", fontSize: 9, bold: true, color: CYAN, charSpacing: 6,
   });
   const idRows = [
     ["Founded",        "2025"],
@@ -396,11 +396,11 @@ sectionDivider({ chapter: "01", title: "Who we are.", gradient: CYAN,
     const y = 2.2 + i * 0.75;
     s.addText(k, {
       x: 8.4, y, w: 1.7, h: 0.4,
-      fontFace: "Inter", fontSize: 11, color: SLATE500,
+      fontFace: "Calibri", fontSize: 11, color: SLATE500,
     });
     s.addText(v, {
       x: 10.1, y, w: 2.7, h: 0.4,
-      fontFace: "Inter", fontSize: 11, bold: true, color: INK, align: "right",
+      fontFace: "Calibri", fontSize: 11, bold: true, color: INK, align: "right",
     });
   });
 }
@@ -419,7 +419,7 @@ sectionDivider({ chapter: "01", title: "Who we are.", gradient: CYAN,
   ], { y: 1.4, size: 32, h: 1.6 });
   s.addText("When we have to choose between two paths, these are the tie-breakers.", {
     x: 0.5, y: 3.1, w: 12.3, h: 0.4,
-    fontFace: "Inter", fontSize: 13, color: SLATE600,
+    fontFace: "Calibri", fontSize: 13, color: SLATE600,
   });
 
   const ps = [
@@ -437,15 +437,15 @@ sectionDivider({ chapter: "01", title: "Who we are.", gradient: CYAN,
     rectCard(s, x, 3.9, 3.05, 3.0);
     s.addText(`PRINCIPLE ${n}`, {
       x: x + 0.2, y: 4.05, w: 2.7, h: 0.3,
-      fontFace: "Inter", fontSize: 9, bold: true, color, charSpacing: 6,
+      fontFace: "Calibri", fontSize: 9, bold: true, color, charSpacing: 6,
     });
     s.addText(title, {
       x: x + 0.2, y: 4.4, w: 2.7, h: 1.0,
-      fontFace: "Inter", fontSize: 14, bold: true, color: INK,
+      fontFace: "Calibri", fontSize: 14, bold: true, color: INK,
     });
     s.addText(body, {
       x: x + 0.2, y: 5.45, w: 2.7, h: 1.4,
-      fontFace: "Inter", fontSize: 10, color: SLATE600, lineSpacingMultiple: 1.3,
+      fontFace: "Calibri", fontSize: 10, color: SLATE600, lineSpacingMultiple: 1.3,
     });
   });
 }
@@ -474,7 +474,7 @@ sectionDivider({ chapter: "02", title: "The issues.", gradient: PURPLE,
   // Left column — list
   s.addText("TODAY'S REALITY", {
     x: 0.5, y: 4.0, w: 6, h: 0.3,
-    fontFace: "Inter", fontSize: 10, bold: true, color: ROSE, charSpacing: 6,
+    fontFace: "Calibri", fontSize: 10, bold: true, color: ROSE, charSpacing: 6,
   });
   const reality = [
     "× One ERP for fees",
@@ -487,33 +487,33 @@ sectionDivider({ chapter: "02", title: "The issues.", gradient: PURPLE,
   reality.forEach((r, i) => {
     s.addText(r, {
       x: 0.5, y: 4.4 + i * 0.32, w: 6, h: 0.3,
-      fontFace: "Inter", fontSize: 13, color: SLATE700,
+      fontFace: "Calibri", fontSize: 13, color: SLATE700,
     });
   });
   s.addText("= 5–7 logins. Renewals every quarter.", {
     x: 0.5, y: 6.5, w: 6, h: 0.4,
-    fontFace: "Inter", fontSize: 13, bold: true, color: INK, italic: true,
+    fontFace: "Calibri", fontSize: 13, bold: true, color: INK, italic: true,
   });
 
   // Right card
   rectCard(s, 7.0, 4.0, 5.8, 3.0, { fill: INK });
   s.addText("5–7", {
     x: 7.3, y: 4.1, w: 5.2, h: 1.4,
-    fontFace: "Inter", fontSize: 90, bold: true, color: CYAN,
+    fontFace: "Calibri", fontSize: 90, bold: true, color: CYAN,
   });
   s.addText("platforms a school logs into every day", {
     x: 7.3, y: 5.55, w: 5.2, h: 0.4,
-    fontFace: "Inter", fontSize: 13, color: SLATE100,
+    fontFace: "Calibri", fontSize: 13, color: SLATE100,
   });
   // Mini stats
   s.addShape("roundRect", { x: 7.3, y: 6.05, w: 2.5, h: 0.85,
     fill: { color: WHITE, transparency: 92 }, line: { type: "none" }, rectRadius: 0.08 });
-  s.addText("4 hr", { x: 7.4, y: 6.10, w: 2.3, h: 0.4, fontFace: "Inter", fontSize: 18, bold: true, color: CYAN });
-  s.addText("teacher paperwork / day", { x: 7.4, y: 6.50, w: 2.3, h: 0.3, fontFace: "Inter", fontSize: 9, color: SLATE100 });
+  s.addText("4 hr", { x: 7.4, y: 6.10, w: 2.3, h: 0.4, fontFace: "Calibri", fontSize: 18, bold: true, color: CYAN });
+  s.addText("teacher paperwork / day", { x: 7.4, y: 6.50, w: 2.3, h: 0.3, fontFace: "Calibri", fontSize: 9, color: SLATE100 });
   s.addShape("roundRect", { x: 9.95, y: 6.05, w: 2.55, h: 0.85,
     fill: { color: WHITE, transparency: 92 }, line: { type: "none" }, rectRadius: 0.08 });
-  s.addText("37", { x: 10.05, y: 6.10, w: 2.4, h: 0.4, fontFace: "Inter", fontSize: 18, bold: true, color: CYAN });
-  s.addText("WhatsApp messages / day (avg)", { x: 10.05, y: 6.50, w: 2.4, h: 0.3, fontFace: "Inter", fontSize: 9, color: SLATE100 });
+  s.addText("37", { x: 10.05, y: 6.10, w: 2.4, h: 0.4, fontFace: "Calibri", fontSize: 18, bold: true, color: CYAN });
+  s.addText("WhatsApp messages / day (avg)", { x: 10.05, y: 6.50, w: 2.4, h: 0.3, fontFace: "Calibri", fontSize: 9, color: SLATE100 });
 }
 
 // =============================================================================
@@ -558,16 +558,16 @@ sectionDivider({ chapter: "02", title: "The issues.", gradient: PURPLE,
     rectCard(s, c.x, 3.4, 5.95, 3.5);
     s.addText(c.eyebrow, {
       x: c.x + 0.3, y: 3.6, w: 5.5, h: 0.3,
-      fontFace: "Inter", fontSize: 9, bold: true, color: c.color, charSpacing: 6,
+      fontFace: "Calibri", fontSize: 9, bold: true, color: c.color, charSpacing: 6,
     });
     s.addText(c.title, {
       x: c.x + 0.3, y: 3.95, w: 5.5, h: 1.0,
-      fontFace: "Inter", fontSize: 18, bold: true, color: INK,
+      fontFace: "Calibri", fontSize: 18, bold: true, color: INK,
     });
     c.bullets.forEach((b, i) => {
       s.addText("· " + b, {
         x: c.x + 0.3, y: 5.0 + i * 0.4, w: 5.5, h: 0.4,
-        fontFace: "Inter", fontSize: 11, color: SLATE700,
+        fontFace: "Calibri", fontSize: 11, color: SLATE700,
       });
     });
   });
@@ -614,16 +614,16 @@ sectionDivider({ chapter: "02", title: "The issues.", gradient: PURPLE,
     rectCard(s, c.x, 3.4, 5.95, 3.5);
     s.addText(c.eyebrow, {
       x: c.x + 0.3, y: 3.6, w: 5.5, h: 0.3,
-      fontFace: "Inter", fontSize: 9, bold: true, color: c.color, charSpacing: 6,
+      fontFace: "Calibri", fontSize: 9, bold: true, color: c.color, charSpacing: 6,
     });
     s.addText(c.title, {
       x: c.x + 0.3, y: 3.95, w: 5.5, h: 1.0,
-      fontFace: "Inter", fontSize: 18, bold: true, color: INK,
+      fontFace: "Calibri", fontSize: 18, bold: true, color: INK,
     });
     c.bullets.forEach((b, i) => {
       s.addText("· " + b, {
         x: c.x + 0.3, y: 5.0 + i * 0.4, w: 5.5, h: 0.4,
-        fontFace: "Inter", fontSize: 11, color: SLATE700,
+        fontFace: "Calibri", fontSize: 11, color: SLATE700,
       });
     });
   });
@@ -637,9 +637,11 @@ sectionDivider({ chapter: "02", title: "The issues.", gradient: PURPLE,
   lightBg(s);
   chrome(s, "02 · THE ISSUES", 11);
 
-  s.addText("🤖", {
+  // Big quotation-mark mark of irony for the "AI as a sticker" slide.
+  // Replaces the previous emoji that PowerPoint couldn't render.
+  s.addText("“    ”", {
     x: 0.5, y: 1.6, w: 12.3, h: 1.4,
-    fontFace: "Inter", fontSize: 100, align: "center",
+    fontFace: "Calibri", fontSize: 120, align: "center", color: SLATE300, bold: true,
   });
   bigTitle(s, [
     { text: '"AI-powered" everything.' },
@@ -650,13 +652,13 @@ sectionDivider({ chapter: "02", title: "The issues.", gradient: PURPLE,
     'A chatbot bolted on a sidebar. A "summarize" button in the settings menu. The actual product still does what it did in 2018 — only the marketing changed.',
     {
       x: 1.0, y: 5.3, w: 11.3, h: 1.0,
-      fontFace: "Inter", fontSize: 16, color: SLATE600, align: "center",
+      fontFace: "Calibri", fontSize: 16, color: SLATE600, align: "center",
       lineSpacingMultiple: 1.4,
     }
   );
   s.addText("Indian schools deserve software that starts from AI, not retrofits it.", {
     x: 1.0, y: 6.4, w: 11.3, h: 0.5,
-    fontFace: "Inter", fontSize: 13, color: SLATE500, align: "center", italic: true,
+    fontFace: "Calibri", fontSize: 13, color: SLATE500, align: "center", italic: true,
   });
 }
 
@@ -674,7 +676,7 @@ sectionDivider({ chapter: "02", title: "The issues.", gradient: PURPLE,
   ], { y: 1.4, size: 36, h: 1.4, dark: true });
   s.addText("Take a screenshot — you'll point at this slide six months from now.", {
     x: 0.5, y: 3.0, w: 12.3, h: 0.3,
-    fontFace: "Inter", fontSize: 12, color: SLATE300,
+    fontFace: "Calibri", fontSize: 12, color: SLATE300,
   });
 
   const pains = [
@@ -692,17 +694,17 @@ sectionDivider({ chapter: "02", title: "The issues.", gradient: PURPLE,
     darkCard(s, x, y, 4.0, 1.4);
     s.addText(eb, {
       x: x + 0.2, y: y + 0.15, w: 3.7, h: 0.3,
-      fontFace: "Inter", fontSize: 9, bold: true, color, charSpacing: 6,
+      fontFace: "Calibri", fontSize: 9, bold: true, color, charSpacing: 6,
     });
     s.addText(body, {
       x: x + 0.2, y: y + 0.5, w: 3.7, h: 0.85,
-      fontFace: "Inter", fontSize: 13, color: WHITE,
+      fontFace: "Calibri", fontSize: 13, color: WHITE,
     });
   });
 
   s.addText("One platform — designed from scratch, AI-native, India-first — solves all six.", {
     x: 0.5, y: 6.95, w: 12.3, h: 0.3,
-    fontFace: "Inter", fontSize: 12, color: SLATE300, italic: true,
+    fontFace: "Calibri", fontSize: 12, color: SLATE300, italic: true,
   });
 }
 
@@ -743,8 +745,8 @@ sectionDivider({ chapter: "03", title: "What we offer.", gradient: PINK,
       line: { color: SLATE300, width: 1, dashType: "dash" },
       rectRadius: 0.1,
     });
-    s.addText(label, { x, y: 3.0, w: 1.95, h: 0.4, fontFace: "Inter", fontSize: 10, color: SLATE600, align: "center" });
-    s.addText(name, { x, y: 3.45, w: 1.95, h: 0.4, fontFace: "Inter", fontSize: 9, color: ROSE, align: "center", strike: "sngStrike" });
+    s.addText(label, { x, y: 3.0, w: 1.95, h: 0.4, fontFace: "Calibri", fontSize: 10, color: SLATE600, align: "center" });
+    s.addText(name, { x, y: 3.45, w: 1.95, h: 0.4, fontFace: "Calibri", fontSize: 9, color: ROSE, align: "center", strike: "sngStrike" });
   });
 
   // Down arrow
@@ -761,27 +763,27 @@ sectionDivider({ chapter: "03", title: "What we offer.", gradient: PINK,
   if (MARK_OK) s.addImage({ path: MARK, x: 1.85, y: 5.1, w: 0.55, h: 0.55 });
   s.addText("AIvenX · all-in-one", {
     x: 2.5, y: 5.05, w: 5, h: 0.3,
-    fontFace: "Inter", fontSize: 9, bold: true, color: CYAN, charSpacing: 6,
+    fontFace: "Calibri", fontSize: 9, bold: true, color: CYAN, charSpacing: 6,
   });
   s.addText("The AI-native school OS", {
     x: 2.5, y: 5.35, w: 8, h: 0.45,
-    fontFace: "Inter", fontSize: 16, bold: true, color: WHITE,
+    fontFace: "Calibri", fontSize: 16, bold: true, color: WHITE,
   });
   // Six chips
-  const chips = ["📊 ERP", "🧠 Cortex", "🛡️ Guardian", "🤝 Connect", "📱 Mobile", "📷 Gallery"];
+  const chips = ["ERP", "Cortex", "Guardian", "Connect", "Mobile", "Gallery"];
   chips.forEach((c, i) => {
     const x = 1.85 + i * 1.65;
     s.addShape("roundRect", {
       x, y: 5.95, w: 1.55, h: 0.45,
       fill: { color: WHITE, transparency: 90 }, line: { type: "none" }, rectRadius: 0.06,
     });
-    s.addText(c, { x, y: 5.95, w: 1.55, h: 0.45, fontFace: "Inter", fontSize: 10, color: WHITE, align: "center", valign: "middle" });
+    s.addText(c, { x, y: 5.95, w: 1.55, h: 0.45, fontFace: "Calibri", fontSize: 10, color: WHITE, align: "center", valign: "middle" });
   });
   // Three counters
   ["1 login", "1 bill", "0 tab-juggling"].forEach((t, i) => {
     s.addText(t, {
       x: 1.85 + i * 3.5, y: 6.5, w: 3.3, h: 0.35,
-      fontFace: "Inter", fontSize: 11, bold: true, color: SLATE100, align: "center",
+      fontFace: "Calibri", fontSize: 11, bold: true, color: SLATE100, align: "center",
     });
   });
 }
@@ -804,18 +806,18 @@ sectionDivider({ chapter: "03", title: "What we offer.", gradient: PINK,
     { y: 3.65, w: 11.5, h: 1.6, size: 14 });
 
   const five = [
-    ["📖", "Generate", "Chapters · 4 modes"],
-    ["🎯", "Assemble", "Question papers"],
-    ["🧠", "Grade",    "Handwritten papers"],
-    ["📋", "Plan",     "Period-wise lessons"],
-    ["🎧", "Narrate",  "Audio playlists"],
+    ["", "Generate", "Chapters · 4 modes"],
+    ["", "Assemble", "Question papers"],
+    ["", "Grade",    "Handwritten papers"],
+    ["", "Plan",     "Period-wise lessons"],
+    ["", "Narrate",  "Audio playlists"],
   ];
   five.forEach(([emoji, h, sub], i) => {
     const x = 0.5 + i * 2.55;
     rectCard(s, x, 5.3, 2.45, 1.55);
-    s.addText(emoji, { x: x + 0.2, y: 5.4, w: 2.0, h: 0.5, fontFace: "Inter", fontSize: 26 });
-    s.addText(h, { x: x + 0.2, y: 5.95, w: 2.0, h: 0.4, fontFace: "Inter", fontSize: 14, bold: true, color: INK });
-    s.addText(sub, { x: x + 0.2, y: 6.35, w: 2.0, h: 0.4, fontFace: "Inter", fontSize: 10, color: SLATE600 });
+    s.addText(emoji, { x: x + 0.2, y: 5.4, w: 2.0, h: 0.5, fontFace: "Calibri", fontSize: 26 });
+    s.addText(h, { x: x + 0.2, y: 5.95, w: 2.0, h: 0.4, fontFace: "Calibri", fontSize: 14, bold: true, color: INK });
+    s.addText(sub, { x: x + 0.2, y: 6.35, w: 2.0, h: 0.4, fontFace: "Calibri", fontSize: 10, color: SLATE600 });
   });
 }
 
@@ -835,7 +837,7 @@ sectionDivider({ chapter: "03", title: "What we offer.", gradient: PINK,
     "Cortex generates the same syllabus in four persona-shaped modes. Students take a quick psychometric quiz; we recommend the right mode for them — and they can switch any time.",
     {
       x: 0.5, y: 3.1, w: 12.3, h: 0.9,
-      fontFace: "Inter", fontSize: 13, color: SLATE600, lineSpacingMultiple: 1.4,
+      fontFace: "Calibri", fontSize: 13, color: SLATE600, lineSpacingMultiple: 1.4,
     }
   );
 
@@ -850,14 +852,14 @@ sectionDivider({ chapter: "03", title: "What we offer.", gradient: PINK,
     rectCard(s, x, 4.2, 3.05, 2.7, { border: color });
     s.addShape("roundRect", { x: x + 0.2, y: 4.4, w: 1.0, h: 0.32,
       fill: { color }, line: { type: "none" }, rectRadius: 0.16 });
-    s.addText(tag, { x: x + 0.2, y: 4.4, w: 1.0, h: 0.32, fontFace: "Inter", fontSize: 9, bold: true, color: WHITE, align: "center", valign: "middle", charSpacing: 4 });
-    s.addText(name, { x: x + 0.2, y: 4.85, w: 2.7, h: 0.5, fontFace: "Inter", fontSize: 18, bold: true, color: INK });
-    s.addText(body, { x: x + 0.2, y: 5.45, w: 2.7, h: 1.4, fontFace: "Inter", fontSize: 10, color: SLATE600, lineSpacingMultiple: 1.3 });
+    s.addText(tag, { x: x + 0.2, y: 4.4, w: 1.0, h: 0.32, fontFace: "Calibri", fontSize: 9, bold: true, color: WHITE, align: "center", valign: "middle", charSpacing: 4 });
+    s.addText(name, { x: x + 0.2, y: 4.85, w: 2.7, h: 0.5, fontFace: "Calibri", fontSize: 18, bold: true, color: INK });
+    s.addText(body, { x: x + 0.2, y: 5.45, w: 2.7, h: 1.4, fontFace: "Calibri", fontSize: 10, color: SLATE600, lineSpacingMultiple: 1.3 });
   });
 
   s.addText("Generation time: ~30 sec / chapter · Teacher reviews + approves before students see it · Boards: CBSE · ICSE · IB · State · Grades 1–12", {
     x: 0.5, y: 7.0, w: 12.3, h: 0.3,
-    fontFace: "Inter", fontSize: 9, color: SLATE500, italic: true,
+    fontFace: "Calibri", fontSize: 9, color: SLATE500, italic: true,
   });
 }
 
@@ -880,7 +882,7 @@ sectionDivider({ chapter: "03", title: "What we offer.", gradient: PINK,
     "Cortex reads handwritten papers, scores against a CBSE-grade rubric step-by-step, and tells you the exact topic each student needs to revisit.",
     {
       x: 0.5, y: 4.2, w: 5.8, h: 1.3,
-      fontFace: "Inter", fontSize: 13, color: SLATE300, lineSpacingMultiple: 1.4,
+      fontFace: "Calibri", fontSize: 13, color: SLATE300, lineSpacingMultiple: 1.4,
     }
   );
 
@@ -893,8 +895,8 @@ sectionDivider({ chapter: "03", title: "What we offer.", gradient: PINK,
   kpis.forEach(([n, l], i) => {
     const x = 0.5 + i * 2.0;
     darkCard(s, x, 5.6, 1.8, 1.3);
-    s.addText(n, { x: x + 0.15, y: 5.7, w: 1.5, h: 0.6, fontFace: "Inter", fontSize: 22, bold: true, color: CYAN });
-    s.addText(l, { x: x + 0.15, y: 6.35, w: 1.5, h: 0.4, fontFace: "Inter", fontSize: 9, color: SLATE300, charSpacing: 4 });
+    s.addText(n, { x: x + 0.15, y: 5.7, w: 1.5, h: 0.6, fontFace: "Calibri", fontSize: 22, bold: true, color: CYAN });
+    s.addText(l, { x: x + 0.15, y: 6.35, w: 1.5, h: 0.4, fontFace: "Calibri", fontSize: 9, color: SLATE300, charSpacing: 4 });
   });
 
   // Right half — answer-sheet mock
@@ -904,54 +906,54 @@ sectionDivider({ chapter: "03", title: "What we offer.", gradient: PINK,
   });
   s.addText("CBSE · CLASS X · MATHS    ROLL · 24-A-17", {
     x: 7.15, y: 1.65, w: 2.95, h: 0.3,
-    fontFace: "Inter", fontSize: 7, bold: true, color: SLATE500, charSpacing: 4,
+    fontFace: "Calibri", fontSize: 7, bold: true, color: SLATE500, charSpacing: 4,
   });
   s.addText("Q3 · Areas Related to Circles", {
     x: 7.15, y: 2.05, w: 2.95, h: 0.3,
-    fontFace: "Inter", fontSize: 8, bold: true, color: SLATE500, charSpacing: 4,
+    fontFace: "Calibri", fontSize: 8, bold: true, color: SLATE500, charSpacing: 4,
   });
-  s.addText("Given r = 21 cm, θ = 120°\nArea of sector = (θ/360) × π r²\n= (120/360) × (22/7) × 21 × 21\n= (1/3) × (22/7) × 441\n= 462 cm²  ✓", {
+  s.addText("Given r = 21 cm, θ = 120°\nArea of sector = (θ/360) × π r²\n= (120/360) × (22/7) × 21 × 21\n= (1/3) × (22/7) × 441\n= 462 cm²  ", {
     x: 7.2, y: 2.4, w: 2.9, h: 1.85,
-    fontFace: "Caveat", fontSize: 14, color: INK, lineSpacingMultiple: 1.2,
+    fontFace: "Comic Sans MS", fontSize: 14, color: INK, lineSpacingMultiple: 1.2,
   });
   s.addText("Q4", {
     x: 7.15, y: 4.4, w: 2.95, h: 0.3,
-    fontFace: "Inter", fontSize: 8, bold: true, color: SLATE500, charSpacing: 4,
+    fontFace: "Calibri", fontSize: 8, bold: true, color: SLATE500, charSpacing: 4,
   });
   s.addText("Area of segment = sector − triangle\nTriangle = ½ × AB × OM", {
     x: 7.2, y: 4.7, w: 2.9, h: 0.85,
-    fontFace: "Caveat", fontSize: 14, color: INK,
+    fontFace: "Comic Sans MS", fontSize: 14, color: INK,
   });
   s.addText("≈ 190 cm² (skipped derivation)", {
     x: 7.2, y: 5.55, w: 2.9, h: 0.4,
-    fontFace: "Caveat", fontSize: 14, color: ROSE,
+    fontFace: "Comic Sans MS", fontSize: 14, color: ROSE,
   });
 
   // Right rubric card
   rectCard(s, 10.4, 1.5, 2.5, 2.5, { fill: INK, border: PURPLE });
   s.addText("RUBRIC · LIVE", {
     x: 10.55, y: 1.6, w: 2.2, h: 0.3,
-    fontFace: "Inter", fontSize: 8, bold: true, color: CYAN, charSpacing: 4,
+    fontFace: "Calibri", fontSize: 8, bold: true, color: CYAN, charSpacing: 4,
   });
   const rubric = [
-    ["Formula recall",   "+1 ✓"],
-    ["Substitution",     "+1 ✓"],
-    ["Arithmetic",       "+1 ✓"],
-    ["Final + units",    "+1 ✓"],
+    ["Formula recall",   "+1 "],
+    ["Substitution",     "+1 "],
+    ["Arithmetic",       "+1 "],
+    ["Final + units",    "+1 "],
     ["Q4 derivation",    "½"],
   ];
   rubric.forEach(([k, v], i) => {
-    s.addText(k, { x: 10.55, y: 1.95 + i * 0.32, w: 1.4, h: 0.3, fontFace: "Inter", fontSize: 9, color: WHITE });
-    s.addText(v, { x: 11.95, y: 1.95 + i * 0.32, w: 0.95, h: 0.3, fontFace: "Inter", fontSize: 9, bold: true, color: i < 4 ? EMERALD : AMBER, align: "right" });
+    s.addText(k, { x: 10.55, y: 1.95 + i * 0.32, w: 1.4, h: 0.3, fontFace: "Calibri", fontSize: 9, color: WHITE });
+    s.addText(v, { x: 11.95, y: 1.95 + i * 0.32, w: 0.95, h: 0.3, fontFace: "Calibri", fontSize: 9, bold: true, color: i < 4 ? EMERALD : AMBER, align: "right" });
   });
-  s.addText("5 / 6", { x: 10.55, y: 3.6, w: 1.0, h: 0.4, fontFace: "Inter", fontSize: 16, bold: true, color: CYAN });
-  s.addText("83%  vs class median 71%", { x: 11.55, y: 3.65, w: 1.4, h: 0.3, fontFace: "Inter", fontSize: 8, color: SLATE300, align: "right" });
+  s.addText("5 / 6", { x: 10.55, y: 3.6, w: 1.0, h: 0.4, fontFace: "Calibri", fontSize: 16, bold: true, color: CYAN });
+  s.addText("83%  vs class median 71%", { x: 11.55, y: 3.65, w: 1.4, h: 0.3, fontFace: "Calibri", fontSize: 8, color: SLATE300, align: "right" });
 
   // Right recommendation card
   rectCard(s, 10.4, 4.15, 2.5, 2.75, { fill: INK, border: EMERALD });
   s.addText("RECOMMENDED NEXT", {
     x: 10.55, y: 4.25, w: 2.2, h: 0.3,
-    fontFace: "Inter", fontSize: 8, bold: true, color: EMERALD, charSpacing: 4,
+    fontFace: "Calibri", fontSize: 8, bold: true, color: EMERALD, charSpacing: 4,
   });
   const recos = [
     "Areas of segment · derivation",
@@ -962,14 +964,14 @@ sectionDivider({ chapter: "03", title: "What we offer.", gradient: PINK,
   recos.forEach((r, i) => {
     s.addText("· " + r, {
       x: 10.55, y: 4.65 + i * 0.4, w: 2.2, h: 0.4,
-      fontFace: "Inter", fontSize: 9, color: WHITE, lineSpacingMultiple: 1.2,
+      fontFace: "Calibri", fontSize: 9, color: WHITE, lineSpacingMultiple: 1.2,
     });
   });
   s.addShape("roundRect", { x: 10.55, y: 6.35, w: 2.2, h: 0.4,
     fill: { color: CYAN }, line: { type: "none" }, rectRadius: 0.06 });
   s.addText("Send to student  →", {
     x: 10.55, y: 6.35, w: 2.2, h: 0.4,
-    fontFace: "Inter", fontSize: 10, bold: true, color: WHITE, align: "center", valign: "middle",
+    fontFace: "Calibri", fontSize: 10, bold: true, color: WHITE, align: "center", valign: "middle",
   });
 }
 
@@ -1000,19 +1002,19 @@ sectionDivider({ chapter: "03", title: "What we offer.", gradient: PINK,
     rectCard(s, x, 4.4, 3.05, 2.5);
     s.addText(n, {
       x: x + 0.2, y: 4.55, w: 2.7, h: 0.85,
-      fontFace: "Inter", fontSize: 60, bold: true, color: color, transparency: 70,
+      fontFace: "Calibri", fontSize: 60, bold: true, color: color, transparency: 70,
     });
     s.addText(eb, {
       x: x + 0.2, y: 5.0, w: 2.7, h: 0.3,
-      fontFace: "Inter", fontSize: 9, bold: true, color, charSpacing: 6,
+      fontFace: "Calibri", fontSize: 9, bold: true, color, charSpacing: 6,
     });
     s.addText(h, {
       x: x + 0.2, y: 5.35, w: 2.7, h: 0.55,
-      fontFace: "Inter", fontSize: 13, bold: true, color: INK,
+      fontFace: "Calibri", fontSize: 13, bold: true, color: INK,
     });
     s.addText(body, {
       x: x + 0.2, y: 5.95, w: 2.7, h: 1.0,
-      fontFace: "Inter", fontSize: 10, color: SLATE600, lineSpacingMultiple: 1.3,
+      fontFace: "Calibri", fontSize: 10, color: SLATE600, lineSpacingMultiple: 1.3,
     });
   });
 }
@@ -1057,16 +1059,16 @@ sectionDivider({ chapter: "03", title: "What we offer.", gradient: PINK,
     rectCard(s, c.x, 3.7, 5.95, 3.3);
     s.addText(c.eyebrow, {
       x: c.x + 0.3, y: 3.85, w: 5.5, h: 0.3,
-      fontFace: "Inter", fontSize: 9, bold: true, color: c.color, charSpacing: 6,
+      fontFace: "Calibri", fontSize: 9, bold: true, color: c.color, charSpacing: 6,
     });
     s.addText(c.title, {
       x: c.x + 0.3, y: 4.2, w: 5.5, h: 0.6,
-      fontFace: "Inter", fontSize: 16, bold: true, color: INK,
+      fontFace: "Calibri", fontSize: 16, bold: true, color: INK,
     });
     c.bullets.forEach((b, i) => {
       s.addText("· " + b, {
         x: c.x + 0.3, y: 4.95 + i * 0.45, w: 5.5, h: 0.45,
-        fontFace: "Inter", fontSize: 11, color: SLATE700, lineSpacingMultiple: 1.3,
+        fontFace: "Calibri", fontSize: 11, color: SLATE700, lineSpacingMultiple: 1.3,
       });
     });
   });
@@ -1099,15 +1101,15 @@ sectionDivider({ chapter: "03", title: "What we offer.", gradient: PINK,
     rectCard(s, c.x, 3.6, 5.95, 3.3);
     s.addText(c.eb, {
       x: c.x + 0.3, y: 3.8, w: 5.5, h: 0.3,
-      fontFace: "Inter", fontSize: 9, bold: true, color: c.color, charSpacing: 6,
+      fontFace: "Calibri", fontSize: 9, bold: true, color: c.color, charSpacing: 6,
     });
     s.addText(c.title, {
       x: c.x + 0.3, y: 4.15, w: 5.5, h: 0.7,
-      fontFace: "Inter", fontSize: 16, bold: true, color: INK,
+      fontFace: "Calibri", fontSize: 16, bold: true, color: INK,
     });
     s.addText(c.body, {
       x: c.x + 0.3, y: 4.95, w: 5.5, h: 1.85,
-      fontFace: "Inter", fontSize: 12, color: SLATE600, lineSpacingMultiple: 1.4,
+      fontFace: "Calibri", fontSize: 12, color: SLATE600, lineSpacingMultiple: 1.4,
     });
   });
 }
@@ -1141,11 +1143,11 @@ sectionDivider({ chapter: "03", title: "What we offer.", gradient: PINK,
     rectCard(s, x, y, 4.0, 1.65);
     s.addText(title, {
       x: x + 0.2, y: y + 0.15, w: 3.7, h: 0.4,
-      fontFace: "Inter", fontSize: 13, bold: true, color: INK,
+      fontFace: "Calibri", fontSize: 13, bold: true, color: INK,
     });
     s.addText(body, {
       x: x + 0.2, y: y + 0.55, w: 3.7, h: 1.05,
-      fontFace: "Inter", fontSize: 9, color: SLATE600, lineSpacingMultiple: 1.3,
+      fontFace: "Calibri", fontSize: 9, color: SLATE600, lineSpacingMultiple: 1.3,
     });
   });
 }
@@ -1169,24 +1171,24 @@ sectionDivider({ chapter: "03", title: "What we offer.", gradient: PINK,
   ], { y: 1.75, size: 30, h: 1.5 });
 
   const items = [
-    ["📷", "Face-AI campus gate", "Real-time recognition. <100ms / frame. Auto IN/OUT events. Visitor sign-in flow. Parent gets notified when child enters or leaves."],
-    ["🚌", "Live bus tracking",   "GPS map. ETA, route status, current stop, driver name, occupancy. 'Bus arriving in 12 min' pings before pickup time."],
-    ["🔊", "In-bus aggression AI · BETA", "Audio + vision AI on monitored routes. Detects raised voices, isolation, exclusion. Alerts the bus monitor + school admin."],
-    ["📋", "Visitor audit log",   "Sign-in: name · ID · purpose · host. 30-day retention. CSV/PDF export. Auto-flag on unknown faces or repeat visits."],
+    ["", "Face-AI campus gate", "Real-time recognition. <100ms / frame. Auto IN/OUT events. Visitor sign-in flow. Parent gets notified when child enters or leaves."],
+    ["", "Live bus tracking",   "GPS map. ETA, route status, current stop, driver name, occupancy. 'Bus arriving in 12 min' pings before pickup time."],
+    ["", "In-bus aggression AI · BETA", "Audio + vision AI on monitored routes. Detects raised voices, isolation, exclusion. Alerts the bus monitor + school admin."],
+    ["", "Visitor audit log",   "Sign-in: name · ID · purpose · host. 30-day retention. CSV/PDF export. Auto-flag on unknown faces or repeat visits."],
   ];
   items.forEach(([emoji, h, body], i) => {
     const col = i % 2, row = Math.floor(i / 2);
     const x = 0.5 + col * 6.4;
     const y = 3.5 + row * 1.7;
     rectCard(s, x, y, 6.2, 1.5);
-    s.addText(emoji, { x: x + 0.2, y: y + 0.2, w: 0.7, h: 0.7, fontFace: "Inter", fontSize: 28 });
-    s.addText(h, { x: x + 1.0, y: y + 0.2, w: 5.0, h: 0.4, fontFace: "Inter", fontSize: 14, bold: true, color: INK });
-    s.addText(body, { x: x + 1.0, y: y + 0.6, w: 5.0, h: 0.9, fontFace: "Inter", fontSize: 10, color: SLATE600, lineSpacingMultiple: 1.3 });
+    s.addText(emoji, { x: x + 0.2, y: y + 0.2, w: 0.7, h: 0.7, fontFace: "Calibri", fontSize: 28 });
+    s.addText(h, { x: x + 1.0, y: y + 0.2, w: 5.0, h: 0.4, fontFace: "Calibri", fontSize: 14, bold: true, color: INK });
+    s.addText(body, { x: x + 1.0, y: y + 0.6, w: 5.0, h: 0.9, fontFace: "Calibri", fontSize: 10, color: SLATE600, lineSpacingMultiple: 1.3 });
   });
 
   s.addText("Every Guardian feature is independently toggleable per tenant. DPDP-Act consent flows for face-AI; schools that prefer can use RFID-card attendance instead.", {
     x: 0.5, y: 7.0, w: 12.3, h: 0.3,
-    fontFace: "Inter", fontSize: 9, color: SLATE500, italic: true,
+    fontFace: "Calibri", fontSize: 9, color: SLATE500, italic: true,
   });
 }
 
@@ -1203,29 +1205,29 @@ sectionDivider({ chapter: "03", title: "What we offer.", gradient: PINK,
   ], { y: 1.4, size: 36, h: 1.0 });
   s.addText("Three more surfaces that complete the AIvenX picture.", {
     x: 0.5, y: 2.55, w: 12.3, h: 0.4,
-    fontFace: "Inter", fontSize: 14, color: SLATE600,
+    fontFace: "Calibri", fontSize: 14, color: SLATE600,
   });
 
   const items = [
-    ["🤝", "CONNECT", PINK,    "From graduation to first job.",     "Searchable alumni directory by batch + company. Mentorship matching. Reunion + job board (rolling out)."],
-    ["📱", "MOBILE · Q4 2026", AMBER,    "Native apps. Three audiences.",  "Student, parent, teacher apps from one Expo codebase. India-data-residency push. SSO with web portal."],
-    ["📷", "GALLERY", ROSE,    "School life, curated.",             "Sports day, annual day, trips. Audience-scoped publishing — only Super Admin / School Admin / Principal can publish."],
+    ["", "CONNECT", PINK,    "From graduation to first job.",     "Searchable alumni directory by batch + company. Mentorship matching. Reunion + job board (rolling out)."],
+    ["", "MOBILE · Q4 2026", AMBER,    "Native apps. Three audiences.",  "Student, parent, teacher apps from one Expo codebase. India-data-residency push. SSO with web portal."],
+    ["", "GALLERY", ROSE,    "School life, curated.",             "Sports day, annual day, trips. Audience-scoped publishing — only Super Admin / School Admin / Principal can publish."],
   ];
   items.forEach(([emoji, eb, color, h, body], i) => {
     const x = 0.5 + i * 4.2;
     rectCard(s, x, 3.4, 4.0, 3.5);
-    s.addText(emoji, { x: x + 0.25, y: 3.55, w: 0.8, h: 0.8, fontFace: "Inter", fontSize: 36 });
+    s.addText(emoji, { x: x + 0.25, y: 3.55, w: 0.8, h: 0.8, fontFace: "Calibri", fontSize: 36 });
     s.addText(eb, {
       x: x + 0.25, y: 4.45, w: 3.5, h: 0.3,
-      fontFace: "Inter", fontSize: 9, bold: true, color, charSpacing: 6,
+      fontFace: "Calibri", fontSize: 9, bold: true, color, charSpacing: 6,
     });
     s.addText(h, {
       x: x + 0.25, y: 4.8, w: 3.5, h: 0.6,
-      fontFace: "Inter", fontSize: 16, bold: true, color: INK,
+      fontFace: "Calibri", fontSize: 16, bold: true, color: INK,
     });
     s.addText(body, {
       x: x + 0.25, y: 5.5, w: 3.5, h: 1.4,
-      fontFace: "Inter", fontSize: 10, color: SLATE600, lineSpacingMultiple: 1.3,
+      fontFace: "Calibri", fontSize: 10, color: SLATE600, lineSpacingMultiple: 1.3,
     });
   });
 }
@@ -1251,34 +1253,34 @@ sectionDivider({ chapter: "04", title: "How we solve it.", gradient: EMERALD,
   ], { y: 1.4, size: 32, h: 1.0 });
   s.addText(
     "Eleven shipped capabilities, two in beta, four on the roadmap. Each removes a specific hour of work.",
-    { x: 0.5, y: 2.55, w: 12.3, h: 0.4, fontFace: "Inter", fontSize: 13, color: SLATE600 });
+    { x: 0.5, y: 2.55, w: 12.3, h: 0.4, fontFace: "Calibri", fontSize: 13, color: SLATE600 });
 
   const caps = [
-    ["📖", "Chapter generation",       "Shipped",  EMERALD],
-    ["🧠", "AI exam evaluator",         "Shipped",  EMERALD],
-    ["📋", "AI lesson planner",         "Shipped",  EMERALD],
-    ["📷", "Face-AI gate / attendance", "Shipped",  EMERALD],
-    ["🎯", "Persona quiz",              "Shipped",  EMERALD],
-    ["🎧", "Audio narration",           "Shipped",  EMERALD],
-    ["📊", "Class engagement heatmap",  "Shipped",  EMERALD],
-    ["📝", "AI question paper builder", "Shipped",  EMERALD],
-    ["🦁", "Leo · chapter tutor",       "Shipped",  EMERALD],
-    ["💯", "Auto-grade homework",       "Shipped",  EMERALD],
-    ["🔍", "Per-student weak-spot",     "Shipped",  EMERALD],
-    ["🚌", "In-bus aggression AI",      "Beta",     AMBER],
-    ["💬", "Multi-language translate",  "Roadmap",  CYAN],
-    ["🛟", "Wellbeing beacon",          "Roadmap",  CYAN],
-    ["✍️", "Class-writing feedback",    "Roadmap",  CYAN],
-    ["🏆", "Living HPC dashboard",      "Roadmap",  CYAN],
+    ["", "Chapter generation",       "Shipped",  EMERALD],
+    ["", "AI exam evaluator",         "Shipped",  EMERALD],
+    ["", "AI lesson planner",         "Shipped",  EMERALD],
+    ["", "Face-AI gate / attendance", "Shipped",  EMERALD],
+    ["", "Persona quiz",              "Shipped",  EMERALD],
+    ["", "Audio narration",           "Shipped",  EMERALD],
+    ["", "Class engagement heatmap",  "Shipped",  EMERALD],
+    ["", "AI question paper builder", "Shipped",  EMERALD],
+    ["", "Leo · chapter tutor",       "Shipped",  EMERALD],
+    ["", "Auto-grade homework",       "Shipped",  EMERALD],
+    ["", "Per-student weak-spot",     "Shipped",  EMERALD],
+    ["", "In-bus aggression AI",      "Beta",     AMBER],
+    ["", "Multi-language translate",  "Roadmap",  CYAN],
+    ["", "Wellbeing beacon",          "Roadmap",  CYAN],
+    ["", "Class-writing feedback",    "Roadmap",  CYAN],
+    ["", "Living HPC dashboard",      "Roadmap",  CYAN],
   ];
   caps.forEach(([emoji, name, status, color], i) => {
     const col = i % 4, row = Math.floor(i / 4);
     const x = 0.5 + col * 3.2;
     const y = 3.2 + row * 0.95;
     rectCard(s, x, y, 3.05, 0.85);
-    s.addText(emoji, { x: x + 0.15, y: y + 0.13, w: 0.5, h: 0.6, fontFace: "Inter", fontSize: 18 });
-    s.addText(name, { x: x + 0.65, y: y + 0.1, w: 1.6, h: 0.4, fontFace: "Inter", fontSize: 10, bold: true, color: INK });
-    s.addText(status.toUpperCase(), { x: x + 0.65, y: y + 0.45, w: 1.6, h: 0.3, fontFace: "Inter", fontSize: 8, bold: true, color, charSpacing: 4 });
+    s.addText(emoji, { x: x + 0.15, y: y + 0.13, w: 0.5, h: 0.6, fontFace: "Calibri", fontSize: 18 });
+    s.addText(name, { x: x + 0.65, y: y + 0.1, w: 1.6, h: 0.4, fontFace: "Calibri", fontSize: 10, bold: true, color: INK });
+    s.addText(status.toUpperCase(), { x: x + 0.65, y: y + 0.45, w: 1.6, h: 0.3, fontFace: "Calibri", fontSize: 8, bold: true, color, charSpacing: 4 });
   });
 }
 
@@ -1296,32 +1298,32 @@ sectionDivider({ chapter: "04", title: "How we solve it.", gradient: EMERALD,
   ], { y: 1.4, size: 32, h: 1.0, dark: true });
   s.addText("Designed in India, for Indian boards, fees, family structures, languages, and the legal frame.", {
     x: 0.5, y: 2.55, w: 12.3, h: 0.4,
-    fontFace: "Inter", fontSize: 13, color: SLATE300,
+    fontFace: "Calibri", fontSize: 13, color: SLATE300,
   });
 
   const india = [
-    ["⚖️", "DPDP Act 2023",        "Minor consent · India data residency · right-to-erasure · audit-grade logging."],
-    ["📚", "NEP 2020 · HPC",       "360° Holistic Progress Card · academic + co-curricular + life skills."],
-    ["🏫", "RTE · RPwD",           "Section 12 quotas · inclusive-education plans · attendance compliance."],
-    ["📊", "CBSE · ICSE · IB · State", "Multi-board curriculum scaffold · 10-yr PYQ archive · sample-paper aligned."],
-    ["🇮🇳", "22 official languages", "Hindi · Tamil · Telugu · Bengali · Marathi · Gujarati · Kannada (rolling out)."],
-    ["💸", "UPI-first fees",       "Multi-child invoices · sibling discounts · EMI · GST receipts."],
-    ["🌐", "Tier-2 / Tier-3 ready","Works on 3G · low-bandwidth modes · text fallback for poor connectivity."],
-    ["👨‍👩‍👦‍👦", "Joint-family pods", "Mother · father · grandparent · driver — role-scoped permissions per parent."],
+    ["", "DPDP Act 2023",        "Minor consent · India data residency · right-to-erasure · audit-grade logging."],
+    ["", "NEP 2020 · HPC",       "360° Holistic Progress Card · academic + co-curricular + life skills."],
+    ["", "RTE · RPwD",           "Section 12 quotas · inclusive-education plans · attendance compliance."],
+    ["", "CBSE · ICSE · IB · State", "Multi-board curriculum scaffold · 10-yr PYQ archive · sample-paper aligned."],
+    ["", "22 official languages", "Hindi · Tamil · Telugu · Bengali · Marathi · Gujarati · Kannada (rolling out)."],
+    ["", "UPI-first fees",       "Multi-child invoices · sibling discounts · EMI · GST receipts."],
+    ["", "Tier-2 / Tier-3 ready","Works on 3G · low-bandwidth modes · text fallback for poor connectivity."],
+    ["", "Joint-family pods", "Mother · father · grandparent · driver — role-scoped permissions per parent."],
   ];
   india.forEach(([emoji, h, body], i) => {
     const col = i % 4, row = Math.floor(i / 4);
     const x = 0.5 + col * 3.2;
     const y = 3.2 + row * 1.85;
     darkCard(s, x, y, 3.05, 1.65);
-    s.addText(emoji, { x: x + 0.15, y: y + 0.15, w: 0.6, h: 0.5, fontFace: "Inter", fontSize: 22 });
+    s.addText(emoji, { x: x + 0.15, y: y + 0.15, w: 0.6, h: 0.5, fontFace: "Calibri", fontSize: 22 });
     s.addText(h, {
       x: x + 0.15, y: y + 0.62, w: 2.75, h: 0.35,
-      fontFace: "Inter", fontSize: 12, bold: true, color: WHITE,
+      fontFace: "Calibri", fontSize: 12, bold: true, color: WHITE,
     });
     s.addText(body, {
       x: x + 0.15, y: y + 1.0, w: 2.75, h: 0.65,
-      fontFace: "Inter", fontSize: 9, color: SLATE300, lineSpacingMultiple: 1.3,
+      fontFace: "Calibri", fontSize: 9, color: SLATE300, lineSpacingMultiple: 1.3,
     });
   });
 }
@@ -1339,7 +1341,7 @@ sectionDivider({ chapter: "04", title: "How we solve it.", gradient: EMERALD,
   ], { y: 1.4, size: 32, h: 1.0 });
   s.addText("Conservative estimates from our pilot schools. Independent of size.", {
     x: 0.5, y: 2.55, w: 12.3, h: 0.4,
-    fontFace: "Inter", fontSize: 13, color: SLATE600,
+    fontFace: "Calibri", fontSize: 13, color: SLATE600,
   });
 
   const big = [
@@ -1353,15 +1355,15 @@ sectionDivider({ chapter: "04", title: "How we solve it.", gradient: EMERALD,
     rectCard(s, x, 3.3, 3.05, 1.7);
     s.addText(eb, {
       x: x + 0.2, y: 3.4, w: 2.7, h: 0.3,
-      fontFace: "Inter", fontSize: 9, bold: true, color: CYAN, charSpacing: 6,
+      fontFace: "Calibri", fontSize: 9, bold: true, color: CYAN, charSpacing: 6,
     });
     s.addText(n, {
       x: x + 0.2, y: 3.7, w: 2.7, h: 0.85,
-      fontFace: "Inter", fontSize: 36, bold: true, color: PURPLE,
+      fontFace: "Calibri", fontSize: 36, bold: true, color: PURPLE,
     });
     s.addText(sub, {
       x: x + 0.2, y: 4.6, w: 2.7, h: 0.3,
-      fontFace: "Inter", fontSize: 10, color: SLATE600,
+      fontFace: "Calibri", fontSize: 10, color: SLATE600,
     });
   });
 
@@ -1375,15 +1377,15 @@ sectionDivider({ chapter: "04", title: "How we solve it.", gradient: EMERALD,
     rectCard(s, x, 5.3, 4.0, 1.6, { fill: SLATE50 });
     s.addText(eb, {
       x: x + 0.2, y: 5.4, w: 3.7, h: 0.3,
-      fontFace: "Inter", fontSize: 9, bold: true, color: PURPLE, charSpacing: 6,
+      fontFace: "Calibri", fontSize: 9, bold: true, color: PURPLE, charSpacing: 6,
     });
     s.addText(n, {
       x: x + 0.2, y: 5.7, w: 3.7, h: 0.7,
-      fontFace: "Inter", fontSize: 28, bold: true, color: INK,
+      fontFace: "Calibri", fontSize: 28, bold: true, color: INK,
     });
     s.addText(sub, {
       x: x + 0.2, y: 6.45, w: 3.7, h: 0.3,
-      fontFace: "Inter", fontSize: 10, color: SLATE600,
+      fontFace: "Calibri", fontSize: 10, color: SLATE600,
     });
   });
 }
@@ -1402,7 +1404,7 @@ sectionDivider({ chapter: "04", title: "How we solve it.", gradient: EMERALD,
   ], { y: 1.4, size: 32, h: 1.0, dark: true });
   s.addText("No setup fee. Pilot for one term, then commit. Pricing tailored on the call by board, headcount, and modules.", {
     x: 0.5, y: 2.55, w: 12.3, h: 0.4,
-    fontFace: "Inter", fontSize: 12, color: SLATE300,
+    fontFace: "Calibri", fontSize: 12, color: SLATE300,
   });
 
   const editions = [
@@ -1466,33 +1468,33 @@ sectionDivider({ chapter: "04", title: "How we solve it.", gradient: EMERALD,
     });
     s.addText("EDITION", {
       x: e.x + 0.25, y: 3.15, w: 3.6, h: 0.3,
-      fontFace: "Inter", fontSize: 9, bold: true, color: e.color, charSpacing: 6,
+      fontFace: "Calibri", fontSize: 9, bold: true, color: e.color, charSpacing: 6,
     });
     if (e.highlighted) {
       s.addShape("roundRect", { x: e.x + 2.85, y: 3.15, w: 1.1, h: 0.3,
         fill: { color: e.color }, line: { type: "none" }, rectRadius: 0.15 });
       s.addText("MOST SCHOOLS", { x: e.x + 2.85, y: 3.15, w: 1.1, h: 0.3,
-        fontFace: "Inter", fontSize: 7, bold: true, color: WHITE, align: "center", valign: "middle", charSpacing: 3 });
+        fontFace: "Calibri", fontSize: 7, bold: true, color: WHITE, align: "center", valign: "middle", charSpacing: 3 });
     }
     s.addText(e.name, {
       x: e.x + 0.25, y: 3.5, w: 3.6, h: 0.55,
-      fontFace: "Inter", fontSize: 22, bold: true, color: WHITE,
+      fontFace: "Calibri", fontSize: 22, bold: true, color: WHITE,
     });
     s.addText(e.sub, {
       x: e.x + 0.25, y: 4.05, w: 3.6, h: 0.5,
-      fontFace: "Inter", fontSize: 10, color: SLATE300, lineSpacingMultiple: 1.3,
+      fontFace: "Calibri", fontSize: 10, color: SLATE300, lineSpacingMultiple: 1.3,
     });
     e.bullets.forEach((b, i) => {
-      s.addText("✓  " + b, {
+      s.addText("  " + b, {
         x: e.x + 0.25, y: 4.6 + i * 0.27, w: 3.65, h: 0.27,
-        fontFace: "Inter", fontSize: 9, color: SLATE100, lineSpacingMultiple: 1.2,
+        fontFace: "Calibri", fontSize: 9, color: SLATE100, lineSpacingMultiple: 1.2,
       });
     });
     e.crosses.forEach((c, i) => {
       const y = 4.6 + (e.bullets.length + i) * 0.27;
       s.addText("×  " + c, {
         x: e.x + 0.25, y, w: 3.65, h: 0.27,
-        fontFace: "Inter", fontSize: 9, color: SLATE500, italic: true,
+        fontFace: "Calibri", fontSize: 9, color: SLATE500, italic: true,
       });
     });
   });
@@ -1512,7 +1514,7 @@ sectionDivider({ chapter: "04", title: "How we solve it.", gradient: EMERALD,
   ], { y: 1.4, size: 28, h: 1.4 });
   s.addText(
     "Send us a recent answer sheet (anonymized). We'll grade it live, generate the recommendations, and walk your principal through the parent home — on your data.",
-    { x: 0.5, y: 3.0, w: 12.3, h: 0.7, fontFace: "Inter", fontSize: 12, color: SLATE600, lineSpacingMultiple: 1.4 });
+    { x: 0.5, y: 3.0, w: 12.3, h: 0.7, fontFace: "Calibri", fontSize: 12, color: SLATE600, lineSpacingMultiple: 1.4 });
 
   const agenda = [
     ["01", "Cortex generates a chapter for your grade-10 maths class",            "~30 sec · 4 personas side-by-side · diagrams + audio narration auto-attached.", "5 min"],
@@ -1527,19 +1529,19 @@ sectionDivider({ chapter: "04", title: "How we solve it.", gradient: EMERALD,
     rectCard(s, 0.5, y, 12.3, 0.45, { fill: SLATE50 });
     s.addText(n, {
       x: 0.6, y, w: 0.6, h: 0.45,
-      fontFace: "Inter", fontSize: 18, bold: true, color: PURPLE, valign: "middle",
+      fontFace: "Calibri", fontSize: 18, bold: true, color: PURPLE, valign: "middle",
     });
     s.addText(h, {
       x: 1.3, y, w: 6.5, h: 0.45,
-      fontFace: "Inter", fontSize: 12, bold: true, color: INK, valign: "middle",
+      fontFace: "Calibri", fontSize: 12, bold: true, color: INK, valign: "middle",
     });
     s.addText(body, {
       x: 7.85, y, w: 4.0, h: 0.45,
-      fontFace: "Inter", fontSize: 9, color: SLATE600, valign: "middle",
+      fontFace: "Calibri", fontSize: 9, color: SLATE600, valign: "middle",
     });
     s.addText(dur, {
       x: 11.95, y, w: 0.85, h: 0.45,
-      fontFace: "Inter", fontSize: 11, bold: true, color: CYAN, align: "right", valign: "middle",
+      fontFace: "Calibri", fontSize: 11, bold: true, color: CYAN, align: "right", valign: "middle",
     });
   });
 }
@@ -1553,20 +1555,20 @@ sectionDivider({ chapter: "04", title: "How we solve it.", gradient: EMERALD,
   if (MARK_OK) s.addImage({ path: MARK, x: 0.5, y: 0.4, w: 0.5, h: 0.5 });
   s.addText("AIvenX", {
     x: 1.1, y: 0.4, w: 4, h: 0.5,
-    fontFace: "Inter", fontSize: 18, bold: true, color: WHITE,
+    fontFace: "Calibri", fontSize: 18, bold: true, color: WHITE,
   });
   slideNum(s, 30, 30, true);
 
   s.addText("See it grade\nyour school's last paper.", {
     x: 0.5, y: 1.7, w: 12.3, h: 2.6,
-    fontFace: "Inter", fontSize: 60, bold: true, color: WHITE,
+    fontFace: "Calibri", fontSize: 60, bold: true, color: WHITE,
     align: "center", lineSpacingMultiple: 1.05,
   });
   s.addText(
     "Reply to our email, or reach us directly. We block 30 minutes for your principal + leadership team and walk through everything in this deck — live, on your data.",
     {
       x: 1.5, y: 4.4, w: 10.3, h: 1.0,
-      fontFace: "Inter", fontSize: 16, color: SLATE300, align: "center", lineSpacingMultiple: 1.4,
+      fontFace: "Calibri", fontSize: 16, color: SLATE300, align: "center", lineSpacingMultiple: 1.4,
     }
   );
 
@@ -1584,17 +1586,17 @@ sectionDivider({ chapter: "04", title: "How we solve it.", gradient: EMERALD,
     darkCard(s, x, y, 4.7, 0.6);
     s.addText(eb, {
       x: x + 0.2, y: y + 0.1, w: 1.5, h: 0.4,
-      fontFace: "Inter", fontSize: 9, bold: true, color: CYAN, charSpacing: 6, valign: "middle",
+      fontFace: "Calibri", fontSize: 9, bold: true, color: CYAN, charSpacing: 6, valign: "middle",
     });
     s.addText(value, {
       x: x + 1.7, y: y + 0.1, w: 2.9, h: 0.4,
-      fontFace: "Inter", fontSize: 12, bold: true, color: WHITE, valign: "middle",
+      fontFace: "Calibri", fontSize: 12, bold: true, color: WHITE, valign: "middle",
     });
   });
 
   s.addText("© 2026 AIvenX Technologies Pvt. Ltd. · Made in India · Demo deck v2 · April 2026", {
     x: 0.5, y: 7.05, w: 12.3, h: 0.3,
-    fontFace: "Inter", fontSize: 9, color: SLATE400, align: "center",
+    fontFace: "Calibri", fontSize: 9, color: SLATE400, align: "center",
   });
 }
 
@@ -1603,7 +1605,7 @@ sectionDivider({ chapter: "04", title: "How we solve it.", gradient: EMERALD,
 // =============================================================================
 pptx.writeFile({ fileName: "AIvenX-Demo-Deck.pptx" })
   .then((name) => {
-    console.log("✓ Wrote", name);
+    console.log(" Wrote", name);
   })
   .catch((err) => {
     console.error("× Error:", err);
