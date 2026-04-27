@@ -6,19 +6,27 @@
 <title>AIvenX — Company Brochure</title>
 <link rel="icon" type="image/png" href="/assets/aivenx-mark.png" />
 
-<!-- Tailwind CDN — same setup as the landing page so the brochure stays in sync visually -->
+<!-- Tailwind CDN keeps the brochure self-contained — no build step. -->
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
   tailwind.config = {
     theme: {
       extend: {
         colors: {
-          'brand-cyan': '#22D3EE',
+          'brand-cyan':   '#22D3EE',
           'brand-purple': '#A855F7',
-          'brand-ink': '#0F172A',
-          'brand-cream': '#FFF1D6',
+          'brand-pink':   '#EC4899',
+          'brand-amber':  '#F59E0B',
+          'brand-emerald':'#10B981',
+          'brand-ink':    '#0B0F1F',
+          'brand-mid':    '#0F172A',
+          'brand-cream':  '#FFF1D6',
         },
-        fontFamily: { sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'] },
+        fontFamily: {
+          sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+          display: ['"Space Grotesk"', 'Inter', 'system-ui', 'sans-serif'],
+          mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
+        },
       },
     },
   };
@@ -26,23 +34,16 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 
 <style>
-  /* Brand gradients */
-  .brand-gradient { background: linear-gradient(135deg, #22D3EE 0%, #A855F7 100%); }
-  .brand-gradient-text {
-    background: linear-gradient(135deg, #22D3EE 0%, #A855F7 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-
-  /* A4 page setup. Each .page is one printed page. We pad in mm so the
-     content respects printer margins. The body has a soft grey backdrop
-     on screen so pages feel like sheets of paper. */
+  /* ====================================================================
+     BROCHURE PRINT LAYOUT
+     A4 portrait. Each .page is one printed sheet. We pad in millimetres
+     so margins respect any printer quirks. Body has a soft grey backdrop
+     on screen so pages read as physical sheets; print drops it.
+     ==================================================================== */
   @page { size: A4; margin: 0; }
-
   html, body { background: #E5E7EB; }
   body { font-family: 'Inter', system-ui, sans-serif; color: #0F172A; }
 
@@ -59,589 +60,721 @@
   }
   .page:last-child { page-break-after: auto; }
 
-  .page-cover {
-    color: white;
-    background: linear-gradient(135deg, #22D3EE 0%, #A855F7 100%);
+  /* Cover + back cover use the dark brand surface so the printed book
+     opens with a gradient cover, then settles into clean white content
+     pages — saves ink on long reads. */
+  .page-dark {
+    background: #0B0F1F;
+    color: #F1F5F9;
     padding: 0;
   }
-
-  /* Background grid for cover */
   .cover-grid {
     background-image:
-      linear-gradient(rgba(255,255,255,0.10) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,0.10) 1px, transparent 1px);
-    background-size: 40px 40px;
+      linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+    background-size: 28px 28px;
   }
 
-  /* Print: drop shadows + grey backdrop, keep margins from @page */
-  @media print {
-    html, body { background: #ffffff; }
-    .page {
-      margin: 0;
-      box-shadow: none;
-      width: 210mm;
-      min-height: 297mm;
-    }
-    .no-print { display: none !important; }
+  .gradient-text {
+    background: linear-gradient(120deg, #22D3EE 0%, #A855F7 50%, #EC4899 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
   }
 
-  /* Footer line on each interior page */
+  .sec-num {
+    font-family:'JetBrains Mono', monospace;
+    font-size: 9pt;
+    letter-spacing: 0.3em;
+    color: #06B6D4;
+    text-transform: uppercase;
+  }
+  .sec-h {
+    font-family:'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 28pt;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+  }
+
+  .card-light   { border: 1px solid #E2E8F0; border-radius: 14px; background: #FFFFFF; box-shadow: 0 1px 3px rgba(15,23,42,0.04); }
+  .card-tinted  { border: 1px solid #E2E8F0; border-radius: 14px; background: linear-gradient(180deg, #F8FAFC 0%, #FFFFFF 100%); }
+  .card-dark    { border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; background: rgba(255,255,255,0.04); }
+  .pill         { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 9pt; font-weight: 600; }
+
   .page-footer {
     position: absolute;
-    left: 18mm;
-    right: 18mm;
-    bottom: 10mm;
-    display: flex;
-    justify-content: space-between;
-    font-size: 9pt;
-    color: #94A3B8;
+    left: 18mm; right: 18mm; bottom: 10mm;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 9pt; color: #94A3B8;
     border-top: 1px solid #E2E8F0;
     padding-top: 4mm;
   }
+  .page-footer .brand-mini { display: inline-flex; align-items: center; gap: 6px; color: #64748B; font-weight: 600; }
+
+  @media print {
+    html, body { background: #ffffff; }
+    .page { margin: 0; box-shadow: none; width: 210mm; min-height: 297mm; }
+    .no-print { display: none !important; }
+    /* Force background colour on dark pages — Chrome/Edge strip
+       backgrounds in print to save ink unless we explicitly opt in. */
+    .page-dark, .cover-grid {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+  }
+
+  .vendor-old { border: 1px dashed #CBD5E1; border-radius: 12px; padding: 14px 10px; text-align: center; color: #64748B; background: #F8FAFC; }
+  .vendor-old .v-name { text-decoration: line-through; font-weight: 600; color: #94A3B8; font-size: 9pt; }
+
+  .cap-chip { border: 1px solid #E2E8F0; border-radius: 12px; padding: 12px 14px; background: #FFFFFF; height: 100%; }
 </style>
 </head>
 <body class="antialiased">
 
 <!-- =================================================================
-     PRINT BAR (screen only) — gives a one-click print/save-to-PDF action
+     PRINT BAR (screen only) — one-click print/save-to-PDF
      ================================================================= -->
 <div class="no-print sticky top-0 z-50 backdrop-blur bg-white/90 border-b border-slate-200">
   <div class="max-w-5xl mx-auto px-6 py-3 flex items-center justify-between">
     <div class="flex items-center gap-3">
-      <img src="/assets/aivenx-mark.png" alt="AIvenX" class="h-7 w-auto" />
-      <span class="text-sm font-semibold">AIvenX Brochure</span>
-      <span class="text-xs text-slate-500">— preview</span>
+      <img src="/assets/aivenx-mark.png" alt="AIvenX" class="w-8 h-8" />
+      <span class="font-display font-bold text-slate-900">AIvenX · Company brochure</span>
     </div>
     <div class="flex items-center gap-3">
       <span class="text-xs text-slate-500 hidden md:block">Print → Save as PDF (A4) for emailing</span>
-      <button onclick="window.print()" class="brand-gradient text-white text-sm font-semibold px-4 py-2 rounded-lg shadow hover:shadow-md transition">
-        🖨 Print / Save PDF
-      </button>
+      <a href="/" class="text-xs text-slate-500 hover:text-slate-900">← Home</a>
+      <button onclick="window.print()" class="px-4 py-2 rounded-lg text-sm font-bold text-white bg-gradient-to-r from-brand-cyan to-brand-purple hover:opacity-90">Save as PDF</button>
     </div>
   </div>
 </div>
 
+
 <!-- =================================================================
-     PAGE 1 — COVER
+     PAGE 1 · COVER
      ================================================================= -->
-<section class="page page-cover">
-  <div class="cover-grid w-full h-full" style="min-height: 297mm; padding: 18mm; display: flex; flex-direction: column; justify-content: space-between;">
-    <div>
-      <img src="/assets/aivenx-logo.png" alt="AIvenX" style="height: 18mm; filter: brightness(0) invert(1);" />
+<section class="page page-dark">
+  <div class="cover-grid relative" style="min-height: 297mm; padding: 22mm 18mm;">
+    <!-- Brand block top-left -->
+    <div class="flex items-center gap-3">
+      <img src="/assets/aivenx-mark.png" alt="AIvenX mark" class="w-12 h-12" />
+      <div>
+        <div class="font-display font-bold text-2xl tracking-tight">AIvenX</div>
+        <div class="text-[10pt] text-slate-400 uppercase tracking-[0.25em]">Company Brochure</div>
+      </div>
     </div>
 
-    <div>
-      <p class="text-sm font-mono uppercase tracking-[0.3em] text-white/80 mb-6">Company Brochure · 2026</p>
-      <h1 class="text-6xl font-black leading-[1.05] tracking-tight mb-6" style="font-size: 56pt;">
-        The AI-native<br />school,<br />in one login.
+    <!-- Hero block centred -->
+    <div class="absolute inset-x-0" style="top: 50%; transform: translateY(-55%); padding: 0 18mm;">
+      <div class="text-[10pt] text-cyan-300 uppercase tracking-[0.3em] font-mono mb-4">India · 2026</div>
+      <h1 class="font-display font-bold tracking-tight" style="font-size: 56pt; line-height: 1;">
+        The AI-native<br/>
+        <span class="gradient-text">school OS</span>.
       </h1>
-      <p class="text-xl text-white/90 max-w-xl leading-relaxed">
-        ERP + Cortex AI Studio + face-recognition attendance.
-        Twenty-plus modules. One platform. One bill.
+      <p class="text-slate-300 mt-6 max-w-2xl text-lg leading-relaxed">
+        AI generates the chapters, grades the exams, watches the gate, and reaches every parent. <br/>
+        One login. One bill. Six vendors gone.
       </p>
-    </div>
-
-    <div class="flex items-end justify-between">
-      <div>
-        <p class="text-sm text-white/70 uppercase tracking-widest mb-1">aivenx.co.in</p>
-        <p class="text-sm text-white/70">hello@aivenx.co.in · Mumbai, India</p>
-      </div>
-      <div class="text-right">
-        <p class="text-xs text-white/60 uppercase tracking-widest">Built for</p>
-        <p class="text-sm font-semibold text-white/90">IB · CBSE · ICSE · CAIE · AP</p>
+      <div class="flex flex-wrap gap-2 mt-8">
+        <span class="pill bg-white/10 text-cyan-200 border border-white/10">Cortex AI Studio</span>
+        <span class="pill bg-white/10 text-purple-200 border border-white/10">ERP</span>
+        <span class="pill bg-white/10 text-emerald-200 border border-white/10">Guardian Safety</span>
+        <span class="pill bg-white/10 text-pink-200 border border-white/10">Connect Alumni</span>
+        <span class="pill bg-white/10 text-amber-200 border border-white/10">Mobile Apps</span>
       </div>
     </div>
+
+    <!-- Footer block -->
+    <div class="absolute" style="bottom: 22mm; left: 18mm; right: 18mm;">
+      <div class="flex items-end justify-between border-t border-white/10 pt-4 text-[9pt] text-slate-400">
+        <div>
+          <div class="font-mono uppercase tracking-widest text-slate-500">Built for</div>
+          <div class="mt-1">CBSE · ICSE · IB · State boards · Grades 1–12</div>
+        </div>
+        <div class="text-right">
+          <div class="font-mono uppercase tracking-widest text-slate-500">Compliance</div>
+          <div class="mt-1">NEP 2020 · DPDP Act 2023 · RTE · RPwD</div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
-<!-- =================================================================
-     PAGE 2 — THE PROBLEM / WHY AIVENX
-     ================================================================= -->
-<section class="page">
-  <p class="text-xs font-mono uppercase tracking-[0.3em] text-brand-purple mb-3">The problem we solve</p>
-  <h2 class="text-4xl font-black tracking-tight mb-8">Schools are juggling 5 vendors.<br/>Teachers are juggling 5 logins.</h2>
-
-  <div class="grid grid-cols-2 gap-8 mb-10">
-    <div>
-      <p class="text-base text-slate-700 leading-relaxed">
-        A typical school today runs on a patchwork: an ERP for fees, a
-        separate LMS for content, an attendance app, an exam tool, a
-        biometric vendor, and a transport tracker. Each charges
-        per-module, per-student, or per-year. Each has its own login,
-        its own data silo, its own outage window.
-      </p>
-      <p class="text-base text-slate-700 leading-relaxed mt-4">
-        The cost isn't just licence fees — it's the 10 hours a week
-        every teacher loses to context-switching, manual data entry,
-        and re-typing the same student record into four different
-        systems.
-      </p>
-    </div>
-    <div class="bg-slate-50 rounded-2xl p-7 border border-slate-200">
-      <p class="text-xs uppercase tracking-widest text-slate-500 mb-4">Typical school stack</p>
-      <ul class="space-y-3 text-sm">
-        <li class="flex justify-between"><span class="text-slate-700">School ERP</span><span class="font-mono text-slate-500">Vendor A</span></li>
-        <li class="flex justify-between"><span class="text-slate-700">LMS / content</span><span class="font-mono text-slate-500">Vendor B</span></li>
-        <li class="flex justify-between"><span class="text-slate-700">Biometric attendance</span><span class="font-mono text-slate-500">Vendor C</span></li>
-        <li class="flex justify-between"><span class="text-slate-700">Exam / report cards</span><span class="font-mono text-slate-500">Vendor D</span></li>
-        <li class="flex justify-between"><span class="text-slate-700">Transport / GPS</span><span class="font-mono text-slate-500">Vendor E</span></li>
-        <li class="pt-3 border-t border-slate-200 mt-3 flex justify-between font-semibold">
-          <span>5 logins · 5 invoices · 5 SLAs</span>
-        </li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="brand-gradient rounded-2xl p-8 text-white">
-    <p class="text-xs uppercase tracking-widest text-white/80 mb-3">Our answer</p>
-    <p class="text-3xl font-extrabold leading-tight">
-      Replace the entire stack with one elegantly designed platform —
-      built AI-first, not retrofitted.
-    </p>
-  </div>
-
-  <div class="page-footer">
-    <span>AIvenX · The AI-native school</span>
-    <span>Page 2</span>
-  </div>
-</section>
 
 <!-- =================================================================
-     PAGE 3 — THE PLATFORM (modules at a glance)
+     PAGE 2 · WHO WE ARE
      ================================================================= -->
 <section class="page">
-  <p class="text-xs font-mono uppercase tracking-[0.3em] text-brand-purple mb-3">The platform</p>
-  <h2 class="text-4xl font-black tracking-tight mb-3">One platform.<br/>Twenty-plus modules.</h2>
-  <p class="text-base text-slate-600 leading-relaxed mb-8 max-w-2xl">
-    Everything a modern school needs — from a parent paying fees on
-    Monday to a camera marking attendance on Wednesday — runs on the
-    same elegant system, with one student record at the centre.
+  <div class="sec-num mb-3">01 · Who we are</div>
+  <h2 class="sec-h">A company<br/><span class="gradient-text">obsessed with</span> <span class="text-slate-500">Indian classrooms.</span></h2>
+
+  <p class="text-slate-700 mt-7 leading-relaxed text-[12pt]">
+    AIvenX is built by educators, technologists, and parents who lived the school-software pain firsthand. We aren't bolting AI onto a legacy ERP — we're building the school operating system the way we wished it existed when our own kids started Class 1.
+  </p>
+  <p class="text-slate-600 mt-4 leading-relaxed text-[11pt]">
+    Designed in <strong class="text-slate-900">Hyderabad, Telangana</strong>, engineered for every Indian board, shipped with NEP&nbsp;2020 and DPDP Act compliance baked in — not retrofitted.
   </p>
 
-  <div class="grid grid-cols-3 gap-4 text-sm">
-    <!-- School Operations -->
-    <div class="rounded-xl border border-slate-200 p-5">
-      <p class="text-xs uppercase tracking-widest text-brand-cyan font-semibold mb-3">School Operations</p>
-      <ul class="space-y-1.5 text-slate-700">
-        <li>• Admissions & enquiry</li>
-        <li>• Fees & invoicing</li>
-        <li>• HR & payroll</li>
-        <li>• Library</li>
-        <li>• Transport & hostel</li>
-        <li>• Real-time reports</li>
-      </ul>
+  <div class="mt-10 grid grid-cols-2 gap-4">
+    <div class="card-tinted p-5">
+      <div class="text-xs font-mono uppercase tracking-widest text-cyan-600 font-bold mb-2">Principle 01</div>
+      <h3 class="font-display font-bold text-[14pt] mb-1.5">Teacher-first, not feature-first</h3>
+      <p class="text-[10pt] text-slate-600 leading-relaxed">Every AI output is reviewed and approved by a teacher before a student sees it. The teacher gains hours; never gets replaced.</p>
     </div>
-    <!-- Academics -->
-    <div class="rounded-xl border border-slate-200 p-5">
-      <p class="text-xs uppercase tracking-widest text-brand-purple font-semibold mb-3">Academics</p>
-      <ul class="space-y-1.5 text-slate-700">
-        <li>• Class & section setup</li>
-        <li>• Timetables</li>
-        <li>• Examinations</li>
-        <li>• Report cards (multi-board)</li>
-        <li>• Promotion & rollover</li>
-        <li>• Parent portal</li>
-      </ul>
+    <div class="card-tinted p-5">
+      <div class="text-xs font-mono uppercase tracking-widest text-purple-600 font-bold mb-2">Principle 02</div>
+      <h3 class="font-display font-bold text-[14pt] mb-1.5">AI-native from day one</h3>
+      <p class="text-[10pt] text-slate-600 leading-relaxed">Not a chatbot bolted on. Cortex sits in the spine — generates, grades, recommends, narrates. Every workflow assumes AI in the loop.</p>
     </div>
-    <!-- Cortex AI -->
-    <div class="rounded-xl border border-slate-200 p-5">
-      <p class="text-xs uppercase tracking-widest text-brand-purple font-semibold mb-3">Cortex AI Studio</p>
-      <ul class="space-y-1.5 text-slate-700">
-        <li>• Chapter generator</li>
-        <li>• 150k question bank</li>
-        <li>• Assessment Creator</li>
-        <li>• AI Evaluator</li>
-        <li>• Lesson plans</li>
-        <li>• Cortex Helper bot</li>
-      </ul>
+    <div class="card-tinted p-5">
+      <div class="text-xs font-mono uppercase tracking-widest text-emerald-600 font-bold mb-2">Principle 03</div>
+      <h3 class="font-display font-bold text-[14pt] mb-1.5">Privacy by architecture</h3>
+      <p class="text-[10pt] text-slate-600 leading-relaxed">India data residency, DPDP-Act consent flows, audit-grade logging, opt-out per family. We collect only what serves the child.</p>
     </div>
-    <!-- Attendance & Safety -->
-    <div class="rounded-xl border border-slate-200 p-5">
-      <p class="text-xs uppercase tracking-widest text-brand-cyan font-semibold mb-3">Attendance & Safety</p>
-      <ul class="space-y-1.5 text-slate-700">
-        <li>• Face AI attendance</li>
-        <li>• Default-absent policy</li>
-        <li>• Period-wise tracking</li>
-        <li>• Auto reports</li>
-        <li>• Visitor logs</li>
-      </ul>
-    </div>
-    <!-- Communication -->
-    <div class="rounded-xl border border-slate-200 p-5">
-      <p class="text-xs uppercase tracking-widest text-brand-cyan font-semibold mb-3">Communication</p>
-      <ul class="space-y-1.5 text-slate-700">
-        <li>• Notice board</li>
-        <li>• Parent messaging</li>
-        <li>• Email & SMS templates</li>
-        <li>• Multi-language</li>
-        <li>• Event calendar</li>
-      </ul>
-    </div>
-    <!-- Multi-tenant -->
-    <div class="rounded-xl border border-slate-200 p-5">
-      <p class="text-xs uppercase tracking-widest text-brand-purple font-semibold mb-3">Foundations</p>
-      <ul class="space-y-1.5 text-slate-700">
-        <li>• Multi-tenant secure</li>
-        <li>• Role-based access</li>
-        <li>• Audit logs</li>
-        <li>• Data export anytime</li>
-        <li>• Daily backups</li>
-      </ul>
+    <div class="card-tinted p-5">
+      <div class="text-xs font-mono uppercase tracking-widest text-amber-600 font-bold mb-2">Principle 04</div>
+      <h3 class="font-display font-bold text-[14pt] mb-1.5">Built for India, not adapted</h3>
+      <p class="text-[10pt] text-slate-600 leading-relaxed">CBSE rubrics, vernacular roadmap, joint-family pods, UPI rails, low-bandwidth mode — every primitive shipped for Indian schools first.</p>
     </div>
   </div>
 
   <div class="page-footer">
-    <span>AIvenX · The platform</span>
-    <span>Page 3</span>
+    <span class="brand-mini"><img src="/assets/aivenx-mark.png" class="w-4 h-4" alt=""/> AIvenX · Company brochure</span>
+    <span>02</span>
   </div>
 </section>
 
+
 <!-- =================================================================
-     PAGE 4 — CORTEX AI STUDIO (deep dive)
+     PAGE 3 · THE ISSUES
      ================================================================= -->
 <section class="page">
-  <p class="text-xs font-mono uppercase tracking-[0.3em] text-brand-purple mb-3">The flagship</p>
-  <h2 class="text-4xl font-black tracking-tight mb-3">
-    <span class="brand-gradient-text">Cortex</span> writes the curriculum.<br/>Teachers do the teaching.
-  </h2>
-  <p class="text-base text-slate-600 leading-relaxed mb-8 max-w-2xl">
-    Cortex AI Studio is what makes AIvenX different. It generates
-    curriculum-aligned chapters, assembles exam papers from a 150,000-question
-    bank, grades handwritten answer sheets, and writes lesson plans —
-    in seconds, not hours.
+  <div class="sec-num mb-3">02 · The issues</div>
+  <h2 class="sec-h">Schools today are <span class="gradient-text">drowning in tools</span>. <span class="text-slate-400">Teachers, in tabs.</span></h2>
+
+  <p class="text-slate-600 mt-6 text-[11pt] leading-relaxed">
+    The average Indian K-12 school logs into 5–7 separate platforms every day. Teachers copy-paste between them. Parents miss messages on WhatsApp. AI is sprinkled on top — never in the spine.
   </p>
 
-  <div class="grid grid-cols-2 gap-5 mb-6">
-    <div class="rounded-xl bg-white border border-slate-200 p-6">
-      <p class="text-3xl font-black brand-gradient-text mb-2">📘</p>
-      <h3 class="font-bold text-lg mb-1">Chapter Generator</h3>
-      <p class="text-sm text-slate-600 leading-relaxed">
-        Pick subject, grade, and topic. Cortex produces a board-aligned
-        chapter in four learning modes: <b>Focus</b> (clear & structured),
-        <b>Spark</b> (engaging analogies), <b>Quest</b> (gamified), and
-        <b>Saga</b> (narrative). Diagrams, exercises, and answer keys included.
-      </p>
+  <div class="mt-8 grid grid-cols-2 gap-4">
+    <div class="card-light p-5">
+      <div class="text-2xl mb-2">🧩</div>
+      <div class="text-[9pt] font-bold uppercase tracking-wider text-rose-600 mb-1">Vendor sprawl</div>
+      <h3 class="font-display font-bold text-[13pt] mb-2">Six vendors. One school.</h3>
+      <p class="text-[10pt] text-slate-600 leading-relaxed">ERP for fees, LMS for content, separate CCTV for safety, WhatsApp for parents, three Excel sheets for HR. Nothing talks. Renewals every quarter.</p>
     </div>
-    <div class="rounded-xl bg-white border border-slate-200 p-6">
-      <p class="text-3xl font-black brand-gradient-text mb-2">📝</p>
-      <h3 class="font-bold text-lg mb-1">Assessment Creator</h3>
-      <p class="text-sm text-slate-600 leading-relaxed">
-        Build exam papers from a 150,000+ question bank. Filter by
-        chapter, difficulty, Bloom level, and marks. CBSE-standard
-        section presets included. Live coverage preview before you commit.
-      </p>
+    <div class="card-light p-5">
+      <div class="text-2xl mb-2">📑</div>
+      <div class="text-[9pt] font-bold uppercase tracking-wider text-amber-600 mb-1">Teacher burnout</div>
+      <h3 class="font-display font-bold text-[13pt] mb-2">4 hours of paperwork. 2 hours of teaching.</h3>
+      <p class="text-[10pt] text-slate-600 leading-relaxed">Lesson plans typed by hand every Sunday. Worksheets scrambled the morning of. 40 answer scripts graded after school every week.</p>
     </div>
-    <div class="rounded-xl bg-white border border-slate-200 p-6">
-      <p class="text-3xl font-black brand-gradient-text mb-2">✍️</p>
-      <h3 class="font-bold text-lg mb-1">AI Evaluator</h3>
-      <p class="text-sm text-slate-600 leading-relaxed">
-        Upload scanned answer sheets. Cortex grades handwritten responses,
-        flags borderline answers for teacher review, and exports a
-        marks sheet ready for the gradebook.
-      </p>
+    <div class="card-light p-5">
+      <div class="text-2xl mb-2">📵</div>
+      <div class="text-[9pt] font-bold uppercase tracking-wider text-purple-600 mb-1">Parent fatigue</div>
+      <h3 class="font-display font-bold text-[13pt] mb-2">37 messages in the WhatsApp group.</h3>
+      <p class="text-[10pt] text-slate-600 leading-relaxed">Fee reminder, picnic permission, homework photo, sports kit notice — buried under "Good morning ji" stickers. The one that mattered? Missed.</p>
     </div>
-    <div class="rounded-xl bg-white border border-slate-200 p-6">
-      <p class="text-3xl font-black brand-gradient-text mb-2">💬</p>
-      <h3 class="font-bold text-lg mb-1">Cortex Helper + Study Mode</h3>
-      <p class="text-sm text-slate-600 leading-relaxed">
-        A built-in AI guide on every page (powered by our mascot, Leo).
-        Helper answers product questions; Study mode tutors students
-        through chapters with context-aware Q&A.
-      </p>
+    <div class="card-light p-5">
+      <div class="text-2xl mb-2">🚸</div>
+      <div class="text-[9pt] font-bold uppercase tracking-wider text-cyan-600 mb-1">Safety blind spots</div>
+      <h3 class="font-display font-bold text-[13pt] mb-2">Did my child reach school?</h3>
+      <p class="text-[10pt] text-slate-600 leading-relaxed">Bus tracker on one app. Gate logbook in a Reception register. Bullying never escalates beyond the class teacher's diary.</p>
     </div>
-  </div>
-
-  <div class="bg-slate-50 rounded-xl p-5 border border-slate-200 flex items-center gap-5">
-    <div class="text-3xl">⏱️</div>
-    <p class="text-sm text-slate-700 leading-relaxed">
-      <b>Time saved per teacher per week: ~10 hours.</b> Lesson prep, paper-setting,
-      and grading collapse from days into minutes.
-    </p>
+    <div class="card-light p-5">
+      <div class="text-2xl mb-2">📊</div>
+      <div class="text-[9pt] font-bold uppercase tracking-wider text-emerald-600 mb-1">Marks aren't insight</div>
+      <h3 class="font-display font-bold text-[13pt] mb-2">"He scored 72%." Now what?</h3>
+      <p class="text-[10pt] text-slate-600 leading-relaxed">No view of where he's stuck. No comparison to class median. No prescribed practice. Next term starts the same way.</p>
+    </div>
+    <div class="card-light p-5">
+      <div class="text-2xl mb-2">🤖</div>
+      <div class="text-[9pt] font-bold uppercase tracking-wider text-pink-600 mb-1">AI as a sticker</div>
+      <h3 class="font-display font-bold text-[13pt] mb-2">"AI-powered" everything. AI-native nothing.</h3>
+      <p class="text-[10pt] text-slate-600 leading-relaxed">A chatbot bolted on. A summarizer in settings. The actual product still does what it did in 2018. Schools deserve better.</p>
+    </div>
   </div>
 
   <div class="page-footer">
-    <span>AIvenX · Cortex AI Studio</span>
-    <span>Page 4</span>
+    <span class="brand-mini"><img src="/assets/aivenx-mark.png" class="w-4 h-4" alt=""/> AIvenX · Company brochure</span>
+    <span>03</span>
   </div>
 </section>
 
+
 <!-- =================================================================
-     PAGE 5 — FACE AI ATTENDANCE
+     PAGE 4 · ONE SPINE — Six vendors gone
      ================================================================= -->
 <section class="page">
-  <p class="text-xs font-mono uppercase tracking-[0.3em] text-brand-purple mb-3">Attendance, reinvented</p>
-  <h2 class="text-4xl font-black tracking-tight mb-3">
-    Face AI replaces<br/>the biometric machine.
-  </h2>
-  <p class="text-base text-slate-600 leading-relaxed mb-8 max-w-2xl">
-    A single webcam at the classroom door — or a tablet at the gate —
-    marks every student present in under a second. No fingerprint
-    queues, no proxy attendance, no missed entries.
+  <div class="sec-num mb-3">03 · One spine</div>
+  <h2 class="sec-h">One platform.<br/><span class="gradient-text">Six vendors gone.</span></h2>
+
+  <p class="text-slate-600 mt-6 text-[11pt] leading-relaxed">
+    AIvenX collapses the fragmented vendor stack into one product. One login for the principal, one bill for the bursar, one dataset for analytics — and zero copy-paste between systems.
   </p>
 
-  <div class="grid grid-cols-2 gap-8 mb-8">
-    <div>
-      <h3 class="font-bold text-lg mb-3">How it works</h3>
-      <ol class="space-y-3 text-sm text-slate-700">
-        <li><b class="brand-gradient-text">1. Enrol once.</b> Capture 3-5 photos of each student during admission. Embeddings are stored, photos are not.</li>
-        <li><b class="brand-gradient-text">2. Recognise live.</b> The classroom camera streams frames. Cortex matches faces in real time and writes attendance to the gradebook.</li>
-        <li><b class="brand-gradient-text">3. Default-absent policy.</b> Anyone not seen by the cut-off is automatically marked absent. Parents get an SMS.</li>
-        <li><b class="brand-gradient-text">4. Period-wise tracking.</b> Same logic for every period — absconding mid-day is detected too.</li>
-      </ol>
-    </div>
-    <div class="bg-gradient-to-br from-cyan-50 to-purple-50 rounded-2xl p-6 border border-slate-200">
-      <p class="text-xs uppercase tracking-widest text-slate-500 mb-4">Why it matters</p>
-      <ul class="space-y-3 text-sm">
-        <li class="flex gap-3"><span class="text-brand-cyan font-bold">✓</span><span>Zero teacher time spent on roll-call</span></li>
-        <li class="flex gap-3"><span class="text-brand-cyan font-bold">✓</span><span>Proxy-proof — no impersonation</span></li>
-        <li class="flex gap-3"><span class="text-brand-cyan font-bold">✓</span><span>Hardware-free — uses any webcam</span></li>
-        <li class="flex gap-3"><span class="text-brand-cyan font-bold">✓</span><span>Privacy-first — only embeddings stored</span></li>
-        <li class="flex gap-3"><span class="text-brand-cyan font-bold">✓</span><span>Works offline-first; syncs when online</span></li>
-      </ul>
-    </div>
+  <div class="mt-10 grid grid-cols-6 gap-3">
+    <div class="vendor-old"><div class="text-xl mb-1">🏛️</div><div class="text-[9pt] text-slate-500">School ERP</div><div class="v-name">Vendor A</div></div>
+    <div class="vendor-old"><div class="text-xl mb-1">📚</div><div class="text-[9pt] text-slate-500">LMS</div><div class="v-name">Vendor B</div></div>
+    <div class="vendor-old"><div class="text-xl mb-1">🎯</div><div class="text-[9pt] text-slate-500">Question bank</div><div class="v-name">Vendor C</div></div>
+    <div class="vendor-old"><div class="text-xl mb-1">🎥</div><div class="text-[9pt] text-slate-500">CCTV / Safety</div><div class="v-name">Vendor D</div></div>
+    <div class="vendor-old"><div class="text-xl mb-1">💬</div><div class="text-[9pt] text-slate-500">Parent app</div><div class="v-name">Vendor E</div></div>
+    <div class="vendor-old"><div class="text-xl mb-1">🚌</div><div class="text-[9pt] text-slate-500">Bus tracker</div><div class="v-name">Vendor F</div></div>
   </div>
 
-  <div class="bg-slate-900 text-white rounded-2xl p-7">
-    <p class="text-xs uppercase tracking-widest text-white/60 mb-3">Real-world impact</p>
-    <p class="text-2xl font-extrabold leading-snug">
-      A 1,000-student school saves ~250 staff-hours per term on
-      attendance alone — and gets fully audited records in return.
-    </p>
+  <div class="flex items-center justify-center my-10">
+    <svg class="w-12 h-12 text-cyan-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
+  </div>
+
+  <div class="rounded-2xl bg-gradient-to-br from-brand-ink to-slate-900 text-white p-7 relative overflow-hidden" style="-webkit-print-color-adjust:exact; print-color-adjust:exact;">
+    <div class="absolute -top-16 -right-16 w-64 h-64 rounded-full bg-brand-cyan/15 blur-3xl"></div>
+    <div class="absolute -bottom-16 -left-16 w-64 h-64 rounded-full bg-brand-purple/15 blur-3xl"></div>
+    <div class="relative">
+      <div class="flex items-center gap-3 mb-5">
+        <img src="/assets/aivenx-mark.png" alt="" class="w-12 h-12" />
+        <div>
+          <div class="text-[9pt] text-cyan-300 uppercase tracking-widest font-bold">AIvenX · all-in-one</div>
+          <div class="font-display font-bold text-xl">The AI-native school OS</div>
+        </div>
+      </div>
+      <div class="grid grid-cols-3 gap-2">
+        <div class="px-3 py-2 rounded-lg bg-white/5 text-[10pt]">📊 ERP</div>
+        <div class="px-3 py-2 rounded-lg bg-white/5 text-[10pt]">🧠 Cortex AI Studio</div>
+        <div class="px-3 py-2 rounded-lg bg-white/5 text-[10pt]">🛡️ Guardian Safety</div>
+        <div class="px-3 py-2 rounded-lg bg-white/5 text-[10pt]">🤝 Connect Alumni</div>
+        <div class="px-3 py-2 rounded-lg bg-white/5 text-[10pt]">📱 Mobile apps</div>
+        <div class="px-3 py-2 rounded-lg bg-white/5 text-[10pt]">📷 Gallery & life</div>
+      </div>
+      <div class="mt-5 pt-5 border-t border-white/10 grid grid-cols-3 text-center">
+        <div><div class="text-2xl font-bold text-brand-cyan">1</div><div class="text-[9pt] text-slate-400">login</div></div>
+        <div><div class="text-2xl font-bold text-brand-purple">1</div><div class="text-[9pt] text-slate-400">bill</div></div>
+        <div><div class="text-2xl font-bold text-brand-pink">0</div><div class="text-[9pt] text-slate-400">tab-juggling</div></div>
+      </div>
+    </div>
   </div>
 
   <div class="page-footer">
-    <span>AIvenX · Face AI Attendance</span>
-    <span>Page 5</span>
+    <span class="brand-mini"><img src="/assets/aivenx-mark.png" class="w-4 h-4" alt=""/> AIvenX · Company brochure</span>
+    <span>04</span>
   </div>
 </section>
 
-<!-- =================================================================
-     PAGE 6 — BUILT FOR EVERY BOARD
-     ================================================================= -->
-<section class="page">
-  <p class="text-xs font-mono uppercase tracking-[0.3em] text-brand-purple mb-3">Built for world-class schools</p>
-  <h2 class="text-4xl font-black tracking-tight mb-3">Curriculum-aligned<br/>out of the box.</h2>
-  <p class="text-base text-slate-600 leading-relaxed mb-10 max-w-2xl">
-    Whether you run an IB World School in Mumbai or a CBSE chain across
-    five states, AIvenX understands your syllabus, grading scale, and
-    report-card format from day one.
-  </p>
-
-  <div class="grid grid-cols-2 gap-5 mb-10">
-    <div class="rounded-2xl border-2 border-slate-200 p-6">
-      <p class="text-xs uppercase tracking-widest text-brand-cyan font-semibold mb-2">International</p>
-      <h3 class="font-bold text-xl mb-3">IB · CAIE · AP</h3>
-      <p class="text-sm text-slate-600 leading-relaxed">
-        Full support for IB PYP / MYP / DP, Cambridge IGCSE & A-Levels,
-        and Advanced Placement. Inquiry-based templates, portfolio
-        rubrics, and DP point conversion built in.
-      </p>
-    </div>
-    <div class="rounded-2xl border-2 border-slate-200 p-6">
-      <p class="text-xs uppercase tracking-widest text-brand-purple font-semibold mb-2">Indian</p>
-      <h3 class="font-bold text-xl mb-3">CBSE · ICSE · ISC · State · NIOS</h3>
-      <p class="text-sm text-slate-600 leading-relaxed">
-        Native support for CBSE, ICSE/ISC, all major State Boards,
-        and NIOS. Term-wise scholastic + co-scholastic report cards,
-        skill grades, and CCE patterns ready out of the box.
-      </p>
-    </div>
-  </div>
-
-  <div class="flex flex-wrap gap-2 mb-8">
-    <span class="px-4 py-2 rounded-full bg-slate-50 border border-slate-200 text-xs font-semibold">IB (PYP · MYP · DP)</span>
-    <span class="px-4 py-2 rounded-full bg-slate-50 border border-slate-200 text-xs font-semibold">CBSE</span>
-    <span class="px-4 py-2 rounded-full bg-slate-50 border border-slate-200 text-xs font-semibold">ICSE / ISC</span>
-    <span class="px-4 py-2 rounded-full bg-slate-50 border border-slate-200 text-xs font-semibold">Cambridge (CAIE)</span>
-    <span class="px-4 py-2 rounded-full bg-slate-50 border border-slate-200 text-xs font-semibold">Advanced Placement</span>
-    <span class="px-4 py-2 rounded-full bg-slate-50 border border-slate-200 text-xs font-semibold">State Boards</span>
-    <span class="px-4 py-2 rounded-full bg-slate-50 border border-slate-200 text-xs font-semibold">NIOS</span>
-  </div>
-
-  <div class="brand-gradient text-white rounded-2xl p-7">
-    <p class="text-xl font-extrabold leading-tight">
-      Don't see yours? Cortex AI adapts to any framework — talk to us
-      and we'll have your school live in 14 days.
-    </p>
-  </div>
-
-  <div class="page-footer">
-    <span>AIvenX · Curriculum Coverage</span>
-    <span>Page 6</span>
-  </div>
-</section>
 
 <!-- =================================================================
-     PAGE 7 — EDITIONS (no prices — contact-driven)
+     PAGE 5 · WHAT WE OFFER · CORTEX + ERP
      ================================================================= -->
 <section class="page">
-  <p class="text-xs font-mono uppercase tracking-[0.3em] text-brand-purple mb-3">Editions</p>
-  <h2 class="text-4xl font-black tracking-tight mb-3">Pick the edition<br/>that fits your school.</h2>
-  <p class="text-base text-slate-600 leading-relaxed mb-8 max-w-2xl">
-    Three editions, one platform. All editions are multi-tenant secure,
-    GDPR-aligned, and include role-based access for admin, principal,
-    teacher, student, and parent.
+  <div class="sec-num mb-3">04 · What we offer</div>
+  <h2 class="sec-h">Five surfaces.<br/><span class="gradient-text">One spine.</span></h2>
+
+  <p class="text-slate-600 mt-5 text-[11pt] leading-relaxed">
+    AIvenX isn't a feature list bolted on a CMS. It's five distinct products sharing one identity, one data layer, one bill — designed so the right person sees the right surface at the right moment.
   </p>
 
-  <div class="grid grid-cols-3 gap-4">
-    <!-- Starter -->
-    <div class="rounded-2xl border border-slate-200 p-5">
-      <p class="text-xs uppercase tracking-widest text-slate-500 mb-2">Starter</p>
-      <h3 class="font-bold text-2xl mb-3">Operate</h3>
-      <p class="text-sm text-slate-600 leading-relaxed mb-4">
-        For schools moving off spreadsheets. Replace the ERP first.
-      </p>
-      <ul class="space-y-1.5 text-sm text-slate-700">
-        <li class="flex gap-2"><span class="text-brand-cyan">✓</span> Admissions & fees</li>
-        <li class="flex gap-2"><span class="text-brand-cyan">✓</span> HR & payroll</li>
-        <li class="flex gap-2"><span class="text-brand-cyan">✓</span> Timetable & exams</li>
-        <li class="flex gap-2"><span class="text-brand-cyan">✓</span> Report cards</li>
-        <li class="flex gap-2"><span class="text-brand-cyan">✓</span> Parent portal</li>
-        <li class="flex gap-2"><span class="text-brand-cyan">✓</span> Email support</li>
-      </ul>
-    </div>
-    <!-- Pro -->
-    <div class="rounded-2xl border-2 border-brand-purple p-5 relative">
-      <span class="absolute -top-3 left-5 brand-gradient text-white text-[10pt] font-bold uppercase tracking-widest px-3 py-1 rounded-full">Most popular</span>
-      <p class="text-xs uppercase tracking-widest text-brand-purple mb-2">Pro</p>
-      <h3 class="font-bold text-2xl mb-3">Operate + Cortex</h3>
-      <p class="text-sm text-slate-600 leading-relaxed mb-4">
-        Add the AI Studio. Save teachers 10 hours a week.
-      </p>
-      <ul class="space-y-1.5 text-sm text-slate-700">
-        <li class="flex gap-2"><span class="text-brand-cyan">✓</span> Everything in Operate</li>
-        <li class="flex gap-2"><span class="text-brand-cyan">✓</span> Cortex Chapter Generator</li>
-        <li class="flex gap-2"><span class="text-brand-cyan">✓</span> 150k Question Bank</li>
-        <li class="flex gap-2"><span class="text-brand-cyan">✓</span> Assessment Creator</li>
-        <li class="flex gap-2"><span class="text-brand-cyan">✓</span> Lesson plans</li>
-        <li class="flex gap-2"><span class="text-brand-cyan">✓</span> Phone + email support</li>
-      </ul>
-    </div>
-    <!-- Enterprise -->
-    <div class="rounded-2xl border border-slate-200 p-5">
-      <p class="text-xs uppercase tracking-widest text-slate-500 mb-2">Enterprise</p>
-      <h3 class="font-bold text-2xl mb-3">Everything</h3>
-      <p class="text-sm text-slate-600 leading-relaxed mb-4">
-        For multi-campus chains and IB / international schools.
-      </p>
-      <ul class="space-y-1.5 text-sm text-slate-700">
-        <li class="flex gap-2"><span class="text-brand-cyan">✓</span> Everything in Pro</li>
-        <li class="flex gap-2"><span class="text-brand-cyan">✓</span> AI Evaluator</li>
-        <li class="flex gap-2"><span class="text-brand-cyan">✓</span> Face AI Attendance</li>
-        <li class="flex gap-2"><span class="text-brand-cyan">✓</span> Teacher Assist (2026)</li>
-        <li class="flex gap-2"><span class="text-brand-cyan">✓</span> Student Surveillance (2026)</li>
-        <li class="flex gap-2"><span class="text-brand-cyan">✓</span> Priority + dedicated CSM</li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="mt-10 bg-slate-50 rounded-2xl p-6 border border-slate-200 text-center">
-    <p class="text-sm text-slate-600 mb-2">Pricing scales with student count and edition.</p>
-    <p class="text-lg font-bold">
-      Email <a href="mailto:sales@aivenx.co.in" class="brand-gradient-text">sales@aivenx.co.in</a>
-      for a quote tailored to your school.
-    </p>
-  </div>
-
-  <div class="page-footer">
-    <span>AIvenX · Editions</span>
-    <span>Page 7</span>
-  </div>
-</section>
-
-<!-- =================================================================
-     PAGE 8 — ROADMAP + CONTACT
-     ================================================================= -->
-<section class="page">
-  <p class="text-xs font-mono uppercase tracking-[0.3em] text-brand-purple mb-3">2026 — 2027 roadmap</p>
-  <h2 class="text-4xl font-black tracking-tight mb-3">Three new pillars,<br/>already on the way.</h2>
-  <p class="text-sm text-slate-600 leading-relaxed mb-8 max-w-2xl">
-    All four roadmap items are included in your AIvenX subscription when they ship — no upsell, no module fee.
-  </p>
-
-  <div class="grid grid-cols-2 gap-4 mb-8">
-    <div class="rounded-2xl border-2 border-dashed border-cyan-300 p-5">
-      <div class="text-2xl mb-1">🛡️</div>
-      <h3 class="font-bold text-base mb-1 brand-gradient-text">AIvenX Guardian</h3>
-      <p class="text-[10pt] uppercase tracking-widest text-slate-500 mb-2">Safety suite</p>
-      <ul class="text-xs text-slate-600 leading-relaxed space-y-1 mb-3">
-        <li>• Live bus GPS · ETA · boarding verification</li>
-        <li>• Campus gate access · face-AI in/out · headcount</li>
-        <li>• In-bus safety AI · bullying detection</li>
-        <li>• Panic button → admin + guardians + authorities</li>
-      </ul>
-      <span class="inline-block text-[9pt] font-semibold uppercase tracking-wider text-cyan-700">Beta H1 · Pilot H2 2026</span>
-    </div>
-    <div class="rounded-2xl border-2 border-dashed border-purple-300 p-5">
-      <div class="text-2xl mb-1">🎓</div>
-      <h3 class="font-bold text-base mb-1 brand-gradient-text">AIvenX Connect</h3>
-      <p class="text-[10pt] uppercase tracking-widest text-slate-500 mb-2">Alumni network</p>
-      <ul class="text-xs text-slate-600 leading-relaxed space-y-1 mb-3">
-        <li>• Alumni directory · searchable, batch-wise</li>
-        <li>• Mentorship matching · students ↔ alumni</li>
-        <li>• Job board · posted by alumni for the school</li>
-        <li>• Reunions & events RSVP from inside the app</li>
-      </ul>
-      <span class="inline-block text-[9pt] font-semibold uppercase tracking-wider text-purple-700">Live in pilot · GA H2 2026</span>
-    </div>
-    <div class="rounded-2xl border-2 border-dashed border-slate-300 p-5">
-      <div class="text-2xl mb-1">📱</div>
-      <h3 class="font-bold text-base mb-1 brand-gradient-text">AIvenX Mobile</h3>
-      <p class="text-[10pt] uppercase tracking-widest text-slate-500 mb-2">Two apps · one platform</p>
-      <ul class="text-xs text-slate-600 leading-relaxed space-y-1 mb-3">
-        <li>• Student app · chapters, Leo tutor, results, timetable</li>
-        <li>• Parent app · live attendance, fees, bus, performance</li>
-        <li>• Wellbeing alerts · safety pings · gate notifications</li>
-        <li>• iOS + Android · single sign-on with school portal</li>
-      </ul>
-      <span class="inline-block text-[9pt] font-semibold uppercase tracking-wider text-slate-700">Shipping early 2027</span>
-    </div>
-    <div class="rounded-2xl border-2 border-dashed border-slate-300 p-5">
-      <div class="text-2xl mb-1">📊</div>
-      <h3 class="font-bold text-base mb-1 brand-gradient-text">Teacher Assist</h3>
-      <p class="text-[10pt] uppercase tracking-widest text-slate-500 mb-2">Auto-generated decks</p>
-      <ul class="text-xs text-slate-600 leading-relaxed space-y-1 mb-3">
-        <li>• Slide-by-slide deck per published chapter</li>
-        <li>• Speaker notes · embedded diagrams</li>
-        <li>• Discussion prompts built in</li>
-        <li>• Walk into class with a polished deck, not Google</li>
-      </ul>
-      <span class="inline-block text-[9pt] font-semibold uppercase tracking-wider text-slate-700">Shipping H2 2026</span>
-    </div>
-  </div>
-
-  <!-- Contact block -->
-  <div class="brand-gradient rounded-2xl p-8 text-white">
-    <p class="text-xs uppercase tracking-widest text-white/80 mb-3">Let's talk</p>
-    <h3 class="text-3xl font-black leading-tight mb-6">Book a 30-minute demo.<br/>See your school running on AIvenX.</h3>
-
-    <div class="grid grid-cols-2 gap-6 mb-6">
-      <div>
-        <p class="text-xs uppercase tracking-widest text-white/70 mb-1">Sales</p>
-        <p class="font-semibold">sales@aivenx.co.in</p>
+  <div class="mt-8 card-tinted p-6">
+    <div class="flex items-center gap-3 mb-4">
+      <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center text-white shadow">
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
       </div>
       <div>
-        <p class="text-xs uppercase tracking-widest text-white/70 mb-1">General</p>
-        <p class="font-semibold">hello@aivenx.co.in</p>
-      </div>
-      <div>
-        <p class="text-xs uppercase tracking-widest text-white/70 mb-1">Support</p>
-        <p class="font-semibold">support@aivenx.co.in</p>
-      </div>
-      <div>
-        <p class="text-xs uppercase tracking-widest text-white/70 mb-1">Web</p>
-        <p class="font-semibold">aivenx.co.in</p>
+        <div class="text-[9pt] text-cyan-700 uppercase tracking-widest font-bold">Cortex · AI Studio</div>
+        <div class="font-display font-bold text-[16pt]">Chapter to grade in 30 seconds.</div>
       </div>
     </div>
+    <p class="text-[11pt] text-slate-700 leading-relaxed mb-5">
+      The teacher's AI workspace. <strong>Generate</strong> CBSE/ICSE chapters in four persona modes. <strong>Assemble</strong> exams from a 150,000-question bank. <strong>Grade</strong> handwritten papers with rubric-aware AI. <strong>Plan</strong> period-wise lessons. <strong>Narrate</strong> chapters as audio playlists.
+    </p>
+    <div class="flex flex-wrap gap-2 mb-4">
+      <span class="pill bg-cyan-50 text-cyan-700 border border-cyan-200">Focus mode</span>
+      <span class="pill bg-pink-50 text-pink-700 border border-pink-200">Spark mode</span>
+      <span class="pill bg-emerald-50 text-emerald-700 border border-emerald-200">Quest mode</span>
+      <span class="pill bg-purple-50 text-purple-700 border border-purple-200">Saga mode</span>
+    </div>
+    <div class="grid grid-cols-3 gap-3">
+      <div class="card-light p-3">
+        <div class="text-[9pt] uppercase font-mono tracking-wider text-slate-500">Question bank</div>
+        <div class="text-xl font-bold gradient-text">150k+</div>
+      </div>
+      <div class="card-light p-3">
+        <div class="text-[9pt] uppercase font-mono tracking-wider text-slate-500">Persona modes</div>
+        <div class="text-xl font-bold gradient-text">4</div>
+      </div>
+      <div class="card-light p-3">
+        <div class="text-[9pt] uppercase font-mono tracking-wider text-slate-500">Boards covered</div>
+        <div class="text-xl font-bold gradient-text">CBSE · ICSE · IB</div>
+      </div>
+    </div>
+  </div>
 
-    <p class="text-sm text-white/80">
-      AIvenX Technologies · Mumbai, India · © 2026
+  <div class="mt-5 card-tinted p-6">
+    <div class="flex items-center gap-3 mb-3">
+      <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white shadow">
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>
+      </div>
+      <div>
+        <div class="text-[9pt] text-purple-700 uppercase tracking-widest font-bold">AIvenX · ERP</div>
+        <div class="font-display font-bold text-[16pt]">Run the school.</div>
+      </div>
+    </div>
+    <p class="text-[11pt] text-slate-700 leading-relaxed mb-3">
+      Students, fees, attendance, exams, HR, library, transport, hostel — every operational module. Face-AI live attendance, UPI fees, parent home with the child's day in one screen, one-click inspection bundle for board renewals.
     </p>
   </div>
 
   <div class="page-footer">
-    <span>AIvenX · Roadmap & Contact</span>
-    <span>Page 8</span>
+    <span class="brand-mini"><img src="/assets/aivenx-mark.png" class="w-4 h-4" alt=""/> AIvenX · Company brochure</span>
+    <span>05</span>
+  </div>
+</section>
+
+
+<!-- =================================================================
+     PAGE 6 · GUARDIAN · CONNECT · MOBILE · GALLERY
+     ================================================================= -->
+<section class="page">
+  <div class="sec-num mb-3">04 · What we offer · continued</div>
+  <h2 class="sec-h">Safety. Alumni. <span class="gradient-text">Mobile.</span></h2>
+
+  <div class="mt-8 grid grid-cols-1 gap-5">
+    <div class="card-tinted p-6">
+      <div class="flex items-center gap-3 mb-3">
+        <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white shadow">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+        </div>
+        <div>
+          <div class="text-[9pt] text-emerald-700 uppercase tracking-widest font-bold">Guardian</div>
+          <div class="font-display font-bold text-[16pt]">Eyes on every gate, every bus.</div>
+        </div>
+      </div>
+      <p class="text-[11pt] text-slate-700 leading-relaxed">
+        Face-AI campus check-in (&lt;100ms recognition, 0.65 confidence threshold), live bus GPS with ETA, in-bus aggression detection, visitor audit log — all parent-visible in real time. Per-school feature toggles let principals enable only what their families have consented to.
+      </p>
+    </div>
+
+    <div class="card-tinted p-6">
+      <div class="flex items-center gap-3 mb-3">
+        <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-pink-500 to-rose-600 flex items-center justify-center text-white shadow">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+        </div>
+        <div>
+          <div class="text-[9pt] text-pink-700 uppercase tracking-widest font-bold">Connect</div>
+          <div class="font-display font-bold text-[16pt]">From graduation to first job.</div>
+        </div>
+      </div>
+      <p class="text-[11pt] text-slate-700 leading-relaxed">
+        Searchable alumni directory by batch and company. Mentorship matching for current students. Job board and reunion modules rolling out. The school's network keeps generating value long after the student leaves.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-2 gap-5">
+      <div class="card-tinted p-6">
+        <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center text-white shadow mb-3">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+        </div>
+        <div class="text-[9pt] text-amber-700 uppercase tracking-widest font-bold">Mobile · Q4 2026</div>
+        <h3 class="font-display font-bold text-[14pt] mb-1.5">Native apps. Three audiences.</h3>
+        <p class="text-[10pt] text-slate-600 leading-relaxed">Student, parent, and teacher apps from one Expo codebase. India-data-residency push notifications.</p>
+      </div>
+      <div class="card-tinted p-6">
+        <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-rose-500 to-orange-500 flex items-center justify-center text-white shadow mb-3">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><circle cx="12" cy="13" r="4" stroke-width="2"/></svg>
+        </div>
+        <div class="text-[9pt] text-rose-700 uppercase tracking-widest font-bold">Gallery</div>
+        <h3 class="font-display font-bold text-[14pt] mb-1.5">School life, curated.</h3>
+        <p class="text-[10pt] text-slate-600 leading-relaxed">Sports day, annual day, trips. Audience-scoped publishing — only Super Admin / School Admin / Principal can publish.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span class="brand-mini"><img src="/assets/aivenx-mark.png" class="w-4 h-4" alt=""/> AIvenX · Company brochure</span>
+    <span>06</span>
+  </div>
+</section>
+
+
+<!-- =================================================================
+     PAGE 7 · AI CAPABILITIES MATRIX
+     ================================================================= -->
+<section class="page">
+  <div class="sec-num mb-3">05 · AI capabilities</div>
+  <h2 class="sec-h">Real AI.<br/><span class="gradient-text">Not a sticker.</span></h2>
+
+  <p class="text-slate-600 mt-5 text-[11pt] leading-relaxed">
+    Eleven shipped capabilities, two in beta, four on the roadmap. Each one removes a specific hour of work from a teacher, parent, or principal's week.
+  </p>
+
+  <div class="mt-7 grid grid-cols-3 gap-3">
+    <div class="cap-chip"><div class="text-xl mb-1.5">📖</div><div class="text-[10pt] font-bold">Persona-aware chapter generation</div><div class="text-[9pt] text-slate-500 mt-1">CBSE/ICSE/IB · 4 modes</div><div class="text-[9pt] font-bold uppercase tracking-wider text-emerald-600 mt-1.5">Shipped</div></div>
+    <div class="cap-chip"><div class="text-xl mb-1.5">🧠</div><div class="text-[10pt] font-bold">AI exam evaluator</div><div class="text-[9pt] text-slate-500 mt-1">Handwriting OCR · rubric grading</div><div class="text-[9pt] font-bold uppercase tracking-wider text-emerald-600 mt-1.5">Shipped</div></div>
+    <div class="cap-chip"><div class="text-xl mb-1.5">📋</div><div class="text-[10pt] font-bold">AI lesson planner</div><div class="text-[9pt] text-slate-500 mt-1">Period-wise · activities · checks</div><div class="text-[9pt] font-bold uppercase tracking-wider text-emerald-600 mt-1.5">Shipped</div></div>
+    <div class="cap-chip"><div class="text-xl mb-1.5">📷</div><div class="text-[10pt] font-bold">Face-AI attendance + gate</div><div class="text-[9pt] text-slate-500 mt-1">InsightFace · &lt;100ms / frame</div><div class="text-[9pt] font-bold uppercase tracking-wider text-emerald-600 mt-1.5">Shipped</div></div>
+    <div class="cap-chip"><div class="text-xl mb-1.5">🎯</div><div class="text-[10pt] font-bold">Psychometric persona match</div><div class="text-[9pt] text-slate-500 mt-1">8 questions → preferred mode</div><div class="text-[9pt] font-bold uppercase tracking-wider text-emerald-600 mt-1.5">Shipped</div></div>
+    <div class="cap-chip"><div class="text-xl mb-1.5">🎧</div><div class="text-[10pt] font-bold">Audio narration playlists</div><div class="text-[9pt] text-slate-500 mt-1">Spotify-style · TTS · per-subject</div><div class="text-[9pt] font-bold uppercase tracking-wider text-emerald-600 mt-1.5">Shipped</div></div>
+    <div class="cap-chip"><div class="text-xl mb-1.5">📊</div><div class="text-[10pt] font-bold">Class engagement heatmap</div><div class="text-[9pt] text-slate-500 mt-1">Correctness × time × completion</div><div class="text-[9pt] font-bold uppercase tracking-wider text-emerald-600 mt-1.5">Shipped</div></div>
+    <div class="cap-chip"><div class="text-xl mb-1.5">📝</div><div class="text-[10pt] font-bold">AI question paper generator</div><div class="text-[9pt] text-slate-500 mt-1">Filter-driven · CBSE blueprint</div><div class="text-[9pt] font-bold uppercase tracking-wider text-emerald-600 mt-1.5">Shipped</div></div>
+    <div class="cap-chip"><div class="text-xl mb-1.5">🦁</div><div class="text-[10pt] font-bold">Leo · chapter-aware tutor</div><div class="text-[9pt] text-slate-500 mt-1">Asks-anything chat · scoped</div><div class="text-[9pt] font-bold uppercase tracking-wider text-emerald-600 mt-1.5">Shipped</div></div>
+    <div class="cap-chip"><div class="text-xl mb-1.5">🚌</div><div class="text-[10pt] font-bold">In-bus aggression detection</div><div class="text-[9pt] text-slate-500 mt-1">Audio + vision · pilot routes</div><div class="text-[9pt] font-bold uppercase tracking-wider text-amber-600 mt-1.5">Beta</div></div>
+    <div class="cap-chip"><div class="text-xl mb-1.5">💬</div><div class="text-[10pt] font-bold">Multi-language translation</div><div class="text-[9pt] text-slate-500 mt-1">Hindi · Tamil · Telugu · Bengali +</div><div class="text-[9pt] font-bold uppercase tracking-wider text-cyan-600 mt-1.5">Roadmap</div></div>
+    <div class="cap-chip"><div class="text-xl mb-1.5">🛟</div><div class="text-[10pt] font-bold">Wellbeing beacon</div><div class="text-[9pt] text-slate-500 mt-1">Distress detection on student writing</div><div class="text-[9pt] font-bold uppercase tracking-wider text-cyan-600 mt-1.5">Roadmap</div></div>
+  </div>
+
+  <div class="page-footer">
+    <span class="brand-mini"><img src="/assets/aivenx-mark.png" class="w-4 h-4" alt=""/> AIvenX · Company brochure</span>
+    <span>07</span>
+  </div>
+</section>
+
+
+<!-- =================================================================
+     PAGE 8 · HOW WE SOLVE — Evaluator pipeline
+     ================================================================= -->
+<section class="page">
+  <div class="sec-num mb-3">06 · How we solve</div>
+  <h2 class="sec-h">Upload the answer sheet.<br/><span class="gradient-text">Get the grade. Get the next steps.</span></h2>
+
+  <p class="text-slate-600 mt-5 text-[11pt] leading-relaxed">
+    Cortex Evaluator is the only AI grading tool built around an Indian board's actual marking scheme. Step-wise rubrics, partial credit, manual override at every stage — and a teacher in the loop, not on the sidelines.
+  </p>
+
+  <div class="mt-7 grid grid-cols-3 gap-4">
+    <div class="card-tinted p-5">
+      <div class="text-[9pt] uppercase tracking-wider font-mono text-slate-500">Faster</div>
+      <div class="text-3xl font-bold gradient-text mt-1">80%</div>
+      <div class="text-[10pt] text-slate-600 mt-1">faster evaluation vs. hand grading</div>
+    </div>
+    <div class="card-tinted p-5">
+      <div class="text-[9pt] uppercase tracking-wider font-mono text-slate-500">Time</div>
+      <div class="text-3xl font-bold gradient-text mt-1">5 min</div>
+      <div class="text-[10pt] text-slate-600 mt-1">per student paper</div>
+    </div>
+    <div class="card-tinted p-5">
+      <div class="text-[9pt] uppercase tracking-wider font-mono text-slate-500">Output</div>
+      <div class="text-3xl font-bold gradient-text mt-1">Auto</div>
+      <div class="text-[10pt] text-slate-600 mt-1">weak-area recommendations</div>
+    </div>
+  </div>
+
+  <div class="mt-9 grid grid-cols-2 gap-4">
+    <div class="card-light p-5 relative">
+      <div class="absolute top-3 right-4 text-[40pt] font-display font-bold text-slate-100 leading-none">1</div>
+      <div class="relative">
+        <div class="text-[9pt] uppercase tracking-wider font-bold text-cyan-600 mb-1">Upload</div>
+        <h3 class="font-display font-bold text-[13pt] mb-1.5">Upload the exam PDF</h3>
+        <p class="text-[10pt] text-slate-600 leading-relaxed">Question paper or scanned answer sheets — bulk-upload in one drag.</p>
+      </div>
+    </div>
+    <div class="card-light p-5 relative">
+      <div class="absolute top-3 right-4 text-[40pt] font-display font-bold text-slate-100 leading-none">2</div>
+      <div class="relative">
+        <div class="text-[9pt] uppercase tracking-wider font-bold text-purple-600 mb-1">Confirm</div>
+        <h3 class="font-display font-bold text-[13pt] mb-1.5">Confirm the answer key</h3>
+        <p class="text-[10pt] text-slate-600 leading-relaxed">AI extracts questions + suggested rubric. Teacher reviews and edits.</p>
+      </div>
+    </div>
+    <div class="card-light p-5 relative">
+      <div class="absolute top-3 right-4 text-[40pt] font-display font-bold text-slate-100 leading-none">3</div>
+      <div class="relative">
+        <div class="text-[9pt] uppercase tracking-wider font-bold text-emerald-600 mb-1">Grade</div>
+        <h3 class="font-display font-bold text-[13pt] mb-1.5">Auto-grade with rubrics</h3>
+        <p class="text-[10pt] text-slate-600 leading-relaxed">Step-wise marks for every paper. Partial credit. Reasoning shown to teacher.</p>
+      </div>
+    </div>
+    <div class="card-light p-5 relative">
+      <div class="absolute top-3 right-4 text-[40pt] font-display font-bold text-slate-100 leading-none">4</div>
+      <div class="relative">
+        <div class="text-[9pt] uppercase tracking-wider font-bold text-amber-600 mb-1">Recommend</div>
+        <h3 class="font-display font-bold text-[13pt] mb-1.5">Recommend, per student</h3>
+        <p class="text-[10pt] text-slate-600 leading-relaxed">Weak-spot chapters + practice + audio playlist sent to each student's app.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span class="brand-mini"><img src="/assets/aivenx-mark.png" class="w-4 h-4" alt=""/> AIvenX · Company brochure</span>
+    <span>08</span>
+  </div>
+</section>
+
+
+<!-- =================================================================
+     PAGE 9 · BUILT FOR INDIA
+     ================================================================= -->
+<section class="page">
+  <div class="sec-num mb-3">07 · Built for India</div>
+  <h2 class="sec-h">Not localized.<br/><span class="gradient-text">Engineered for India.</span></h2>
+
+  <p class="text-slate-600 mt-5 text-[11pt] leading-relaxed">
+    Designed in India, for Indian boards, fees, family structures, languages, and the legal frame.
+  </p>
+
+  <div class="mt-7 grid grid-cols-2 gap-4">
+    <div class="card-light p-5">
+      <div class="text-2xl mb-2">⚖️</div>
+      <h3 class="font-display font-bold text-[13pt] mb-1">DPDP Act 2023</h3>
+      <p class="text-[10pt] text-slate-600 leading-relaxed">Minor consent, India data residency, right-to-erasure, audit-grade logging.</p>
+    </div>
+    <div class="card-light p-5">
+      <div class="text-2xl mb-2">📚</div>
+      <h3 class="font-display font-bold text-[13pt] mb-1">NEP 2020 · HPC</h3>
+      <p class="text-[10pt] text-slate-600 leading-relaxed">360° Holistic Progress Card — academic + co-curricular + life skills + values.</p>
+    </div>
+    <div class="card-light p-5">
+      <div class="text-2xl mb-2">🏫</div>
+      <h3 class="font-display font-bold text-[13pt] mb-1">RTE · RPwD</h3>
+      <p class="text-[10pt] text-slate-600 leading-relaxed">Section 12 quotas, inclusive-education plans, attendance compliance.</p>
+    </div>
+    <div class="card-light p-5">
+      <div class="text-2xl mb-2">📊</div>
+      <h3 class="font-display font-bold text-[13pt] mb-1">CBSE · ICSE · IB · State</h3>
+      <p class="text-[10pt] text-slate-600 leading-relaxed">Multi-board curriculum scaffold, sample-paper aligned, 10-yr PYQ archive.</p>
+    </div>
+    <div class="card-light p-5">
+      <div class="text-2xl mb-2">🇮🇳</div>
+      <h3 class="font-display font-bold text-[13pt] mb-1">22 official languages</h3>
+      <p class="text-[10pt] text-slate-600 leading-relaxed">Hindi · Tamil · Telugu · Bengali · Marathi · Gujarati · Kannada and more — coming.</p>
+    </div>
+    <div class="card-light p-5">
+      <div class="text-2xl mb-2">💸</div>
+      <h3 class="font-display font-bold text-[13pt] mb-1">UPI-first fees</h3>
+      <p class="text-[10pt] text-slate-600 leading-relaxed">Multi-child invoices, sibling discounts, EMI, GST-compliant receipts.</p>
+    </div>
+    <div class="card-light p-5">
+      <div class="text-2xl mb-2">🌐</div>
+      <h3 class="font-display font-bold text-[13pt] mb-1">Tier-2 / Tier-3 ready</h3>
+      <p class="text-[10pt] text-slate-600 leading-relaxed">Works on 3G, low-bandwidth modes, text fallback for poor connectivity.</p>
+    </div>
+    <div class="card-light p-5">
+      <div class="text-2xl mb-2">👨‍👩‍👦‍👦</div>
+      <h3 class="font-display font-bold text-[13pt] mb-1">Joint-family pods</h3>
+      <p class="text-[10pt] text-slate-600 leading-relaxed">Mother · father · grandparent · driver — role-scoped permissions per parent.</p>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span class="brand-mini"><img src="/assets/aivenx-mark.png" class="w-4 h-4" alt=""/> AIvenX · Company brochure</span>
+    <span>09</span>
+  </div>
+</section>
+
+
+<!-- =================================================================
+     PAGE 10 · EDITIONS
+     ================================================================= -->
+<section class="page">
+  <div class="sec-num mb-3">08 · Editions</div>
+  <h2 class="sec-h">Three editions.<br/><span class="gradient-text">Pick what fits.</span></h2>
+
+  <p class="text-slate-600 mt-5 text-[11pt] leading-relaxed">
+    No setup fee. Pilot for one term, then commit. Pricing tailored on the call by board, headcount, and modules.
+  </p>
+
+  <div class="mt-7 grid grid-cols-3 gap-4">
+    <div class="card-light p-5">
+      <div class="text-[9pt] uppercase font-mono tracking-widest text-slate-500 font-bold mb-1">Edition</div>
+      <div class="font-display font-bold text-[18pt] mb-1">Starter</div>
+      <p class="text-[10pt] text-slate-500 mb-4">Schools running ERP for the first time</p>
+      <ul class="space-y-1.5 text-[10pt] text-slate-700">
+        <li class="flex gap-1.5"><span class="text-cyan-500">✓</span><span>Students · academics · attendance</span></li>
+        <li class="flex gap-1.5"><span class="text-cyan-500">✓</span><span>Fees · HR · communication</span></li>
+        <li class="flex gap-1.5"><span class="text-cyan-500">✓</span><span>Exams · report cards</span></li>
+        <li class="flex gap-1.5"><span class="text-cyan-500">✓</span><span>Parent home + child detail</span></li>
+        <li class="flex gap-1.5"><span class="text-cyan-500">✓</span><span>Gallery · announcements</span></li>
+      </ul>
+    </div>
+
+    <div class="rounded-2xl p-[2px] bg-gradient-to-br from-brand-cyan via-brand-purple to-brand-pink" style="-webkit-print-color-adjust:exact; print-color-adjust:exact;">
+      <div class="bg-white rounded-[14px] p-5">
+        <div class="flex items-center justify-between mb-1">
+          <div class="text-[9pt] uppercase font-mono tracking-widest text-cyan-700 font-bold">Edition</div>
+          <span class="pill bg-gradient-to-r from-brand-cyan to-brand-purple text-white text-[8pt]">Most schools</span>
+        </div>
+        <div class="font-display font-bold text-[18pt] mb-1">Standard</div>
+        <p class="text-[10pt] text-slate-500 mb-4">Content + AI evaluator. Curriculum done for you.</p>
+        <ul class="space-y-1.5 text-[10pt] text-slate-700">
+          <li class="flex gap-1.5"><span class="text-cyan-500">✓</span><span>Everything in Starter</span></li>
+          <li class="flex gap-1.5"><span class="text-cyan-500">✓</span><span><b>Pre-built chapter library</b> · all 4 personas</span></li>
+          <li class="flex gap-1.5"><span class="text-cyan-500">✓</span><span>Audio narration playlists</span></li>
+          <li class="flex gap-1.5"><span class="text-cyan-500">✓</span><span>150k question bank + paper creator</span></li>
+          <li class="flex gap-1.5"><span class="text-cyan-500">✓</span><span><b>AI evaluator</b> · handwriting → grade</span></li>
+          <li class="flex gap-1.5"><span class="text-cyan-500">✓</span><span>Library · Transport · Hostel</span></li>
+          <li class="flex gap-1.5 opacity-60"><span class="text-slate-400">×</span><span class="text-slate-500">Cortex Studio chapter generator</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card-light p-5">
+      <div class="text-[9pt] uppercase font-mono tracking-widest text-slate-500 font-bold mb-1">Edition</div>
+      <div class="font-display font-bold text-[18pt] mb-1">Enterprise</div>
+      <p class="text-[10pt] text-slate-500 mb-4">Generate your own content. Run safety-critical ops.</p>
+      <ul class="space-y-1.5 text-[10pt] text-slate-700">
+        <li class="flex gap-1.5"><span class="text-pink-500">✓</span><span>Everything in Standard</span></li>
+        <li class="flex gap-1.5"><span class="text-pink-500">✓</span><span><b>Cortex Studio</b> · chapter generator</span></li>
+        <li class="flex gap-1.5"><span class="text-pink-500">✓</span><span>AI lesson planner · period-wise</span></li>
+        <li class="flex gap-1.5"><span class="text-pink-500">✓</span><span>Guardian · Face-AI gate · Bus AI</span></li>
+        <li class="flex gap-1.5"><span class="text-pink-500">✓</span><span>In-bus aggression detection</span></li>
+        <li class="flex gap-1.5"><span class="text-pink-500">✓</span><span>Connect alumni network</span></li>
+        <li class="flex gap-1.5"><span class="text-pink-500">✓</span><span>Mobile apps (Q4 2026 pilot)</span></li>
+        <li class="flex gap-1.5"><span class="text-pink-500">✓</span><span>Dedicated success manager</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span class="brand-mini"><img src="/assets/aivenx-mark.png" class="w-4 h-4" alt=""/> AIvenX · Company brochure</span>
+    <span>10</span>
+  </div>
+</section>
+
+
+<!-- =================================================================
+     PAGE 11 · CONTACT
+     ================================================================= -->
+<section class="page page-dark">
+  <div class="cover-grid relative" style="height: 297mm; padding: 22mm 18mm;">
+    <div class="flex items-center gap-3">
+      <img src="/assets/aivenx-mark.png" alt="" class="w-10 h-10" />
+      <div>
+        <div class="font-display font-bold text-xl tracking-tight">AIvenX</div>
+        <div class="text-[10pt] text-slate-400 uppercase tracking-[0.25em]">Company brochure · contact</div>
+      </div>
+    </div>
+
+    <div class="absolute inset-x-0" style="top: 50%; transform: translateY(-55%); padding: 0 18mm;">
+      <div class="text-[10pt] text-cyan-300 uppercase tracking-[0.3em] font-mono mb-4">10 · Contact us</div>
+      <h2 class="font-display font-bold tracking-tight" style="font-size: 44pt; line-height: 1.05;">
+        See it grade<br/>
+        <span class="gradient-text">your school's last paper</span>.
+      </h2>
+      <p class="text-slate-300 mt-6 max-w-2xl text-[12pt] leading-relaxed">
+        Send us a recent answer sheet (anonymized). We'll grade it live, generate the recommendations, and walk your principal through the parent home — in 30 minutes.
+      </p>
+
+      <div class="grid grid-cols-2 gap-5 mt-10 max-w-3xl">
+        <div class="card-dark p-5">
+          <div class="text-[9pt] uppercase tracking-widest text-slate-400 font-mono mb-2">Email</div>
+          <a href="mailto:hello@aivenx.co.in" class="font-display font-bold text-[18pt] text-white hover:text-cyan-300">hello@aivenx.co.in</a>
+        </div>
+        <div class="card-dark p-5">
+          <div class="text-[9pt] uppercase tracking-widest text-slate-400 font-mono mb-2">Headquarters</div>
+          <div class="font-display font-bold text-[18pt] text-white">Hyderabad, Telangana</div>
+          <div class="text-[10pt] text-slate-400 mt-1">India</div>
+        </div>
+        <div class="card-dark p-5">
+          <div class="text-[9pt] uppercase tracking-widest text-slate-400 font-mono mb-2">Web</div>
+          <div class="font-display font-bold text-[16pt] text-white">aivenx.co.in</div>
+        </div>
+        <div class="card-dark p-5">
+          <div class="text-[9pt] uppercase tracking-widest text-slate-400 font-mono mb-2">Demo</div>
+          <div class="text-[11pt] text-slate-200">30-minute walkthrough · NDA-friendly · Pilot for 1 term · No setup fees</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="absolute" style="bottom: 22mm; left: 18mm; right: 18mm;">
+      <div class="flex items-center justify-between border-t border-white/10 pt-4 text-[9pt] text-slate-400">
+        <div>© 2026 AIvenX Technologies Pvt. Ltd. · Made in India</div>
+        <div class="font-mono uppercase tracking-widest text-slate-500">Company Brochure · v2</div>
+      </div>
+    </div>
   </div>
 </section>
 
